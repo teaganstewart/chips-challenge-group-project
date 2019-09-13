@@ -7,18 +7,15 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
 
-public class GUI extends JFrame {
+public class GUI extends Frame {
 
-    private Game game;
-    private JFrame main;
+    Game game;
 
     public GUI(){
         game = new Game();
-        createWindow();
-
-        main.addKeyListener(new KeyListener() {
+        gameWindow();
+        this.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
 
@@ -31,6 +28,27 @@ public class GUI extends JFrame {
 
             @Override
             public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_X && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
+                    System.out.println("exit");
+                }
+                if (e.getKeyCode() == KeyEvent.VK_S && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
+                    System.out.println("save");
+                }
+                if (e.getKeyCode() == KeyEvent.VK_R && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
+                    System.out.println("resume");
+                }
+                if (e.getKeyCode() == KeyEvent.VK_P && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
+                    System.out.println("restart this level ");
+                }
+                if (e.getKeyCode() == KeyEvent.VK_1 && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
+                    System.out.println("restart");
+                }
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    System.out.println("pause");
+                }
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    System.out.println("esc");
+                }
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     System.out.println("up");
                 }
@@ -49,99 +67,23 @@ public class GUI extends JFrame {
         });
     }
 
-    public void createWindow(){
-        main = new JFrame("Clap and Chap");
-        main.setLayout(new BorderLayout());
-        main.setSize(800,800);
-        createMenuBar();
-        main.setVisible(true);
-
-    }
-
-    public void createMenuBar(){
-
-        JMenuBar menuBar = new JMenuBar();
-
-        JMenu fileMenu = new JMenu("File");
-        JMenu gameMenu = new JMenu("Game");
-        fileMenu.setMnemonic(KeyEvent.VK_F);
-        gameMenu.setMnemonic(KeyEvent.VK_G);
-
-        //File menu
-        JMenuItem exitItem = new JMenuItem("Exit");
-        KeyStroke ctrlXKeyStroke = KeyStroke.getKeyStroke("control X");
-        exitItem.setAccelerator(ctrlXKeyStroke);
-        exitItem.addActionListener((event) -> System.out.println("not save"));
-
-        JMenuItem saveAndExitItem = new JMenuItem("Save & Exit");
-        KeyStroke ctrlSKeyStroke = KeyStroke.getKeyStroke("control S");
-        saveAndExitItem.setAccelerator(ctrlSKeyStroke);
-        saveAndExitItem.addActionListener((event) -> System.out.println("Save & Exit"));
-
-        JMenuItem loadGameItem = new JMenuItem("Load game");
-        KeyStroke ctrlRKeyStroke = KeyStroke.getKeyStroke("control R");
-        loadGameItem.setAccelerator(ctrlRKeyStroke);
-        loadGameItem.addActionListener((event) -> System.out.println("load"));
-
-        //Game Menu
-        JMenuItem restart_level_Item= new JMenuItem("Restart Level");
-        KeyStroke ctrlPKeyStroke = KeyStroke.getKeyStroke("control P");
-        restart_level_Item.setAccelerator(ctrlPKeyStroke);
-        restart_level_Item.addActionListener((event) -> System.out.println("Restart level"));
-
-        JMenuItem restart_game_Item= new JMenuItem("Restart game");
-        KeyStroke ctrl1KeyStroke = KeyStroke.getKeyStroke("control 1");
-        restart_game_Item.setAccelerator(ctrl1KeyStroke);
-        restart_game_Item.addActionListener((event) -> System.out.println("Restart game"));
-
-        JMenuItem pause_Item= new JMenuItem("Pause game (Space)");
-        pause_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0));
-        pause_Item.addActionListener((event) -> System.out.println("Pause game"));
-
-        JMenuItem resume_Item= new JMenuItem("Resume game (ESC)",KeyEvent.VK_ESCAPE);
-        resume_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
-        resume_Item.addActionListener((event) -> System.out.println("Resume game"));
-
-        //Add file items
-        fileMenu.add(loadGameItem);
-        fileMenu.add(saveAndExitItem);
-        fileMenu.add(exitItem);
-
-        //Add game items
-        gameMenu.add(restart_level_Item);
-        gameMenu.add(restart_game_Item);
-        gameMenu.add(pause_Item);
-        gameMenu.add(resume_Item);
-
-        menuBar.add(fileMenu);
-        menuBar.add(gameMenu);
-        main.setJMenuBar(menuBar);
-
-        /**
-         * File Menu
-         *      Load Game
-         *      Save & Exit
-         *      Exit
-         * Game Menu
-         *
-         *      Restart Level
-         *      Restart Game
-         *      Pause
-         *      Unpause
-         *      Help
-         */
+    public void gameWindow(){
+        JFrame main = new JFrame();
+        setLayout(new BorderLayout());
+        setSize(800,800);
+        setVisible(true);
     }
 
     public void displayTime(){
-        int time = game.getTime();
+
     }
 
     public void displayLevel(){
-        int level = game.getLevel();
+
     }
 
     public void displayTreasure() {
-        int treasures = game.getTreasures();
+
     }
 
 
