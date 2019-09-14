@@ -4,6 +4,11 @@ public abstract class Entity {
 		
 	private int row, col;
 	
+	public Entity(int row, int col) {
+		setRow(row);
+		setCol(col);
+	}
+	
 	public int getRow() {
 		return row;
 	}
@@ -19,5 +24,10 @@ public abstract class Entity {
 	public void setCol(int col) {
 		this.col = col;
 	}
+	
+	/**
+	 * If we ever need to actually overwrite the toString method (which we probably will for saving)
+	 */
+	//public abstract String toString();
 	
 }
