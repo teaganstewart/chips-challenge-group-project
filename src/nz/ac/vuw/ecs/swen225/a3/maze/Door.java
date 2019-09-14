@@ -1,4 +1,5 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public class Door extends Entity {
+    // Bop it
 }
