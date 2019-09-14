@@ -3,6 +3,7 @@ package nz.ac.vuw.ecs.swen225.a3.application.ui;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -13,6 +14,8 @@ public class GUI extends JFrame {
 
     private Game game;
     private JFrame main;
+    private JPanel gamePanel;
+    private JPanel infoPanel;
 
     public GUI(){
         game = new Game();
@@ -52,9 +55,27 @@ public class GUI extends JFrame {
     public void createWindow(){
         main = new JFrame("Clap and Chap");
         main.setLayout(new BorderLayout());
-        main.setSize(800,800);
+
+
+
         createMenuBar();
+        gamePanel = new GamePanel(game);
+        infoPanel = new InfoPanel(game);
+
+        main.add(gamePanel, BorderLayout.CENTER);
+        main.add(infoPanel, BorderLayout.LINE_END);
+        //main.getContentPane().set
+        main.setSize(new Dimension(800,600));
+
+        main.setMinimumSize(new Dimension(800,600));
+        main.setMaximumSize(new Dimension(1600,1800));
+
+
+
+        main.pack();
         main.setVisible(true);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        main.setLocation(dim.width/2-main.getSize().width/2, dim.height/2-main.getSize().height/2);
 
     }
 
@@ -71,7 +92,7 @@ public class GUI extends JFrame {
         JMenuItem exitItem = new JMenuItem("Exit");
         KeyStroke ctrlXKeyStroke = KeyStroke.getKeyStroke("control X");
         exitItem.setAccelerator(ctrlXKeyStroke);
-        exitItem.addActionListener((event) -> System.out.println("not save"));
+        exitItem.addActionListener((event) -> System.out.println("Exit"));
 
         JMenuItem saveAndExitItem = new JMenuItem("Save & Exit");
         KeyStroke ctrlSKeyStroke = KeyStroke.getKeyStroke("control S");
@@ -81,7 +102,7 @@ public class GUI extends JFrame {
         JMenuItem loadGameItem = new JMenuItem("Load game");
         KeyStroke ctrlRKeyStroke = KeyStroke.getKeyStroke("control R");
         loadGameItem.setAccelerator(ctrlRKeyStroke);
-        loadGameItem.addActionListener((event) -> System.out.println("load"));
+        loadGameItem.addActionListener((event) -> System.out.println("Load"));
 
         //Game Menu
         JMenuItem restart_level_Item= new JMenuItem("Restart Level");
@@ -94,11 +115,11 @@ public class GUI extends JFrame {
         restart_game_Item.setAccelerator(ctrl1KeyStroke);
         restart_game_Item.addActionListener((event) -> System.out.println("Restart game"));
 
-        JMenuItem pause_Item= new JMenuItem("Pause game (Space)");
+        JMenuItem pause_Item= new JMenuItem("Pause game");
         pause_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0));
         pause_Item.addActionListener((event) -> System.out.println("Pause game"));
 
-        JMenuItem resume_Item= new JMenuItem("Resume game (ESC)",KeyEvent.VK_ESCAPE);
+        JMenuItem resume_Item= new JMenuItem("Resume game",KeyEvent.VK_ESCAPE);
         resume_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
         resume_Item.addActionListener((event) -> System.out.println("Resume game"));
 
