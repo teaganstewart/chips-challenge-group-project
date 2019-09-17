@@ -12,6 +12,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  */
 public abstract class Entity {
 		
+	private Tile tileOn;
 	private Coordinate coord;
 	
 	/**
@@ -21,8 +22,9 @@ public abstract class Entity {
 	 * @param col
 	 * 		Col position.
 	 */
-	public Entity(int row, int col) {
+	public Entity(int row, int col, Tile tileOn) {
 		setCoord(row,col);
+		setTileOn(tileOn);
 	}
 	
 	/**
@@ -58,6 +60,24 @@ public abstract class Entity {
 		this.coord = coord;
 	}
 	
+	/**
+	 * Gets the tile this entity is on.
+	 * @return
+	 * 		The tile.
+	 */
+	public Tile getTileOn() {
+		return tileOn;
+	}
+
+	/**
+	 * Sets the tile this entity is on.
+	 * @param tileOn
+	 * 		The tile.
+	 */
+	public void setTileOn(Tile tileOn) {
+		this.tileOn = tileOn;
+	}
+
 	/**
 	 * Method called when an entity touches another entity.
 	 * For players, this method is called upon movement if

@@ -16,13 +16,21 @@ public class Treasure extends Entity {
 	 * 		the row
 	 * @param col
 	 * 		the col
+	 * @param tileOn
+	 * 		The tile the treasure is on
 	 */
-	public Treasure(int row, int col) {
-		super(row,col);
+	public Treasure(int row, int col, Tile tileOn) {
+		super(row,col, tileOn);
 	}
 
 	@Override
 	public void onTouch(Entity player) {
+		
+		// even though the player class doesn't explicitly collect these, just a safe check
+		if (!(player instanceof Player)) return;
+		
+		//	getTileOn().remove(this);
+		//	setTileOn(null);
 		
 		// increments the static counter by 1
 		totalCollected++;

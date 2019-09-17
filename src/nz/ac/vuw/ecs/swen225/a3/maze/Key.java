@@ -16,11 +16,13 @@ public class Key extends Entity {
 	 * 		The row
 	 * @param col
 	 * 		The column
+	 * @param tileOn
+	 * 		The tile the key is on
 	 * @param color
 	 * 		The color of this key.
 	 */
-	public Key (int row, int col, BasicColor color) {
-		super(row,col);
+	public Key (int row, int col, Tile tileOn, BasicColor color) {
+		super(row,col,tileOn);
 		this.color = color;
 	}
 	
@@ -34,10 +36,17 @@ public class Key extends Entity {
 	}
 
 	@Override
-	public void onTouch(Entity player) {
-		// if player has space in their inventory
-		//   player.add(this)
-		//   tell the tile at this coordinate to remove the key
+	public void onTouch(Entity pl) {
+		
+		if (!(pl instanceof Player)) return;
+		Player player = (Player) pl;
+		
+		/*
+		if (player.addToInvetory(this)) {
+			getTileOn().remove(this);
+			setTileOn(null);
+		}
+		 */
 	}
 	
 }

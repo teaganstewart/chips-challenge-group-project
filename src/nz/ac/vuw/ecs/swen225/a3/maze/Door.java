@@ -20,11 +20,13 @@ public class Door extends Entity {
 	 * 		Row position
 	 * @param col
 	 * 		Col position
+	 * @param tileOn
+	 * 		The tile the door is on
 	 * @param color
 	 * 		Color of the door, using BasicColor enum
 	 */
-	public Door(int row, int col, BasicColor color) {
-		super(row, col);
+	public Door(int row, int col, Tile tileOn, BasicColor color) {
+		super(row, col, tileOn);
 		this.color = color;
 		this.locked = true;
 	}
@@ -50,8 +52,11 @@ public class Door extends Entity {
 	}
 
 	@Override
-	public void onTouch(Entity player) {
-		/**
+	public void onTouch(Entity pl) {
+
+		if (!(pl instanceof Player)) return;
+		Player player = (Player) pl;
+		
 		Key key = null;
 		for (Entity e : player.getInventory()) {
 			if (e instanceof Key) {
@@ -65,9 +70,8 @@ public class Door extends Entity {
 		}
 		
 		if (key != null) {
-			player.remove(key);
+			//player.removeFromInvetory(key);
 		}
-		*/
 		
 	}
 
