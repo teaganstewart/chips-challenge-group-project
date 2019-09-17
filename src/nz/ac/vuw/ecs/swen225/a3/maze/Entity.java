@@ -4,16 +4,15 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  * The Entity abstract class, which can be extended by any class if the purpose of it
  * is to be featured in the maze. This includes the Player, any Treasures, Keys, Hints,
  * or any other objects we wish to create. By default, this will allow every entity to
- * store its own row/col position, as well as what happens upon the player interacting
- * with this Entity.
+ * store its own row/col position in a Coordinate, as well as what happens upon the
+ * player interacting with this Entity.
  * 
  * @author Ethan Munn
  *
  */
 public abstract class Entity {
 		
-	private int row;
-	private int col;
+	private Coordinate coord;
 	
 	/**
 	 * The default super constructor. All entities must use this.
@@ -23,44 +22,40 @@ public abstract class Entity {
 	 * 		Col position.
 	 */
 	public Entity(int row, int col) {
-		this.row = row;
-		this.col = col;
+		setCoord(row,col);
 	}
 	
 	/**
-	 * Gets the row this entity is in.
+	 * Gets the coordinate this entity is at.
 	 * @return
-	 * 		the row
+	 * 		the coordinate
 	 */
-	public int getRow() {
-		return row;
+	public Coordinate getCoord() {
+		return coord;
 	}
-	
+
 	/**
-	 * Gets the column this entity is in.
-	 * @return
-	 * 		the column
-	 */
-	public int getCol() {
-		return col;
-	}
-	
-	/**
-	 * Sets the row this entity is in.
+	 * Sets the coordinate to a new Coordinate at this row/col position.
+	 * Saves the step of having to make the new Coordinate object if the
+	 * user doesn't want to.
+	 * 
 	 * @param row
 	 * 		the row
+	 * @param col
+	 * 		the col
 	 */
-	public void setRow(int row) {
-		this.row = row;
+	public void setCoord(int row, int col) {
+		setCoord(new Coordinate(row,col));
 	}
 	
 	/**
-	 * Sets the column this entity is in.
-	 * @param col
-	 * 		the column
+	 * Alternate setting of coord where the user just makes their own
+	 * new Coordinate. Can just use the row/col version as well.
+	 * @param coord
+	 * 		the new Coordinate passed over
 	 */
-	public void setCol(int col) {
-		this.col = col;
+	public void setCoord(Coordinate coord) {
+		this.coord = coord;
 	}
 	
 	/**
@@ -71,7 +66,7 @@ public abstract class Entity {
 	 * interacting with
 	 */
 	public abstract void onTouch(Entity e);
-	
+
 	/**
 	 * If we ever need to actually overwrite the toString method (which we probably will for saving)
 	 */
