@@ -12,7 +12,8 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  */
 public abstract class Entity {
 		
-	private Coordinate coord;
+	private int row;
+	private int col;
 	
 	/**
 	 * The default super constructor. All entities must use this.
@@ -22,7 +23,8 @@ public abstract class Entity {
 	 * 		Col position.
 	 */
 	public Entity(int row, int col) {
-		setCoordinate(row,col);
+		this.row = row;
+		this.col = col;
 	}
 	
 	/**
@@ -31,7 +33,7 @@ public abstract class Entity {
 	 * 		the row
 	 */
 	public int getRow() {
-		return coord.getRow();
+		return row;
 	}
 	
 	/**
@@ -40,28 +42,25 @@ public abstract class Entity {
 	 * 		the column
 	 */
 	public int getCol() {
-		return coord.getCol();
+		return col;
 	}
 	
 	/**
-	 * Sets the row and col as a Coordinate object, for more compact storage.
+	 * Sets the row this entity is in.
 	 * @param row
 	 * 		the row
+	 */
+	public void setRow(int row) {
+		this.row = row;
+	}
+	
+	/**
+	 * Sets the column this entity is in.
 	 * @param col
 	 * 		the column
 	 */
-	public void setCoordinate(int row, int col) {
-		coord = new Coordinate(row,col);
-	}
-	
-	/**
-	 * If the entire coordinate is desired, one can also return this too as the
-	 * grouping of the row and col
-	 * @return
-	 * 		the coordinate of this entity
-	 */
-	public Coordinate getCoordinate() {
-		return coord;
+	public void setCol(int col) {
+		this.col = col;
 	}
 	
 	/**
