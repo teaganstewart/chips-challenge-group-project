@@ -9,11 +9,24 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  */
 public class Door extends Entity {
 
-	final BasicColor color;
+	private boolean locked;
+	private final BasicColor color;
 	
+	/**
+	 * Creates a new door object, corresponding to a certain key
+	 * colour. By default, every new door should be locked.
+	 * 
+	 * @param row
+	 * 		Row position
+	 * @param col
+	 * 		Col position
+	 * @param color
+	 * 		Color of the door, using BasicColor enum
+	 */
 	public Door(int row, int col, BasicColor color) {
 		super(row, col);
 		this.color = color;
+		this.locked = true;
 	}
 	
 	/**
@@ -32,8 +45,48 @@ public class Door extends Entity {
 	 * @return
 	 * 		Whether or not the player can unlock this door.
 	 */
-	public boolean isRightKey(BasicColor keyColor) {
-		return keyColor == color;
+	public boolean isRightKey(Key key) {
+		return key.getColor() == color;
+	}
+
+	@Override
+	public void onTouch(Entity player) {
+		/**
+		Key key = null;
+		for (Entity e : player.getInventory()) {
+			if (e instanceof Key) {
+				Key temp = (Key) e;
+				if (isRightKey(temp)) {
+					unlock();
+					key = temp;
+					break;
+				}
+			}
+		}
+		
+		if (key != null) {
+			player.remove(key);
+		}
+		*/
+		
+	}
+
+	/**
+	 * Used to check whether or not the door is locked.
+	 * @return
+	 * 		if the door is locked or unlocked
+	 */
+	public boolean isLocked() {
+		return locked;
+	}
+
+	/**
+	 * A private method for unlocking the door. We don't want this
+	 * to be public, as we don't want the state of the door being
+	 * controlled by something outside of the door.
+	 */
+	private void unlock() {
+		locked = false;
 	}
 	
 }
