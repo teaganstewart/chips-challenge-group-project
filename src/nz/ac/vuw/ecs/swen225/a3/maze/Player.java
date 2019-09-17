@@ -6,8 +6,8 @@ public class Player extends Moveable {
 
 	private List<Entity> inventory;
 
-	public Player(int row, int col) {
-		super(row, col);
+	public Player(int row, int col, Tile tile) {
+		super(row, col, tile);
 		inventory = new ArrayList<Entity>();
 	}
 

@@ -6,8 +6,8 @@ public abstract class Moveable extends Entity {
 	private Direction direction;
 	private Direction lastDirection;
 	
-	public Moveable(int row, int col) {
-		super(row, col);
+	public Moveable(int row, int col, Tile tile) {
+		super(row, col, tile);
 	}
 	
 	/**

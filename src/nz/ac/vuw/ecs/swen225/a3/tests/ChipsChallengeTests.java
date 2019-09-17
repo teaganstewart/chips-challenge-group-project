@@ -15,8 +15,8 @@ public class ChipsChallengeTests {
 	
 	@Test
 	void extensionsTest() { 
-		Player p = new Player(1,2);
-		Player p2 = new Player(2,1);
+		Player p = new Player(1,2, null);
+		Player p2 = new Player(2,1, null);
 		assertTrue(p.addToInventory(p2));
 		
 	}
