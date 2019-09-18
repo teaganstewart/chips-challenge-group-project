@@ -17,4 +17,6 @@ public class TestMaze {
         tiles[0][0].setEntity(new Player());
         assert(maze.movePlayer(0, 0, 4, 4));
     }
+
+    // testing change in gitlab sdkcvdsjv
 }
