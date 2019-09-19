@@ -1,10 +1,11 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public class Tile {
-	
-	private Player player;
+
 	private Entity entity;
-	private final boolean wall;
+	private int row;
+	private int col;
+	private boolean wall;
 	
 	/**
 	 * Constructs a new Tile object, that may or may not be a wall
@@ -78,6 +79,30 @@ public class Tile {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-	
-	
+
+	/* Getters and Setters*/
+
+	public Entity getEntity() {
+		return entity;
+	}
+
+	public void setEntity(Entity entity) {
+		this.entity = entity;
+	}
+
+	public int getCol() {
+		return col;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
 }
