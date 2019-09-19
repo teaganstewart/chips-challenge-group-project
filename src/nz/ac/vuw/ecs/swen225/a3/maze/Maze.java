@@ -46,4 +46,5 @@ public class Maze {
     }
 
 
+    // Testing proper maze-Josh commit
 }
