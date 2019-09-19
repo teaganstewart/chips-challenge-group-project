@@ -2,12 +2,12 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public abstract class Moveable extends Entity {
 
-	int row, col;
+	Tile tileOn;
 	private Direction direction;
 	private Direction lastDirection;
 	
-	public Moveable(int row, int col, Tile tile) {
-		super(row, col, tile);
+	public Moveable(Tile tileOn) {
+		super(tileOn);
 	}
 	
 	/**

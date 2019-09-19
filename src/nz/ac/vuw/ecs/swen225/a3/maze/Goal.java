@@ -13,8 +13,8 @@ public class Goal extends Entity {
 	
 	private boolean completed;
 	
-	public Goal(int row, int col, Tile tileOn) {
-		super(row, col, tileOn);
+	public Goal(Tile tileOn) {
+		super(tileOn);
 		completed = false;
 	}
 

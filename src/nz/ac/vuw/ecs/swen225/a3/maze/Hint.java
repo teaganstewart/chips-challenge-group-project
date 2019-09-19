@@ -22,8 +22,8 @@ public class Hint extends Entity {
 	 * @param message
 	 * 		The message to display upon this hint being touched.
 	 */
-	public Hint(int row, int col, Tile tileOn, String message) {
-		super(row, col, tileOn);
+	public Hint(Tile tileOn, String message) {
+		super(tileOn);
 		this.message = message;
 	}
 
