@@ -2,21 +2,29 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public class Tile {
 
-	private Entity entity;
+	private final TileType type;
 	private Coordinate coord;
-	private boolean wall;
-	private Player player;
+	private Entity entity;
+	//private Player player;
 	
 	/**
-	 * Constructs a new Tile object, that may or may not be a wall
-	 * @param wall
-	 * 		whether or not this tile is impassable, eg. a wall
+	 * Constructs a new Tile object
 	 */
-	public Tile(Coordinate coord, boolean wall) {
+	public Tile(Coordinate coord, TileType type) {
 		this.coord = coord;
-		this.wall = wall;
+		this.type = type;
 	}
 
+	/* Getters and Setters*/
+	
+	public void setCoordinate(Coordinate coord){
+		this.coord = coord;
+	}
+
+	public Coordinate getCoordinate(){
+		return this.coord;
+	}
+	
 	/**
 	 * A simple getter for the Entity on this tile, if it exists.
 	 * @return
@@ -36,42 +44,42 @@ public class Tile {
 	}
 	
 	/**
+	 * Return the type of tile this is
+	 * @return
+	 * 		the TileType
+	 */
+	public TileType getType() {
+		return type;
+	}
+	
+	/**
 	 * Returns whether or not this tile is a wall. Prevents the player from moving across it,
 	 * if this is the case
 	 * @return
 	 */
 	public boolean isWall() {
-		return wall;
+		return type == TileType.WALL;
 	}
 
-	/**
-	 * Returns the player, if it exists on this tile
-	 * @return
-	 * 		the player, if they are on this tile
-	 */
-	public Player getPlayer() {
-		return player;
-	}
+//	/**
+//	 * Returns the player, if it exists on this tile
+//	 * @return
+//	 * 		the player, if they are on this tile
+//	 */
+//	public Player getPlayer() {
+//		return player;
+//	}
+//
+//	/**
+//	 * Has storage for the Player and an Entity, as for some entities (like the hint),
+//	 * the player is stored on top of these and doesn't remove it from the maze. By
+//	 * default, this player variable is null, as having the player term inside of the
+//	 *  constructor to only ever be used once per load is extraneous and messy.
+//	 *  @param player
+//	 *  	Typically null, will sometimes have the player on it
+//	 */
+//	public void setPlayer(Player player) {
+//		this.player = player;
+//	}
 
-	/**
-	 * Has storage for the Player and an Entity, as for some entities (like the hint),
-	 * the player is stored on top of these and doesn't remove it from the maze. By
-	 * default, this player variable is null, as having the player term inside of the
-	 *  constructor to only ever be used once per load is extraneous and messy.
-	 *  @param player
-	 *  	Typically null, will sometimes have the player on it
-	 */
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-
-	/* Getters and Setters*/
-
-	public void setCoordinate(Coordinate coord){
-		this.coord = coord;
-	}
-
-	public Coordinate getCoordinate(){
-		return this.coord;
-	}
 }

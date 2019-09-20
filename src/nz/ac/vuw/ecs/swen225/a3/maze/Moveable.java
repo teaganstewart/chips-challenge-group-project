@@ -1,9 +1,10 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-public abstract class Moveable extends Entity {
+public abstract class Moveable {
 	
 	public Moveable() {
-		super();
 	}
+	
+	public abstract boolean canWalkOn(Entity entity);
 
 }

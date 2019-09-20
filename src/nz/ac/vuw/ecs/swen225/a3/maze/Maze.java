@@ -8,6 +8,8 @@ public class Maze {
         this.tiles = tiles;
     }
 
+    // NEEDS TO BE MOVED INTO APPLICATION
+    
     /**
      * Returns true if player was moved from start location to end location,
      * else returns false if player was not moved. This method also allows for collecting items
@@ -21,29 +23,24 @@ public class Maze {
         // Safe to do a cast
         Player player = (Player) startEntity;
 
-        // Check whether destination is empty. If so, move player
-        if(endTile.getEntity() == null){
-            endTile.setEntity(player);
-            return true;
-        }
-
-        // Check if item can be collected. If so, collect and move player
-        if(collect(endTile) != null){
+        // Check if entity can be collected/walked on. If so, collect and move player
+        if(canWalkOn(player, endTile)){
             endTile.setEntity(player);
             return true;
         }
 
         return false;
     }
-
+    
     /**
      * Returns entity collected, else returns null for no entity collected
      * */
-    public Entity collect(Tile tile){
-        Entity entity = tile.getEntity();
-        if(!entity.isPickupable()) return null;
-        tile.setEntity(null);
-        return entity;
+    public boolean canWalkOn(Player player, Tile tile){
+        Entity entity = tile.getEntity();    
+        
+        if (entity == null) return true;
+        else return player.canWalkOn(entity);
+ 
     }
 
 

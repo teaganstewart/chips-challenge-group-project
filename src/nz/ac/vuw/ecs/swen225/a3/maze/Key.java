@@ -6,7 +6,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  * @author Ethan Munn
  *
  */
-public class Key extends Entity {
+public class Key implements Entity {
 	
 	final BasicColor color;
 	
@@ -16,7 +16,6 @@ public class Key extends Entity {
 	 * 		The color of this key.
 	 */
 	public Key (BasicColor color) {
-		super();
 		this.color = color;
 	}
 	
@@ -27,20 +26,6 @@ public class Key extends Entity {
 	 */
 	BasicColor getColor() {
 		return color;
-	}
-
-	@Override
-	public void onTouch(Entity pl) {
-		
-		if (!(pl instanceof Player)) return;
-		Player player = (Player) pl;
-		
-		/*
-		if (player.addToInvetory(this)) {
-			getTileOn().remove(this);
-			setTileOn(null);
-		}
-		 */
 	}
 	
 }
