@@ -11,6 +11,26 @@ public class Maze {
     // NEEDS TO BE MOVED INTO APPLICATION
     
     /**
+     * 
+     * @return
+     * 		Returns the list of tiles for uses in other classes.
+     */
+    public Tile[][] getTiles() {
+    	return tiles;
+    }
+    
+    /**
+     * 
+     * @param tiles
+     * 		
+     */
+    public void setTiles(Tile[][] tiles) {
+    	this.tiles = tiles;
+    }
+
+    // NEEDS TO BE MOVED INTO APPLICATION
+    
+    /**
      * Returns true if player was moved from start location to end location,
      * else returns false if player was not moved. This method also allows for collecting items
      */

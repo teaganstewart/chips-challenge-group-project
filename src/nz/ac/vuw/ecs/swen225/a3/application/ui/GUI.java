@@ -3,12 +3,8 @@ package nz.ac.vuw.ecs.swen225.a3.application.ui;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 public class GUI extends JFrame {
 
@@ -20,7 +16,7 @@ public class GUI extends JFrame {
     public GUI(){
         game = new Game();
         createWindow();
-
+        main.setFocusable(true);
         main.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -50,7 +46,55 @@ public class GUI extends JFrame {
 
             }
         });
+        
+        main.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				System.out.println("heyyy");
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				System.out.println("heyyy");
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+        	
+        });
+        
+        main.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent componentEvent) {
+                gamePanel.setSize(gamePanel.getPreferredSize() );
+               
+                
+            }
+        });
     }
+    
+    public JPanel getInfoPanel() {
+    	return infoPanel;
+    }
+    
+    
 
     public void createWindow(){
         main = new JFrame("Clap and Chap");
@@ -59,9 +103,9 @@ public class GUI extends JFrame {
 
 
         createMenuBar();
-        gamePanel = new GamePanel(game);
+        gamePanel = new GamePanel(game,this);
         infoPanel = new InfoPanel(game);
-
+        this.setBounds(30, 30, 542,542);
         main.add(gamePanel, BorderLayout.CENTER);
         main.add(infoPanel, BorderLayout.LINE_END);
         //main.getContentPane().set
@@ -76,7 +120,7 @@ public class GUI extends JFrame {
         main.setVisible(true);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         main.setLocation(dim.width/2-main.getSize().width/2, dim.height/2-main.getSize().height/2);
-
+        main.setFocusable(true);
     }
 
     public void createMenuBar(){
@@ -137,6 +181,7 @@ public class GUI extends JFrame {
         menuBar.add(fileMenu);
         menuBar.add(gameMenu);
         main.setJMenuBar(menuBar);
+        main.setFocusable(true);
 
         /**
          * File Menu
