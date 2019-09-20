@@ -12,13 +12,11 @@ public class Key extends Entity {
 	
 	/**
 	 * Sets up a brand new key.
-	 * @param tileOn
-	 * 		The tile the key is on
 	 * @param color
 	 * 		The color of this key.
 	 */
-	public Key (Tile tileOn, BasicColor color) {
-		super(tileOn);
+	public Key (BasicColor color) {
+		super();
 		this.color = color;
 	}
 	

@@ -1,3 +1,5 @@
+package nz.ac.vuw.ecs.swen225.a3.maze.Tests;
+
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import org.junit.jupiter.api.Test;
 
@@ -14,9 +16,7 @@ public class MazeTests {
         tiles = new Tile[9][9];
         for(int row=0; row < 9; row++){
             for(int col=0; col < 9; col++) {
-                tiles[row][col] = new Tile(false);
-                tiles[row][col].setRow(row);
-                tiles[row][col].setCol(col);
+                tiles[row][col] = new Tile(new Coordinate(row, col), false);
             }
         }
         maze = new Maze(tiles);
@@ -38,7 +38,7 @@ public class MazeTests {
     @Test
     public void testMovePlayerAndCollectValid(){
         tiles[0][0].setEntity(new Player());
-        tiles[4][4].setEntity(new Key());
+        tiles[4][4].setEntity(new Key(BasicColor.YELLOW));
 
         assert(maze.movePlayer(0, 0, 4, 4));
         // TODO assert correct item is collected
@@ -47,7 +47,7 @@ public class MazeTests {
     @Test
     public void testMovePlayerAndCollectNotValid(){
         tiles[0][0].setEntity(new Player());
-        tiles[4][4].setEntity(new Door());
+        tiles[4][4].setEntity(new Door(BasicColor.RED));
         assertFalse(maze.movePlayer(0, 0, 4, 4));
     }
 }

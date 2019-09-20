@@ -12,8 +12,8 @@ public class Tile {
 	 * @param wall
 	 * 		whether or not this tile is impassable, eg. a wall
 	 */
-	public Tile(int row, int col, boolean wall) {
-		this.coord = new Coordinate(row, col);
+	public Tile(Coordinate coord, boolean wall) {
+		this.coord = coord;
 		this.wall = wall;
 	}
 

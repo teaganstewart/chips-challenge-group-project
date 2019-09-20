@@ -12,18 +12,12 @@ public class Hint extends Entity {
 	private final String message;
 	
 	/**
-	 * Creates a brand new Hint.
-	 * @param row
-	 * 		The row position.
-	 * @param col
-	 * 		The col position
-	 * @param tileOn
 	 * 		The tile the hint is on
 	 * @param message
 	 * 		The message to display upon this hint being touched.
 	 */
-	public Hint(Tile tileOn, String message) {
-		super(tileOn);
+	public Hint(String message) {
+		super();
 		this.message = message;
 	}
 

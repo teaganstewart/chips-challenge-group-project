@@ -9,33 +9,11 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  *
  */
 public abstract class Entity {
-
-	private Tile tileOn; // Represents the tile this entity is on
 	
 	/**
 	 * The default super constructor. All entities must use this.
 	 */
-	public Entity(Tile tileOn) {
-		setTileOn(tileOn);
-	}
-	
-	/**
-	 * Gets the tile this entity is on.
-	 * @return
-	 * 		The tile.
-	 */
-	public Tile getTileOn() {
-		return tileOn;
-	}
-
-	/**
-	 * Sets the tile this entity is on.
-	 * @param tileOn
-	 * 		The tile.
-	 */
-	public void setTileOn(Tile tileOn) {
-		this.tileOn = tileOn;
-	}
+	public Entity() {	}
 
 	/**
 	 * Method called when an entity touches another entity.
