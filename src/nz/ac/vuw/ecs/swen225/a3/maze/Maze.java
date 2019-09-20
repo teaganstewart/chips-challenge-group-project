@@ -2,6 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public class Maze {
     private Tile[][] tiles;
+    Player player;
 
     public Maze(Tile[][] tiles){
         this.tiles = tiles;
