@@ -1,3 +1,6 @@
 Chap’s Challenge.iml
 /.idea
 /out/
+/bin/
+.project
+.classpath
