@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import javax.json.Json;
+import javax.json.JsonObject;
 import java.util.*;
 
 public class Player extends Moveable implements Entity {
@@ -105,4 +107,10 @@ public class Player extends Moveable implements Entity {
 		return false;
 	}
 
+	@Override
+	public String toJSON() {
+		JsonObject value = Json.createObjectBuilder()
+				.add("Player")
+		return ;
+	}
 }

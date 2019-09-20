@@ -26,6 +26,10 @@ public class TreasureDoor extends Door {
 		return false;
 		
 	}
-	
-	
+
+
+	@Override
+	public String toJSON() {
+		return null;
+	}
 }

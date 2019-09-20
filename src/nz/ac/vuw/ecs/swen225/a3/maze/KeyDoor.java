@@ -61,6 +61,10 @@ public class KeyDoor extends Door {
 		return false;
 		
 	}
-	
-	
+
+
+	@Override
+	public String toJSON() {
+		return null;
+	}
 }
