@@ -9,9 +9,7 @@ public class Game {
     int treasures;
     boolean endGame;
 
-    public Game(){
-
-    }
+  
     private Player player;
     private Maze maze;
 
