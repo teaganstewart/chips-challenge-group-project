@@ -7,8 +7,6 @@ public class Maze {
     public Maze(Tile[][] tiles){
         this.tiles = tiles;
     }
-
-    // NEEDS TO BE MOVED INTO APPLICATION
     
     /**
      * Returns true if player was moved from start location to end location,
@@ -23,7 +21,7 @@ public class Maze {
         // Safe to do a cast
         Player player = (Player) startEntity;
 
-        // Check if entity can be collected/walked on. If so, collect and move player
+        // Check if entity can be collected/tile can be walked on. If so, collect and move player
         if(canWalkOn(player, endTile)){
             endTile.setEntity(player);
             return true;
