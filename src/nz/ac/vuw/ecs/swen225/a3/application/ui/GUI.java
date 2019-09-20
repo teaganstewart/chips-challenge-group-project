@@ -83,10 +83,15 @@ public class GUI extends JFrame {
         
         main.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
-                gamePanel.setSize(gamePanel.getPreferredSize());
+                gamePanel.setSize(gamePanel.getPreferredSize() );
+               
                 
             }
         });
+    }
+    
+    public JPanel getInfoPanel() {
+    	return infoPanel;
     }
     
     
@@ -98,9 +103,9 @@ public class GUI extends JFrame {
 
 
         createMenuBar();
-        gamePanel = new GamePanel(game);
+        gamePanel = new GamePanel(game,this);
         infoPanel = new InfoPanel(game);
-
+        this.setBounds(30, 30, 542,542);
         main.add(gamePanel, BorderLayout.CENTER);
         main.add(infoPanel, BorderLayout.LINE_END);
         //main.getContentPane().set

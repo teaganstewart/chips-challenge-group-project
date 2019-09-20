@@ -13,23 +13,24 @@ public class GamePanel extends JPanel {
     private Game game;
     private Render renderer;
     private Maze maze;
+    private GUI gui;
 
-    public GamePanel(Game game){
+    public GamePanel(Game game, GUI gui){
         this.game = game;
-        renderer = new Render(game, this, maze);
+        this.gui = gui;
+       // renderer = new Render(game, this, maze);
         this.setLayout(new GridLayout(9,9,1,1));
-       // this.setBorder(BorderFactory.createEmptyBorder(30,0,30,0));
         this.setBackground(Color.blue);
         
-        for (int y = 0; y < maze.getTiles().length; y++) {
-			for (int x1 = 0; x1 < maze.getTiles().length; x1++) {
-
-				this.add(renderer.getBoard()[y][x1]);
-
-			}
-		}
+//        for (int y = 0; y < maze.getTiles().length; y++) {
+//			for (int x1 = 0; x1 < maze.getTiles().length; x1++) {
+//
+//				this.add(renderer.getBoard()[y][x1]);
+//
+//			}
+//		}
         
-        this.setSize(542,542);
+       
         setVisible(true);
     }
     
@@ -63,8 +64,9 @@ public class GamePanel extends JPanel {
        } else {
            prefSize = d;
        }
-       int w = (int) prefSize.getWidth();
-       int h = (int) prefSize.getHeight();
+
+       int w = (int) prefSize.getWidth() - gui.getInfoPanel().getWidth() - 60;
+       int h = (int) prefSize.getHeight() - 60;
        // the smaller of the two sizes
        int s = (w>h ? h : w);
        return new Dimension(s,s);
