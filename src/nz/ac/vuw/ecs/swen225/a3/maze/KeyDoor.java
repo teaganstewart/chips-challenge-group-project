@@ -55,7 +55,6 @@ public class KeyDoor extends Door {
 		}
 		
 		if (key != null) {
-			//player.removeInventory(key);
 			return true;
 		}
 		

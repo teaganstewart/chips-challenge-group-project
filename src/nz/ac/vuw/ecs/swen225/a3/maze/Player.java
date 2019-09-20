@@ -6,7 +6,8 @@ public class Player extends Moveable implements Entity {
 
 	private List<Entity> inventory;
 
-	public Player() {
+	public Player(int row, int col) {
+		super(row, col);
 		inventory = new ArrayList<Entity>();
 	}
 

@@ -2,6 +2,12 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public class Tile {
 
+	public enum TileType {
+
+		FLOOR, WALL, HINT, GOAL
+		
+	}
+	
 	private final TileType type;
 	private Coordinate coord;
 	private Entity entity;
