@@ -6,21 +6,16 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  * @author Ethan Munn
  *
  */
-public class Key extends Entity {
+public class Key implements Entity {
 	
 	final BasicColor color;
 	
 	/**
 	 * Sets up a brand new key.
-	 * @param row
-	 * 		The row
-	 * @param col
-	 * 		The column
 	 * @param color
 	 * 		The color of this key.
 	 */
-	public Key (int row, int col, BasicColor color) {
-		super(row,col);
+	public Key (BasicColor color) {
 		this.color = color;
 	}
 	
@@ -31,13 +26,6 @@ public class Key extends Entity {
 	 */
 	BasicColor getColor() {
 		return color;
-	}
-
-	@Override
-	public void onTouch(Entity player) {
-		// if player has space in their inventory
-		//   player.add(this)
-		//   tell the tile at this coordinate to remove the key
 	}
 	
 }

@@ -6,28 +6,18 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  * @author Ethan Munn
  *
  */
-public class Treasure extends Entity {
+public class Treasure implements Entity {
 	
+	private static int totalInLevel;
 	private static int totalCollected;
-	
+
 	/**
-	 * Creates a brand new Treasure.
-	 * @param row
-	 * 		the row
-	 * @param col
-	 * 		the col
+	 * 	The treasure constructor doesn't really need anything inside of it
 	 */
-	public Treasure(int row, int col) {
-		super(row,col);
+	public Treasure() {
+		totalInLevel++;
 	}
 
-	@Override
-	public void onTouch(Entity player) {
-		
-		// increments the static counter by 1
-		totalCollected++;
-		
-	}
 	
 	//-------------------------------------//
 	//           STATIC METHODS            //
@@ -38,16 +28,23 @@ public class Treasure extends Entity {
 	 */
 	public static void reset() {
 		totalCollected = 0;
+		totalInLevel = 0;
 	}
 	
 	/**
-	 * Gets the total amount of collected Treasures
-	 * in a level
-	 * @return
-	 * 		total count of treasures collected
+	 * Called to reset the Treasure counter.
 	 */
-	public static int getTotalCollected() {
-		return totalCollected;
+	public static void incrTreasuresCollected() {
+		totalCollected++;
+	}
+	
+	/**
+	 * Returns if the total collected equals total amount in the level
+	 * @return
+	 * 		true or false, depending on this condition
+	 */
+	public static boolean allCollected() {
+		return totalCollected == totalInLevel;
 	}
 	
 }
