@@ -77,7 +77,7 @@ public class Player extends Moveable implements Entity {
 	
 	/**
 	 * Returns whether or not the player can walk on this entity
-	 * @param ent
+	 * @param entity
 	 * 		the entity checked against
 	 * @return
 	 * 		whether it can or can't overwrite the entity
@@ -110,7 +110,9 @@ public class Player extends Moveable implements Entity {
 	@Override
 	public String toJSON() {
 		JsonObject value = Json.createObjectBuilder()
-				.add("Player")
-		return ;
+				.add("Inventory", Json.createArrayBuilder()
+				//TODO fix this
+				).build();
+		return value.toString();
 	}
 }
