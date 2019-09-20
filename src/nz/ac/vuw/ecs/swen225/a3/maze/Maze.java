@@ -7,6 +7,24 @@ public class Maze {
     public Maze(Tile[][] tiles){
         this.tiles = tiles;
     }
+    
+    /**
+     * 
+     * @return
+     * 		Returns the list of tiles for uses in other classes.
+     */
+    public Tile[][] getTiles() {
+    	return tiles;
+    }
+    
+    /**
+     * 
+     * @param tiles
+     * 		
+     */
+    public void setTiles(Tile[][] tiles) {
+    	this.tiles = tiles;
+    }
 
     // NEEDS TO BE MOVED INTO APPLICATION
     
