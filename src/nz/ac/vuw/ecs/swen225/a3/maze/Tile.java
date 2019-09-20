@@ -1,34 +1,20 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public class Tile {
-	
-	private Player player;
+
 	private Entity entity;
-	private final boolean wall;
+	private Coordinate coord;
+	private boolean wall;
+	private Player player;
 	
 	/**
 	 * Constructs a new Tile object, that may or may not be a wall
 	 * @param wall
 	 * 		whether or not this tile is impassable, eg. a wall
 	 */
-	public Tile(boolean wall) {
-		setEntity(null);
-		setPlayer(null);
-		
+	public Tile(Coordinate coord, boolean wall) {
+		this.coord = coord;
 		this.wall = wall;
-	}
-	
-	/**
-	 * Constructs a new Tile object with an Entity on it (it can not be a wall,
-	 * in this case)
-	 * @param e
-	 * 		the entity on this tile by default, either null or actually an entity
-	 */
-	public Tile(Entity e) {
-		setEntity(e);
-		setPlayer(null);
-		
-		this.wall = false;
 	}
 
 	/**
@@ -78,6 +64,14 @@ public class Tile {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-	
-	
+
+	/* Getters and Setters*/
+
+	public void setCoordinate(Coordinate coord){
+		this.coord = coord;
+	}
+
+	public Coordinate getCoordinate(){
+		return this.coord;
+	}
 }

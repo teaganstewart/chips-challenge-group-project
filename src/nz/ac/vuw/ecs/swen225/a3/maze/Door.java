@@ -15,18 +15,12 @@ public class Door extends Entity {
 	/**
 	 * Creates a new door object, corresponding to a certain key
 	 * colour. By default, every new door should be locked.
-	 * 
-	 * @param row
-	 * 		Row position
-	 * @param col
-	 * 		Col position
-	 * @param tileOn
-	 * 		The tile the door is on
+	 *
 	 * @param color
 	 * 		Color of the door, using BasicColor enum
 	 */
-	public Door(int row, int col, Tile tileOn, BasicColor color) {
-		super(row, col, tileOn);
+	public Door(BasicColor color) {
+		super();
 		this.color = color;
 		this.locked = true;
 	}

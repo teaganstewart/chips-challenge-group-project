@@ -9,18 +9,12 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 public class Treasure extends Entity {
 	
 	private static int totalCollected;
-	
+
 	/**
-	 * Creates a brand new Treasure.
-	 * @param row
-	 * 		the row
-	 * @param col
-	 * 		the col
-	 * @param tileOn
 	 * 		The tile the treasure is on
 	 */
-	public Treasure(int row, int col, Tile tileOn) {
-		super(row,col, tileOn);
+	public Treasure() {
+		super();
 	}
 
 	@Override

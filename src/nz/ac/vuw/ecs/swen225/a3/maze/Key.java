@@ -12,17 +12,11 @@ public class Key extends Entity {
 	
 	/**
 	 * Sets up a brand new key.
-	 * @param row
-	 * 		The row
-	 * @param col
-	 * 		The column
-	 * @param tileOn
-	 * 		The tile the key is on
 	 * @param color
 	 * 		The color of this key.
 	 */
-	public Key (int row, int col, Tile tileOn, BasicColor color) {
-		super(row,col,tileOn);
+	public Key (BasicColor color) {
+		super();
 		this.color = color;
 	}
 	
