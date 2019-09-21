@@ -14,24 +14,13 @@ public class Maze {
      * else returns false if player was not moved. This method also automatically collects items
      */
     public boolean movePlayer(Direction dir){
-        int dx = 0;
-        int dy = 0;
-
-        if(dir==Direction.DOWN) {
-            dy = 1;
-        }else if(dir==Direction.UP) {
-            dy = -1;
-        }else if(dir==Direction.LEFT) {
-            dx = -1;
-        }else if(dir==Direction.RIGHT) {
-            dx = 1;
-        }else{
-            throw new IllegalArgumentException("No move direction defined, cannot move player");
-        }
+        // Set the players direction, regardless of whether they will actually move
+        player.setDirection(dir);
 
         // Check for player moving out of bounds
-        int colDest = player.getCol() + dx;
-        int rowDest = player.getRow() + dy;
+        Coordinate dest = player.getNextPos();
+        int rowDest = dest.getRow();
+        int colDest = dest.getCol();
         if((rowDest < 0) || (rowDest > tiles.length) || (colDest < 0) || (colDest > tiles[0].length)){
             return false;
         }
