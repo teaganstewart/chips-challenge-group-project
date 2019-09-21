@@ -29,7 +29,7 @@ public class LoadUtils {
 
                 JsonObject save = reader.readObject();
 
-                //Player player = loadPlayer(save.getJsonObject("player"));
+                //TODO ADD IMPLEMENTATION
 
                 System.out.println(save.toString());
 
@@ -126,7 +126,9 @@ public class LoadUtils {
         return new Coordinate(coordinate.getInt("row"), coordinate.getInt("col"));
     }
 
+
     private static Entity loadEntity(JsonObject entity){
+        //TODO ADD IMPLEMENTATION
         return null;
     }
 
