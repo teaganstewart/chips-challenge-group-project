@@ -1,7 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence;
 
 /**
- * The LoadGame class contains methods that are used for loading
+ * The LoadGame class contains methods that are used for loading games and levels
  * @author Matt Rothwell
  */
 public class LoadGame {

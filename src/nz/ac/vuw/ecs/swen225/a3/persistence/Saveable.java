@@ -2,7 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.persistence;
 
 /**
  * Saveable class provides methods that have to be
- * implemented on objects that will have to be saved.
+ * implemented on objects that will have to be saved as a JSON.
  *
  * @author Matt Rothwell
  */
