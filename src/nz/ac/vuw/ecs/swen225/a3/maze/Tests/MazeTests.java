@@ -37,7 +37,8 @@ public class MazeTests {
 	}
 
 	@Test
-	public void testMovePlayerNotValid(){
+	// Testing moving the player off the tiles
+	public void testMovePlayerNotValid01(){
         // Setup
 
         Tile[][] tiles = new Tile[9][9];
