@@ -4,8 +4,8 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
 
 import javax.json.Json;
 import javax.json.JsonWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 
 /**
@@ -26,13 +26,13 @@ public class SaveGame {
      */
     public static boolean saveGame(Maze maze){
         try{
-            JsonWriter writer = Json.createWriter(new PrintStream(SAVES_DIRECTORY+System.currentTimeMillis()));
+            JsonWriter writer = Json.createWriter(new PrintStream(new File(SAVES_DIRECTORY+"\\"+System.currentTimeMillis()+".json")));
             writer.write(maze.toJSON());
+            writer.close();
+            return true;
         } catch (FileNotFoundException e) {
             return false;
         }
-
-        return false;
     }
 
     /**

@@ -60,7 +60,7 @@ public class Maze implements Saveable {
     }
 
     @Override
-    public String toJSON() {
+    public JsonObject toJSON() {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
         for (int row = 0; row < tiles[0].length; row++){
@@ -73,7 +73,7 @@ public class Maze implements Saveable {
                 .add("player", player.toJSON())
                 .add("tiles", arrayBuilder)
                 .build();
-        return jsonObject.toString();
+        return jsonObject;
     }
 
 

@@ -110,7 +110,7 @@ public class Player extends Moveable implements Saveable {
 	}
 
 	@Override
-	public String toJSON() {
+	public JsonObject toJSON() {
 		JsonArrayBuilder inventoryJson = Json.createArrayBuilder();
 		for (Entity entity : inventory){
 			inventoryJson.add(entity.toJSON());
@@ -121,6 +121,6 @@ public class Player extends Moveable implements Saveable {
 				.add("col", getCol())
 				.add("Inventory", inventoryJson)
 				.build();
-		return value.toString();
+		return value;
 	}
 }

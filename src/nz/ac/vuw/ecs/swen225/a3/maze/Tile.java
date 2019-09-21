@@ -4,6 +4,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 public class Tile implements Saveable {
 
@@ -76,13 +77,16 @@ public class Tile implements Saveable {
 	 * @return String in JSON format describing this tile.
 	 */
 	@Override
-	public String toJSON() {
-        JsonObject tile = Json.createObjectBuilder()
-				.add("TileType", type.toString())
-				.add("Coordinate", coord.toJSON())
-				.add("Entity", entity != null ? entity.toJSON() : "null")
-				.build();
-		return tile.toString();
+	public JsonObject toJSON() {
+		JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+		jsonObjectBuilder.add("TileType", type.toString());
+		jsonObjectBuilder.add("Coordinate", coord.toJSON());
+
+		if (entity != null){
+			jsonObjectBuilder.add("Entity", entity.toJSON());
+		}
+
+		return jsonObjectBuilder.build();
 	}
 
 //	/**
