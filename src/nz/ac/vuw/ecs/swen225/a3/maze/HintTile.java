@@ -41,7 +41,7 @@ public class HintTile extends Tile implements Saveable {
 		JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
 		jsonObjectBuilder.add("TileType", getType().toString());
 		jsonObjectBuilder.add("Coordinate", getCoordinate().toJSON());
-		jsonObjectBuilder.add("message", message);
+		jsonObjectBuilder.add("Message", message);
 
 		if (getEntity() != null){
 			jsonObjectBuilder.add("Entity", getEntity().toJSON());

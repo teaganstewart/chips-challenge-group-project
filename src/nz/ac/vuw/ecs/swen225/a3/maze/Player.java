@@ -11,8 +11,8 @@ public class Player extends Moveable implements Saveable {
 
 	private List<Entity> inventory;
 
-	public Player(int row, int col) {
-		super(row, col);
+	public Player(Coordinate coordinate) {
+		super(coordinate);
 		inventory = new ArrayList<Entity>();
 	}
 
@@ -117,8 +117,7 @@ public class Player extends Moveable implements Saveable {
 		}
 
 		JsonObject value = Json.createObjectBuilder()
-				.add("row", getRow())
-				.add("col", getCol())
+				.add("Coordinate", getCoordinate().toJSON())
 				.add("Inventory", inventoryJson)
 				.build();
 		return value;

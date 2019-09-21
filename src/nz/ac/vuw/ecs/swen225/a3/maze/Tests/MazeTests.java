@@ -20,7 +20,7 @@ public class MazeTests {
             }
         }
 
-        Player player = new Player(3, 3);
+        Player player = new Player(new Coordinate(3, 3));
         Maze maze = new Maze(tiles, player);
 
 		assert(maze.movePlayer(Direction.LEFT));
@@ -48,7 +48,7 @@ public class MazeTests {
             }
         }
 
-        Player player = new Player(0, 0);
+        Player player = new Player(new Coordinate(0,0));
         Maze maze = new Maze(tiles, player);
 
 		assertFalse(maze.movePlayer(Direction.LEFT));
@@ -65,7 +65,7 @@ public class MazeTests {
             }
         }
 
-        Player player = new Player(0, 0);
+        Player player = new Player(new Coordinate(0, 0));
         Maze maze = new Maze(tiles, player);
 
 		Key key = new Key(BasicColor.YELLOW);
@@ -86,7 +86,7 @@ public class MazeTests {
             }
         }
 
-        Player player = new Player(3, 3);
+        Player player = new Player(new Coordinate(3, 3));
         Maze maze = new Maze(tiles, player);
 		SaveUtils.saveGame(maze);
 
@@ -100,7 +100,7 @@ public class MazeTests {
 
 	@Test
 	void extensionsTest() {
-		Player p = new Player(1,2);
+		Player p = new Player(new Coordinate(1, 2));
 		assertTrue(p.addToInventory(new TreasureDoor()));
 	}
 }

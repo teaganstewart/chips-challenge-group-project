@@ -69,11 +69,13 @@ public class Maze implements Saveable {
             }
         }
 
-        JsonObject jsonObject = Json.createObjectBuilder()
+        JsonObject build = Json.createObjectBuilder()
                 .add("player", player.toJSON())
+                .add("rows", tiles[0].length)
+                .add("cols", tiles.length)
                 .add("tiles", arrayBuilder)
                 .build();
-        return jsonObject;
+        return build;
     }
 
 
