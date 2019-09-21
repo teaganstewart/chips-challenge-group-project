@@ -10,6 +10,9 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
  */
 public class SaveGame {
 
+    public static String SAVES_DIRECTORY = "saves";
+
+
     /**
      * Save the game state so that the player can resume next time the program is
      * opened.

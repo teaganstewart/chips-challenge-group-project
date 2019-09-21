@@ -1,5 +1,10 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+
 /**
  * The HintTile class, which allows the player to view a hint message. This class may be viewed
  * as extraneous as it only holds a string, but in my opinion it helps keep the classes clean.
@@ -7,7 +12,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  * @author Ethan Munn
  *
  */
-public class HintTile extends Tile {
+public class HintTile extends Tile implements Saveable {
 
 	private final String message;
 	
@@ -29,5 +34,17 @@ public class HintTile extends Tile {
 	public String getMessage() {
 		return message;
 	}
+
+	@Override
+	public String toJSON() {
+		JsonObject tile = Json.createObjectBuilder()
+				.add("TileType", getType().toString())
+				.add("Coordinate", getCoordinate().toJSON())
+				.add("Entity", getEntity() != null ? getEntity().toJSON() : "null")
+				.add("message", message)
+				.build();
+		return tile.toString();
+	}
+
 	
 }

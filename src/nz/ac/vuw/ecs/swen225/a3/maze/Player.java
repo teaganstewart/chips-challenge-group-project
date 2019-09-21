@@ -5,7 +5,6 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import java.util.*;
 
 public class Player extends Moveable implements Saveable {
@@ -117,9 +116,9 @@ public class Player extends Moveable implements Saveable {
 			inventoryJson.add(entity.toJSON());
 		}
 
-
 		JsonObject value = Json.createObjectBuilder()
-				.add("EntityClass", "Player")
+				.add("row", getRow())
+				.add("col", getCol())
 				.add("Inventory", inventoryJson)
 				.build();
 		return value.toString();

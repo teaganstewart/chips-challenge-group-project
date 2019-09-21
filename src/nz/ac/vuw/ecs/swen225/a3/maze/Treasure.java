@@ -1,5 +1,9 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+
 /**
  * The Treasure class. As well as being used to hold Treasure objects, it has a static counter
  * built into it. This allows for the total treasures in a level to be counted up easily.
@@ -49,6 +53,7 @@ public class Treasure implements Entity {
 
 	@Override
 	public String toJSON() {
-		return null;
+		JsonObject value = Json.createObjectBuilder().add("EntityClass", "Treasure").build();
+		return value.toString();
 	}
 }

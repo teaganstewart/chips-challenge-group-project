@@ -2,6 +2,10 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+
 public class Maze implements Saveable {
     private Tile[][] tiles;
     private Player player;
@@ -57,9 +61,40 @@ public class Maze implements Saveable {
 
     @Override
     public String toJSON() {
-        return null;
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+
+        for (int row = 0; row < tiles[0].length; row++){
+            for (int col = 0; col < tiles.length; col++){
+                arrayBuilder.add(tiles[row][col].toJSON());
+            }
+        }
+
+        JsonObject jsonObject = Json.createObjectBuilder()
+                .add("player", player.toJSON())
+                .add("tiles", arrayBuilder)
+                .build();
+        return jsonObject.toString();
     }
 
 
-    // Testing proper maze-Josh commit
+    /* Getters and Setters */
+
+    /**
+     *
+     * @return
+     * 		Returns the list of tiles for uses in other classes.
+     */
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    /**
+     *
+     * @param tiles
+     *
+     */
+    public void setTiles(Tile[][] tiles) {
+        this.tiles = tiles;
+    }
+
 }

@@ -22,18 +22,18 @@ public class MazeTests {
         Player player = new Player(3, 3);
         Maze maze = new Maze(tiles, player);
 
-//		assert(maze.movePlayer(Direction.LEFT));
-//		assert(player.getRow() == 3);
-//		assert(player.getCol() == 2);
-//		assert(maze.movePlayer(Direction.UP));
-//		assert(player.getRow() == 2);
-//		assert(player.getCol() == 2);
-//		assert(maze.movePlayer(Direction.RIGHT));
-//		assert(player.getRow() == 2);
-//		assert(player.getCol() == 3);
-//		assert(maze.movePlayer(Direction.DOWN));
-//		assert(player.getRow() == 3);
-//		assert(player.getCol() == 3);
+		assert(maze.movePlayer(Direction.LEFT));
+		assert(player.getRow() == 3);
+		assert(player.getCol() == 2);
+		assert(maze.movePlayer(Direction.UP));
+		assert(player.getRow() == 2);
+		assert(player.getCol() == 2);
+		assert(maze.movePlayer(Direction.RIGHT));
+		assert(player.getRow() == 2);
+		assert(player.getCol() == 3);
+		assert(maze.movePlayer(Direction.DOWN));
+		assert(player.getRow() == 3);
+		assert(player.getCol() == 3);
 	}
 
 	@Test
@@ -87,6 +87,7 @@ public class MazeTests {
 
         Player player = new Player(3, 3);
         Maze maze = new Maze(tiles, player);
+        System.out.println(maze.toJSON());
 
 		tiles[3][2].setEntity(new KeyDoor(BasicColor.RED));
 		assertFalse(maze.movePlayer(Direction.LEFT));
@@ -99,7 +100,6 @@ public class MazeTests {
 	@Test
 	void extensionsTest() {
 		Player p = new Player(1,2);
-		Player p2 = new Player(3,1);
-		assertTrue(p.addToInventory(p2));
+		assertTrue(p.addToInventory(new TreasureDoor()));
 	}
 }

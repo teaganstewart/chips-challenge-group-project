@@ -16,7 +16,6 @@ public class Tile implements Saveable {
 	private final TileType type;
 	private Coordinate coord;
 	private Entity entity;
-	//private Player player;
 	
 	/**
 	 * Constructs a new Tile object
@@ -80,16 +79,10 @@ public class Tile implements Saveable {
 	public String toJSON() {
         JsonObject tile = Json.createObjectBuilder()
 				.add("TileType", type.toString())
-				.add("Coordinate", Json.createObjectBuilder()
-				.add("row", coord.getRow())
-				.add("col", coord.getCol()))
+				.add("Coordinate", coord.toJSON())
 				.add("Entity", entity != null ? entity.toJSON() : "null")
 				.build();
 		return tile.toString();
-	}
-
-	public static void main(String[] args) {
-		System.out.println(new Tile(new Coordinate(2, 1), TileType.FLOOR).toJSON());
 	}
 
 //	/**

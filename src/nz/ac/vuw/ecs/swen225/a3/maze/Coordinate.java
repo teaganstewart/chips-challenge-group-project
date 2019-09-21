@@ -1,5 +1,10 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+
 /**
  * The Coordinate class, purely to store coordinates of objects in a simpler way.
  * Comes with an overridden equals method, as well as getters for the row and col.
@@ -9,7 +14,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  * @author Ethan Munn
  *
  */
-public class Coordinate {
+public class Coordinate implements Saveable {
 	
 	private final int row;
 	private final int col;
@@ -55,5 +60,13 @@ public class Coordinate {
 	public String toString() {
 		return "[" + row + ", " + col + "]";
 	}
-	
+
+	@Override
+	public String toJSON() {
+		JsonObject coord = Json.createObjectBuilder()
+				.add("row", row)
+				.add("col", col).build();
+
+		return coord.toString();
+	}
 }

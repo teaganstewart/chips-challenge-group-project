@@ -1,5 +1,8 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+
 public class KeyDoor extends Door {
 
 	private final BasicColor color;
@@ -64,6 +67,11 @@ public class KeyDoor extends Door {
 
 	@Override
 	public String toJSON() {
-		return null;
+		JsonObject value = Json.createObjectBuilder()
+				.add("EntityClass", "KeyDoor")
+				.add("locked", isLocked())
+				.add("BasicColor", color.toString())
+				.build();
+		return value.toString();
 	}
 }
