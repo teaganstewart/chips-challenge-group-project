@@ -46,5 +46,9 @@ public class Treasure implements Entity {
 	public static boolean allCollected() {
 		return totalCollected == totalInLevel;
 	}
-	
+
+	@Override
+	public String toJSON() {
+		return null;
+	}
 }

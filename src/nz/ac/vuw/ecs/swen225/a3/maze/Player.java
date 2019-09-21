@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import javax.json.Json;
+import javax.json.JsonObject;
 import java.util.*;
 
 public class Player extends Moveable implements Entity {
@@ -24,12 +26,12 @@ public class Player extends Moveable implements Entity {
 	public List<Entity> getInventory() {
 		return Collections.unmodifiableList(inventory);
 	}
-
+	
 	/**
-	 *
-	 * @param aInventory
+	 * 
+	 * @param aInventory 
 	 * 		The item that needs to be added.
-	 * @return
+	 * @return 
 	 * 		Returns a boolean saying whether the adding was successful.
 	 */
 	public boolean addToInventory(Entity aInventory)
@@ -38,13 +40,13 @@ public class Player extends Moveable implements Entity {
 			inventory.add(aInventory);
 			return true;
 		}
-
+		
 		return false;
 
 	}
-
+	
 	/**
-	 *
+	 * 
 	 * @param index
 	 * 		The index that the entity that you want is at.
 	 * @return
@@ -56,23 +58,23 @@ public class Player extends Moveable implements Entity {
 		}
 		return null;
 	}
-
+	
 	/**
-	 *
+	 * 
 	 * Remove the entity at the given index.
-	 *
+	 * 
 	 * @param index
-	 * 		The index that the entity that you want to remove is at.
+	 * 		The index that the entity that you want to remove is at.	
 	 */
 	public boolean removeInventoryAt(int index) {
 		if(index<inventory.size()) {
 			inventory.remove(index);
 			return true;
 		}
-
+		
 		return false;
 	}
-
+	
 	/**
 	 * Returns whether or not the player can walk on this entity
 	 * @param entity
@@ -82,7 +84,7 @@ public class Player extends Moveable implements Entity {
 	 */
 	@Override
 	public boolean canWalkOn(Entity entity) {
-
+		
 		// key
 		if (entity instanceof Key) {
 			Key key = (Key) entity;
@@ -100,7 +102,7 @@ public class Player extends Moveable implements Entity {
 			return door.onTouch(this);
 		}
 		// ...
-
+		
 		// none of the above
 		return false;
 	}

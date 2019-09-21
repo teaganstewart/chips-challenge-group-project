@@ -2,7 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 public abstract class Moveable {
 
-	private int col, row;
+	int row, col;
 	private Direction direction;
 	private Direction lastDirection;
 	
@@ -10,11 +10,7 @@ public abstract class Moveable {
 		this.row = row;
 		this.col = col;
 	}
-
-	public abstract boolean canWalkOn(Entity entity);
-
-	/*Getters and Setters*/
-
+	
 	/**
 	 * @return
 	 * 		Returns the direction that the player is facing.
@@ -86,20 +82,6 @@ public abstract class Moveable {
 		}
 
 	}
-
-	public int getRow() {
-		return row;
-	}
-
-	public void setRow(int row) {
-		this.row = row;
-	}
-
-	public int getCol() {
-		return col;
-	}
-
-	public void setCol(int col) {
-		this.col = col;
-	}
+	
+	public abstract boolean canWalkOn(Entity entity);
 }
