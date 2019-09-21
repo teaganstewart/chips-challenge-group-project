@@ -54,13 +54,13 @@ public abstract class Moveable {
 	public Coordinate getNextPos() {
 		switch(direction) {
 		case DOWN:
-			return new Coordinate(row, col+1);
+			return new Coordinate(row + 1, col);
 		case UP:
-			return new Coordinate(row, col-1);
+			return new Coordinate(row - 1, col);
 		case LEFT:
-			return new Coordinate(row-1, col);
+			return new Coordinate(row, col - 1);
 		case RIGHT:
-			return new Coordinate(row+1, col);
+			return new Coordinate(row, col + 1);
 		default:
 			return null;
 		}
@@ -73,16 +73,16 @@ public abstract class Moveable {
 	 */
 	public Coordinate getPrevPos() {
 		switch(lastDirection.inverse()) {
-		case DOWN:
-			return new Coordinate(row, col+1);
-		case UP:
-			return new Coordinate(row, col-1);
-		case LEFT:
-			return new Coordinate(row-1, col);
-		case RIGHT:
-			return new Coordinate(row+1, col);
-		default:
-			return null;
+			case DOWN:
+				return new Coordinate(row - 1, col);
+			case UP:
+				return new Coordinate(row + 1, col);
+			case LEFT:
+				return new Coordinate(row, col + 1);
+			case RIGHT:
+				return new Coordinate(row, col - 1);
+			default:
+				return null;
 		}
 
 	}

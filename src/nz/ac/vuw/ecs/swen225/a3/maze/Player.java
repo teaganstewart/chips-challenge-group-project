@@ -85,7 +85,8 @@ public class Player extends Moveable implements Entity {
 		
 		// key
 		if (entity instanceof Key) {
-			addToInventory(entity);
+			Key key = (Key) entity;
+			addToInventory(key);
 			return true;
 		}
 		// treasure
