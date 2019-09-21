@@ -27,9 +27,5 @@ public class Key implements Entity {
 	BasicColor getColor() {
 		return color;
 	}
-
-	@Override
-	public String toJSON() {
-		return null;
-	}
+	
 }
