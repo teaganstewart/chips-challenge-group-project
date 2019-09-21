@@ -4,8 +4,9 @@ public class Maze {
     private Tile[][] tiles;
     Player player;
 
-    public Maze(Tile[][] tiles){
+    public Maze(Tile[][] tiles, Player player){
         this.tiles = tiles;
+        this.player = player;
     }
 
     // NEEDS TO BE MOVED INTO APPLICATION

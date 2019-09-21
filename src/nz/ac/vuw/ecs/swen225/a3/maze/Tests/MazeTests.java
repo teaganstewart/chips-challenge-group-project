@@ -10,6 +10,7 @@ public class MazeTests {
 
 	private Tile[][] tiles;
 	private Maze maze;
+	Player player;
 
 	public MazeTests(){
 		// Setup
@@ -20,21 +21,22 @@ public class MazeTests {
 				tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
 			}
 		}
-		maze = new Maze(tiles);
+
+		player = new Player(3, 3);
+		maze = new Maze(tiles, player);
 	}
 
 	@Test
 	public void testMovePlayerValid(){
 		tiles[0][0].setEntity(new Player(0,0));
-		assert(maze.movePlayer(0, 0, 4, 4));
+		assert(maze.movePlayer(4, 4));
 	}
 
-	// TODO Array Index Out of Bounds means this test fails
 	@Test
 	public void testMovePlayerNotValid(){
 		tiles[0][0].setEntity(new Player(0,0));
 		try {
-			maze.movePlayer(0, 0, -1, -1);
+			maze.movePlayer(-1, -1);
 		}
 		catch(ArrayIndexOutOfBoundsException e) {
 			assertTrue(true);
@@ -45,19 +47,21 @@ public class MazeTests {
 	}
 
 	@Test
-	public void testMovePlayerAndCollectValid(){
-		tiles[0][0].setEntity(new Player(0,0));
-		tiles[4][4].setEntity(new Key(BasicColor.YELLOW));
+	public void testCollectValid(){
+		Key key = new Key(BasicColor.YELLOW);
+		player.setRow(0);
+		player.setCol(0);
+		tiles[4][4].setEntity(key);
 
-		assert(maze.movePlayer(0, 0, 4, 4));
-		// TODO assert correct item is collected
+		assert(maze.movePlayer( 4, 4));
+		assert(player.getInventory().contains(key));
 	}
 
 	@Test
 	public void testMovePlayerAndCollectNotValid(){
 		tiles[0][0].setEntity(new Player(0,0));
 		tiles[4][4].setEntity(new KeyDoor(BasicColor.RED));
-		assertFalse(maze.movePlayer(0, 0, 4, 4));
+		assertFalse(maze.movePlayer(4, 4));
 	}
 
 	//-----------------------------//
@@ -65,7 +69,7 @@ public class MazeTests {
 	//-----------------------------//
 
 	@Test
-	void extensionsTest() { 
+	void extensionsTest() {
 		Player p = new Player(1,2);
 		Player p2 = new Player(3,1);
 		assertTrue(p.addToInventory(p2));
