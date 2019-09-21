@@ -75,7 +75,7 @@ public class Player extends Moveable implements Entity {
 	
 	/**
 	 * Returns whether or not the player can walk on this entity
-	 * @param ent
+	 * @param entity
 	 * 		the entity checked against
 	 * @return
 	 * 		whether it can or can't overwrite the entity
@@ -85,8 +85,7 @@ public class Player extends Moveable implements Entity {
 		
 		// key
 		if (entity instanceof Key) {
-			Key key = (Key) entity;
-			addToInventory(key);
+			addToInventory(entity);
 			return true;
 		}
 		// treasure
