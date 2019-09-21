@@ -10,11 +10,11 @@ import java.io.PrintStream;
 
 /**
  *
- * This class contains methods relevant to saving of the current game state to a json file.
+ * The SaveUtils contains methods relevant to saving of the current game state to a json file.
  *
  * @author Matt Rothwell
  */
-public class SaveGame {
+public class SaveUtils {
 
     public static String SAVES_DIRECTORY = "saves";
 

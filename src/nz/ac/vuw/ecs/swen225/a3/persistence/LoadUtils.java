@@ -2,18 +2,15 @@ package nz.ac.vuw.ecs.swen225.a3.persistence;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
 
-import javax.json.Json;
-import javax.json.JsonReader;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.InputStream;
 
 
 /**
- * The LoadGame class contains methods that are used for loading games and levels
+ * The LoadUtils class contains methods that are used for loading games and levels
  * @author Matt Rothwell
  */
-public class LoadGame {
+public class LoadUtils {
 
     public static String LEVELS_DIRECTORY = "levels";
 
@@ -21,6 +18,7 @@ public class LoadGame {
      * Resumes the game from the last save made.
      */
     public static Maze resumeGame(){
+
         return null;
     }
 
@@ -42,7 +40,7 @@ public class LoadGame {
      */
     private static File getMostRecentSave(){
         File newest = null;
-        File directory = new File(SaveGame.SAVES_DIRECTORY);
+        File directory = new File(SaveUtils.SAVES_DIRECTORY);
         FileFilter filter = pathname -> pathname.isFile() && pathname.toString().endsWith(".json");
         File[] files = directory.listFiles(filter);
 

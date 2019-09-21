@@ -1,7 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze.Tests;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
-import nz.ac.vuw.ecs.swen225.a3.persistence.SaveGame;
+import nz.ac.vuw.ecs.swen225.a3.persistence.SaveUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -88,7 +88,7 @@ public class MazeTests {
 
         Player player = new Player(3, 3);
         Maze maze = new Maze(tiles, player);
-		SaveGame.saveGame(maze);
+		SaveUtils.saveGame(maze);
 
 		tiles[3][2].setEntity(new KeyDoor(BasicColor.RED));
 		assertFalse(maze.movePlayer(Direction.LEFT));
