@@ -11,7 +11,6 @@ public class Tile {
 	private final TileType type;
 	private Coordinate coord;
 	private Entity entity;
-	//private Player player;
 	
 	/**
 	 * Constructs a new Tile object
