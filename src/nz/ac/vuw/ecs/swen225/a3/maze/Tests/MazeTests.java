@@ -22,18 +22,18 @@ public class MazeTests {
         Player player = new Player(3, 3);
         Maze maze = new Maze(tiles, player);
 
-		assert(maze.movePlayer(Direction.LEFT));
-		assert(player.getRow() == 3);
-		assert(player.getCol() == 2);
-		assert(maze.movePlayer(Direction.UP));
-		assert(player.getRow() == 2);
-		assert(player.getCol() == 2);
-		assert(maze.movePlayer(Direction.RIGHT));
-		assert(player.getRow() == 2);
-		assert(player.getCol() == 3);
-		assert(maze.movePlayer(Direction.DOWN));
-		assert(player.getRow() == 3);
-		assert(player.getCol() == 3);
+//		assert(maze.movePlayer(Direction.LEFT));
+//		assert(player.getRow() == 3);
+//		assert(player.getCol() == 2);
+//		assert(maze.movePlayer(Direction.UP));
+//		assert(player.getRow() == 2);
+//		assert(player.getCol() == 2);
+//		assert(maze.movePlayer(Direction.RIGHT));
+//		assert(player.getRow() == 2);
+//		assert(player.getCol() == 3);
+//		assert(maze.movePlayer(Direction.DOWN));
+//		assert(player.getRow() == 3);
+//		assert(player.getCol() == 3);
 	}
 
 	@Test

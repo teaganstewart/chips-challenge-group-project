@@ -1,10 +1,14 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
+
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import java.util.*;
 
-public class Player extends Moveable implements Entity {
+public class Player extends Moveable implements Saveable {
 
 	private List<Entity> inventory;
 
@@ -108,10 +112,16 @@ public class Player extends Moveable implements Entity {
 
 	@Override
 	public String toJSON() {
+		JsonArrayBuilder inventoryJson = Json.createArrayBuilder();
+		for (Entity entity : inventory){
+			inventoryJson.add(entity.toJSON());
+		}
+
+
 		JsonObject value = Json.createObjectBuilder()
-				.add("Inventory", Json.createArrayBuilder()
-				//TODO fix this
-				).build();
+				.add("EntityClass", "Player")
+				.add("Inventory", inventoryJson)
+				.build();
 		return value.toString();
 	}
 }

@@ -10,5 +10,4 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
  *
  */
 public interface Entity extends Saveable {
-	
 }

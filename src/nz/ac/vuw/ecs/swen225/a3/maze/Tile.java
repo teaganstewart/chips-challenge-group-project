@@ -83,7 +83,7 @@ public class Tile implements Saveable {
 				.add("Coordinate", Json.createObjectBuilder()
 				.add("row", coord.getRow())
 				.add("col", coord.getCol()))
-				.add("Entity", entity.toJSON())
+				.add("Entity", entity != null ? entity.toJSON() : "null")
 				.build();
 		return tile.toString();
 	}

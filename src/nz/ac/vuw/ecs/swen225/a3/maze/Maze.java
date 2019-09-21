@@ -1,6 +1,8 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-public class Maze {
+import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
+
+public class Maze implements Saveable {
     private Tile[][] tiles;
     private Player player;
 
@@ -47,6 +49,11 @@ public class Maze {
         if (entity == null) return true;
         else return player.canWalkOn(entity);
 
+    }
+
+    @Override
+    public String toJSON() {
+        return null;
     }
 
 

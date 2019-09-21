@@ -41,6 +41,6 @@ public abstract class Door implements Entity {
 	 * Used for the different forms of unlocking
 	 * @param player
 	 */
-	public abstract boolean onTouch(Entity player);
+	public abstract boolean onTouch(Player player);
 	
 }
