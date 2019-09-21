@@ -31,9 +31,13 @@ public class Maze implements Saveable {
 
         Tile endTile = tiles[rowDest][colDest];
 
-        // Check if entity can be collected/walked on. If so, collect and move player
+        // Check if entity can be collected/walked on. If so, collect and move player. "canWalkOn"
+        // automatically collects item if this is possible
         if(canWalkOn(player, endTile)){
-            endTile.setEntity(player);
+
+            // Move player onto destination tile
+            player.setRow(endTile.getCoordinate().getRow());
+            player.setCol(endTile.getCoordinate().getCol());
             return true;
         }
 
