@@ -11,6 +11,7 @@ import java.io.*;
 
 /**
  * The LoadUtils class contains methods that are used for loading games and levels
+ * 
  * @author Matt Rothwell
  */
 public class LoadUtils {
@@ -42,23 +43,15 @@ public class LoadUtils {
     }
 
     /**
-     * For testing x
-     * @param args
-     */
-    public static void main(String[] args) {
-        resumeGame();
-    }
-
-    /**
      * Loads a new game from the starting level
      */
     public static void restartGame(){}
-
+        //TODO implementation
     /**
      * Loads the specified level in JSON format from file
      */
     private static void loadLevel(int i){
-
+        //TODO implementation
     }
 
     /**
@@ -126,7 +119,11 @@ public class LoadUtils {
         return new Coordinate(coordinate.getInt("row"), coordinate.getInt("col"));
     }
 
-
+    /**
+     * Load an Entity from JSON
+     * @param entity the Json object representing an entity
+     * @return Java object identical to that represented in file form
+     */
     private static Entity loadEntity(JsonObject entity){
         //TODO ADD IMPLEMENTATION
         return null;
