@@ -2,12 +2,12 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import java.util.*;
 
-public class Player extends Moveable {
+public class Player extends Moveable implements Entity {
 
 	private List<Entity> inventory;
 
-	public Player() {
-		super();
+	public Player(int row, int col) {
+		super(row, col);
 		inventory = new ArrayList<Entity>();
 	}
 
@@ -72,12 +72,37 @@ public class Player extends Moveable {
 		
 		return false;
 	}
-
-
+	
+	/**
+	 * Returns whether or not the player can walk on this entity
+	 * @param ent
+	 * 		the entity checked against
+	 * @return
+	 * 		whether it can or can't overwrite the entity
+	 */
 	@Override
-	public void onTouch(Entity e) {
-		e.onTouch(this);
+	public boolean canWalkOn(Entity entity) {
+		
+		// key
+		if (entity instanceof Key) {
+			Key key = (Key) entity;
+			addToInventory(key);
+			return true;
+		}
+		// treasure
+		else if (entity instanceof Treasure) {
+			Treasure.incrTreasuresCollected();
+			return true;
+		}
+		// any door
+		else if (entity instanceof Door) {
+			Door door = (Door) entity;
+			return door.onTouch(this);
+		}
+		// ...
+		
+		// none of the above
+		return false;
 	}
-
 
 }

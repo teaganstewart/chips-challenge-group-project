@@ -1,13 +1,13 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 /**
- * The Hint class, which allows the player to view a hint upon touching this object
- * (and pressing a key, as a popup every time might get annoying).
+ * The HintTile class, which allows the player to view a hint message. This class may be viewed
+ * as extraneous as it only holds a string, but in my opinion it helps keep the classes clean.
  * 
  * @author Ethan Munn
  *
  */
-public class Hint extends Entity {
+public class HintTile extends Tile {
 
 	private final String message;
 	
@@ -16,16 +16,9 @@ public class Hint extends Entity {
 	 * @param message
 	 * 		The message to display upon this hint being touched.
 	 */
-	public Hint(String message) {
-		super();
+	public HintTile(Coordinate coord, String message) {
+		super(coord, TileType.HINT);
 		this.message = message;
-	}
-
-	@Override
-	public void onTouch(Entity player) {
-		
-		// unsure what to put in here, maybe a toggle of some kind
-		
 	}
 
 	/**
