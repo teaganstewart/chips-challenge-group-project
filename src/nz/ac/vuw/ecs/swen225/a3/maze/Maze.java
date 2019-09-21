@@ -22,8 +22,10 @@ public class Maze {
         // Check for no entity in the start position
         Tile endTile = tiles[endRow][endCol];
 
-        // Check if entity can be collected/walked on. If so, collect and move player
+        // Check if entity can be collected/walked on. If so, collect and move player. "canWalkOn"
+        // automatically collects item if this is possible
         if(canWalkOn(player, endTile)){
+
             // Move player onto destination tile
             player.setRow(endTile.getCoordinate().getRow());
             player.setCol(endTile.getCoordinate().getCol());
