@@ -62,11 +62,11 @@ public class Coordinate implements Saveable {
 	}
 
 	@Override
-	public String toJSON() {
+	public JsonObject toJSON() {
 		JsonObject coord = Json.createObjectBuilder()
 				.add("row", row)
 				.add("col", col).build();
 
-		return coord.toString();
+		return coord;
 	}
 }

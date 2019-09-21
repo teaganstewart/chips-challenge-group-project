@@ -30,10 +30,10 @@ public class TreasureDoor extends Door {
 
 
 	@Override
-	public String toJSON() {
+	public JsonObject toJSON() {
 		JsonObject value = Json.createObjectBuilder()
 				.add("EntityClass", "TreasureDoor")
 				.add("locked", isLocked()).build();
-		return value.toString();
+		return value;
 	}
 }

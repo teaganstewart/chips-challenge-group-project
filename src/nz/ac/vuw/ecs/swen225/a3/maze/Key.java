@@ -1,5 +1,8 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+
 /**
  * The key class, used to unlock doors matching the BasicColor of this object.
  * 
@@ -29,7 +32,11 @@ public class Key implements Entity {
 	}
 
 	@Override
-	public String toJSON() {
-		return null;
+	public JsonObject toJSON() {
+		JsonObject value = Json.createObjectBuilder()
+				.add("EntityClass", "Key")
+				.add("BasicColor", color.toString())
+				.build();
+		return value;
 	}
 }

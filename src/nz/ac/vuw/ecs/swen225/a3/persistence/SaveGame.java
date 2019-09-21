@@ -2,6 +2,12 @@ package nz.ac.vuw.ecs.swen225.a3.persistence;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
 
+import javax.json.Json;
+import javax.json.JsonWriter;
+import java.io.FileNotFoundException;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+
 /**
  *
  * This class contains methods relevant to saving of the current game state to a json file.
@@ -18,8 +24,15 @@ public class SaveGame {
      * opened.
      * @param maze the board.
      */
-    public static void saveGame(Maze maze){
+    public static boolean saveGame(Maze maze){
+        try{
+            JsonWriter writer = Json.createWriter(new PrintStream(SAVES_DIRECTORY+System.currentTimeMillis()));
+            writer.write(maze.toJSON());
+        } catch (FileNotFoundException e) {
+            return false;
+        }
 
+        return false;
     }
 
     /**

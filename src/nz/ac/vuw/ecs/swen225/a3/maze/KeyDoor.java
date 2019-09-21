@@ -66,12 +66,12 @@ public class KeyDoor extends Door {
 
 
 	@Override
-	public String toJSON() {
+	public JsonObject toJSON() {
 		JsonObject value = Json.createObjectBuilder()
 				.add("EntityClass", "KeyDoor")
 				.add("locked", isLocked())
 				.add("BasicColor", color.toString())
 				.build();
-		return value.toString();
+		return value;
 	}
 }

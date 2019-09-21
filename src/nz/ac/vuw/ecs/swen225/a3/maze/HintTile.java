@@ -4,6 +4,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 /**
  * The HintTile class, which allows the player to view a hint message. This class may be viewed
@@ -36,14 +37,17 @@ public class HintTile extends Tile implements Saveable {
 	}
 
 	@Override
-	public String toJSON() {
-		JsonObject tile = Json.createObjectBuilder()
-				.add("TileType", getType().toString())
-				.add("Coordinate", getCoordinate().toJSON())
-				.add("Entity", getEntity() != null ? getEntity().toJSON() : "null")
-				.add("message", message)
-				.build();
-		return tile.toString();
+	public JsonObject toJSON() {
+		JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+		jsonObjectBuilder.add("TileType", getType().toString());
+		jsonObjectBuilder.add("Coordinate", getCoordinate().toJSON());
+		jsonObjectBuilder.add("message", message);
+
+		if (getEntity() != null){
+			jsonObjectBuilder.add("Entity", getEntity().toJSON());
+		}
+
+		return jsonObjectBuilder.build();
 	}
 
 	
