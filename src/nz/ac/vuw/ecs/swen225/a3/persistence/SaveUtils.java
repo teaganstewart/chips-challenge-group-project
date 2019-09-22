@@ -10,7 +10,7 @@ import java.io.PrintStream;
 
 /**
  *
- * The SaveUtils contains methods relevant to saving of the current game state to a json file.
+ * The SaveUtils contains methods relevant to saving of the current game state to a Json file.
  *
  * @author Matt Rothwell
  */

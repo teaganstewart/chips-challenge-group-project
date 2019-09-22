@@ -14,10 +14,10 @@ import javax.json.JsonObject;
  */
 public class Level implements Saveable {
 
-    private long levelBeginTime;
-    private long levelRunningTime;
+    private Long levelBeginTime;
+    private Long levelRunningTime;
 
-    private long levelStartTime;
+    private Long levelStartTime;
 
     private int level;
     private Maze maze;
@@ -65,9 +65,9 @@ public class Level implements Saveable {
     public JsonObject toJSON() {
         JsonObject level = Json.createObjectBuilder()
                 .add("levelNumber", this.level)
-                .add("levelBeginTime", levelBeginTime)
-                .add("totalRunningTime", levelRunningTime)
-                .add("completed", "false")
+                .add("levelBeginTime", levelBeginTime.toString())
+                .add("totalRunningTime", levelRunningTime.toString())
+                .add("completed", false)
                 .add("maze", maze.toJSON())
                 .build();
 
