@@ -1,14 +1,14 @@
 package nz.ac.vuw.ecs.swen225.a3.application.ui;
 
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
+import nz.ac.vuw.ecs.swen225.a3.maze.Direction;
+import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
+import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 
 public class GUI extends JFrame {
 
@@ -20,7 +20,6 @@ public class GUI extends JFrame {
     public GUI(){
         game = new Game();
         createWindow();
-
         main.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -34,23 +33,34 @@ public class GUI extends JFrame {
 
             @Override
             public void keyReleased(KeyEvent e) {
+                Maze maze = game.getMaze();
+                Player player = game.getPlayer();
+                int row,col;
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     System.out.println("up");
-
+                    maze.movePlayer(Direction.UP);
+                    System.out.println(player.getCoordinate());
                 }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     System.out.println("down");
+                    maze.movePlayer(Direction.DOWN);
+                    System.out.println(player.getCoordinate());
                 }
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     System.out.println("left");
+                    maze.movePlayer(Direction.LEFT);
+                    System.out.println(player.getCoordinate());
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     System.out.println("right");
+                    maze.movePlayer(Direction.RIGHT);
+                    System.out.println(player.getCoordinate());
                 }
 
 
             }
         });
+
     }
 
     /**
@@ -81,7 +91,7 @@ public class GUI extends JFrame {
         main.setVisible(true);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         main.setLocation(dim.width/2-main.getSize().width/2, dim.height/2-main.getSize().height/2);
-
+        main.setFocusable(true);
     }
 
     /**

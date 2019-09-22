@@ -1,7 +1,9 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
+import nz.ac.vuw.ecs.swen225.a3.maze.Level;
 import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
+import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 
 public class Game {
     int level;
@@ -13,7 +15,7 @@ public class Game {
     boolean endGame;
 
     public Game(){
-
+        loadGame();
     }
 
     public Maze getMaze(){
@@ -29,6 +31,10 @@ public class Game {
     }
 
     public void loadGame(){
+        Level level = LoadUtils.resumeGame();
+        maze = level.getMaze();
+        player = maze.getPlayer();
+
 
     }
 

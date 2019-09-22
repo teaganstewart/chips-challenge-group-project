@@ -14,7 +14,7 @@ public class GamePanel extends JPanel {
         this.setLayout(new GridLayout(9,9,0,0));
         this.setBorder(BorderFactory.createEmptyBorder(30,30,30,20));
         for(int i =0; i<81; i++) {
-            this.add(new Button("Hi"));
+            this.add(new JLabel("Hi"));
         }
         setVisible(true);
     }

@@ -199,8 +199,8 @@ public class LoadUtils {
         JsonArray jsonArray = maze.getJsonArray("tiles");
 
         int index = 0;
-        for (int row = 0; row < tiles[0].length; row++){
-            for (int col = 0; col < tiles.length; col++){
+        for (int row = 0; row < rows; row++){
+            for (int col = 0; col < cols; col++){
                 tiles[row][col] = loadTile(jsonArray.getJsonObject(index++));
             }
         }
