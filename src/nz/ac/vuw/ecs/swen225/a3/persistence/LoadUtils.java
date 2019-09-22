@@ -52,11 +52,13 @@ public class LoadUtils {
             levelStartTime = System.currentTimeMillis();
         }
 
+        int timeAllowed = level.getInt("timeAllowed");
+
         boolean completed = level.getBoolean("completed");
 
         Maze maze = loadMaze(level.getJsonObject("maze"));
 
-        return new Level(levelNumber, maze, levelStartTime, levelRunningTime);
+        return new Level(levelNumber, maze, levelStartTime, levelRunningTime, timeAllowed);
     }
 
     /**
@@ -199,8 +201,8 @@ public class LoadUtils {
         JsonArray jsonArray = maze.getJsonArray("tiles");
 
         int index = 0;
-        for (int row = 0; row < tiles[0].length; row++){
-            for (int col = 0; col < tiles.length; col++){
+        for (int row = 0; row < rows; row++){
+            for (int col = 0; col < cols; col++){
                 tiles[row][col] = loadTile(jsonArray.getJsonObject(index++));
             }
         }

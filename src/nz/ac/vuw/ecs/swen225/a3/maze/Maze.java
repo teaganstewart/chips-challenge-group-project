@@ -89,16 +89,16 @@ public class Maze implements Saveable {
     public JsonObject toJSON() {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
-        for (int row = 0; row < tiles[0].length; row++){
-            for (int col = 0; col < tiles.length; col++){
+        for (int row = 0; row < tiles.length; row++){
+            for (int col = 0; col < tiles[0].length; col++){
                 arrayBuilder.add(tiles[row][col].toJSON());
             }
         }
 
         JsonObject build = Json.createObjectBuilder()
                 .add("player", player.toJSON())
-                .add("rows", tiles[0].length)
-                .add("cols", tiles.length)
+                .add("rows", tiles.length)
+                .add("cols", tiles[0].length)
                 .add("tiles", arrayBuilder)
                 .add("treasureData", Treasure.toJSONStatic())
                 .build();
@@ -126,4 +126,12 @@ public class Maze implements Saveable {
         this.tiles = tiles;
     }
 
+
+    /**
+     * @return
+     *       The player in this maze.
+     */
+    public Player getPlayer() {
+        return player;
+    }
 }
