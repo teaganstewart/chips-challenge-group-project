@@ -10,7 +10,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  *
  */
 public class Coordinate {
-	
+
 	private final int row;
 	private final int col;
 	
@@ -44,11 +44,27 @@ public class Coordinate {
 		return col;
 	}
 	
+//	@Override
+//	public boolean equals(Object o) {
+//		if (!(o instanceof Coordinate)) return false;
+//		Coordinate c = (Coordinate) o;
+//		return c.getRow() == row && c.getCol() == col;
+//	}
+
 	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof Coordinate)) return false;
-		Coordinate c = (Coordinate) o;
-		return c.getRow() == row && c.getCol() == col;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Coordinate other = (Coordinate) obj;
+		if (col != other.col)
+			return false;
+		if (row != other.row)
+			return false;
+		return true;
 	}
 	
 	@Override

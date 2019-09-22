@@ -3,7 +3,8 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 public abstract class Moveable {
 
 	private int col, row;
-	private Direction direction;
+	// Initialize direction to avoid null pointers and simulate realistic gameplay
+	private Direction direction = Direction.RIGHT;
 	private Direction lastDirection;
 	
 	public Moveable(int row, int col) {
@@ -28,6 +29,8 @@ public abstract class Moveable {
 	 * 		The direction that you want the player to be facing.
 	 */
 	public void setDirection(Direction dir){
+		// Update last direction first
+		lastDirection = direction;
 		direction = dir;
 	}
 	
@@ -37,14 +40,6 @@ public abstract class Moveable {
 	 */
 	public Direction getLastDirection(){
 		return lastDirection;
-	}
-
-	/**
-	 * @param dir
-	 * 		The direction that you want the player to have been facing.
-	 */
-	public void setLastDirection(Direction dir){
-		lastDirection = dir;
 	}
 	
 	/**
@@ -72,15 +67,15 @@ public abstract class Moveable {
 	 * 		The direction that the player was at before it moved.
 	 */
 	public Coordinate getPrevPos() {
-		switch(lastDirection.inverse()) {
+		switch(direction.inverse()) {
 			case DOWN:
-				return new Coordinate(row - 1, col);
-			case UP:
 				return new Coordinate(row + 1, col);
+			case UP:
+				return new Coordinate(row - 1, col);
 			case LEFT:
-				return new Coordinate(row, col + 1);
-			case RIGHT:
 				return new Coordinate(row, col - 1);
+			case RIGHT:
+				return new Coordinate(row, col + 1);
 			default:
 				return null;
 		}
