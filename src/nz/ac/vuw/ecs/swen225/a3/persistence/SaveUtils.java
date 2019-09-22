@@ -1,6 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence;
 
-import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
+import nz.ac.vuw.ecs.swen225.a3.maze.Level;
 
 import javax.json.Json;
 import javax.json.JsonWriter;
@@ -22,12 +22,12 @@ public class SaveUtils {
     /**
      * Save the game state so that the player can resume next time the program is
      * opened.
-     * @param maze the board.
+     * @param level object to save.
      */
-    public static boolean saveGame(Maze maze){
+    public static boolean saveGame(Level level){
         try{
             JsonWriter writer = Json.createWriter(new PrintStream(new File(SAVES_DIRECTORY+"\\"+System.currentTimeMillis()+".json")));
-            writer.write(maze.toJSON());
+            writer.write(level.toJSON());
             writer.close();
             return true;
         } catch (FileNotFoundException e) {

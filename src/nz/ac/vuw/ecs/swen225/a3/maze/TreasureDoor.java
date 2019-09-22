@@ -28,7 +28,10 @@ public class TreasureDoor extends Door {
 		
 	}
 
-
+	/**
+	 * Produce a JSON object for this TreasureDoor
+	 * @return Json object representing this TreasureDoor
+	 */
 	@Override
 	public JsonObject toJSON() {
 		JsonObject value = Json.createObjectBuilder()

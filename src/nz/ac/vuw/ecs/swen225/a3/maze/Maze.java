@@ -59,6 +59,10 @@ public class Maze implements Saveable {
 
     }
 
+    /**
+     * Serialise this Java Object to Json
+     * @return Json representation of this object.
+     */
     @Override
     public JsonObject toJSON() {
         JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();

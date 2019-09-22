@@ -89,7 +89,8 @@ public class MazeTests {
         Player player = new Player(new Coordinate(3, 3));
         player.addToInventory(new Key(BasicColor.GREEN));
         Maze maze = new Maze(tiles, player);
-		SaveUtils.saveGame(maze);
+        Level level = new Level(1, maze, System.currentTimeMillis(), 0);
+		SaveUtils.saveGame(level);
 
 		tiles[3][2].setEntity(new KeyDoor(BasicColor.RED));
 		assertFalse(maze.movePlayer(Direction.LEFT));

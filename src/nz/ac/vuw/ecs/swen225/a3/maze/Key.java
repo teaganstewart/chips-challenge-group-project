@@ -31,6 +31,10 @@ public class Key implements Entity {
 		return color;
 	}
 
+	/**
+	 * Produce a JSON representation of this Key
+	 * @return Json object identical to this key
+	 */
 	@Override
 	public JsonObject toJSON() {
 		JsonObject value = Json.createObjectBuilder()

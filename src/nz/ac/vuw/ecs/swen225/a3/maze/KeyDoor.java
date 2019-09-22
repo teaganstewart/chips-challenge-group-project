@@ -64,7 +64,10 @@ public class KeyDoor extends Door {
 		
 	}
 
-
+	/**
+	 * Creates a Json representation of this KeyDoor.
+	 * @return Json object representation of this KeyDoor.
+	 */
 	@Override
 	public JsonObject toJSON() {
 		JsonObject value = Json.createObjectBuilder()

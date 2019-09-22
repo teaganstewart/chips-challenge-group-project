@@ -16,19 +16,7 @@ public class PersistanceTests {
 
     @Test
     public void test01(){
-        Tile[][] tiles = new Tile[1][1];
-        tiles[0][0] = new Tile(new Coordinate(0,0), Tile.TileType.FLOOR);
-        Maze maze = new Maze(tiles, new Player(new Coordinate(0, 0)));
 
-        SaveUtils.saveGame(maze);
-
-        Maze maze2 = LoadUtils.resumeGame();
-
-        SaveUtils.saveGame(maze2);
-
-        Maze maze3 = LoadUtils.resumeGame();
-
-        assertEquals(maze2, maze3);
 
     }
 }

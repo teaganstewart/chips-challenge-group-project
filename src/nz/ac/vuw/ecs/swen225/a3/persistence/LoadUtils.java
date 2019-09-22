@@ -10,7 +10,7 @@ import java.io.*;
 
 
 /**
- * The LoadUtils class contains methods that are used for loading games and levels
+ * The LoadUtils class contains methods that are used for loading games and levels.
  *
  * @author Matt Rothwell
  */
@@ -20,36 +20,39 @@ public class LoadUtils {
 
     /**
      * Resumes the game from the last save made.
+     * @return the most recent level played by the player, null if there is not a save
      */
-    public static Maze resumeGame(){
+    public static Level resumeGame(){
         File recentSave = getMostRecentSave();
-        if (recentSave != null){
-            try {
-                InputStream inputStream = new FileInputStream(recentSave);
-                JsonReader reader = Json.createReader(inputStream);
-
-                JsonObject save = reader.readObject();
-
-                return loadMaze(save);
-
-
-            } catch (FileNotFoundException e) {
-                return null;
-            }
-        }
-        return null;
+        JsonObject jsonObjectRecentSave = readJsonFromFile(recentSave);
+        return loadLevel(jsonObjectRecentSave);
     }
 
     /**
-     * Loads a new game from the starting level
+     * Loads the specified level in JSON format from default source
+     * @param levelNumber - the level to load
      */
-    public static void restartGame(){}
-        //TODO implementation
+    private static Level loadLevel(int levelNumber){
+        File levelFile = new File(LEVELS_DIRECTORY+"\\"+levelNumber);
+        return loadLevel(readJsonFromFile(levelFile));
+    }
+
     /**
-     * Loads the specified level in JSON format from file
+     * Produces a Level object from the JSON input given
+     * @param level Json representation of a game
+     * @return the Json deserialised back into Object form
      */
-    private static void loadLevel(int i){
-        //TODO implementation
+    private static Level loadLevel(JsonObject level){
+        int levelNumber = level.getInt("levelNumber");
+        long levelStartTime = Long.parseLong(level.getString("levelBeginTime"));
+        long levelRunningTime = Long.parseLong(level.getString("totalRunningTime"));
+
+        boolean completed = level.getBoolean("completed");
+
+        Maze maze = loadMaze(level.getJsonObject("maze"));
+        Level newLevel = new Level(levelNumber, maze, levelStartTime, levelRunningTime);
+
+        return newLevel;
     }
 
     /**
@@ -71,6 +74,30 @@ public class LoadUtils {
         }
 
         return newest;
+    }
+
+    /**
+     * Reads a file and reads it into a new JsonObject
+     * @param file the file to read json from
+     * @return Json object version of that file, null if not found.
+     */
+    private static JsonObject readJsonFromFile(File file){
+        if (file != null){
+            try {
+                InputStream inputStream = new FileInputStream(file);
+                JsonReader reader = Json.createReader(inputStream);
+
+                JsonObject save = reader.readObject();
+
+                return save;
+
+
+            } catch (FileNotFoundException e) {
+                return null;
+            }
+        }
+
+        return null;
     }
 
     /**

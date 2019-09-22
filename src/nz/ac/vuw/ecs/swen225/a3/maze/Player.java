@@ -109,6 +109,10 @@ public class Player extends Moveable implements Saveable {
 		return false;
 	}
 
+	/**
+	 * Generate a Json representation of this Player
+	 * @return Json object player
+	 */
 	@Override
 	public JsonObject toJSON() {
 		JsonArrayBuilder inventoryJson = Json.createArrayBuilder();

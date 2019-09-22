@@ -36,6 +36,10 @@ public class HintTile extends Tile implements Saveable {
 		return message;
 	}
 
+	/**
+	 * Produce a Json representation of this HintTile
+	 * @return Json object representation
+	 */
 	@Override
 	public JsonObject toJSON() {
 		JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
