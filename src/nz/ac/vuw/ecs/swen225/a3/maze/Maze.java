@@ -1,26 +1,39 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-public class Maze {
-    private Tile[][] tiles;
-    Player player;
+import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 
-    public Maze(Tile[][] tiles){
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+
+public class Maze implements Saveable {
+    private Tile[][] tiles;
+    private Player player;
+
+    public Maze(Tile[][] tiles, Player player){
         this.tiles = tiles;
+        this.player = player;
     }
 
     // NEEDS TO BE MOVED INTO APPLICATION
-    
 
-
-    // NEEDS TO BE MOVED INTO APPLICATION
-    
     /**
-     * Returns true if player was moved from start location to end location,
-     * else returns false if player was not moved. This method also allows for collecting items
+     * Returns true if player was moved in the specified direction,
+     * else returns false if player was not moved. This method also automatically collects items
      */
-    public boolean movePlayer(int endRow, int endCol){
-        // Check for no entity in the start position
-        Tile endTile = tiles[endRow][endCol];
+    public boolean movePlayer(Direction dir){
+        // Set the players direction, regardless of whether they will actually move
+        player.setDirection(dir);
+
+        // Check for player moving out of bounds
+        Coordinate dest = player.getNextPos();
+        int rowDest = dest.getRow();
+        int colDest = dest.getCol();
+        if((rowDest < 0) || (rowDest > tiles.length) || (colDest < 0) || (colDest > tiles[0].length)){
+            return false;
+        }
+
+        Tile endTile = tiles[rowDest][colDest];
 
         // Check if entity can be collected/walked on. If so, collect and move player. "canWalkOn"
         // automatically collects item if this is possible
@@ -34,17 +47,42 @@ public class Maze {
 
         return false;
     }
-    
+
     /**
      * Returns entity collected, else returns null for no entity collected
      * */
     public boolean canWalkOn(Player player, Tile tile){
-        Entity entity = tile.getEntity();    
-        
+        Entity entity = tile.getEntity();
+
         if (entity == null) return true;
         else return player.canWalkOn(entity);
- 
+
     }
+
+    /**
+     * Serialise this Java Object to Json
+     * @return Json representation of this object.
+     */
+    @Override
+    public JsonObject toJSON() {
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+
+        for (int row = 0; row < tiles[0].length; row++){
+            for (int col = 0; col < tiles.length; col++){
+                arrayBuilder.add(tiles[row][col].toJSON());
+            }
+        }
+
+        JsonObject build = Json.createObjectBuilder()
+                .add("player", player.toJSON())
+                .add("rows", tiles[0].length)
+                .add("cols", tiles.length)
+                .add("tiles", arrayBuilder)
+                .add("treasureData", Treasure.toJSONStatic())
+                .build();
+        return build;
+    }
+
 
     /* Getters and Setters */
 
@@ -65,4 +103,5 @@ public class Maze {
     public void setTiles(Tile[][] tiles) {
         this.tiles = tiles;
     }
+
 }

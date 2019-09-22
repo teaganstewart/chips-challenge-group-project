@@ -1,5 +1,8 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+
 public class KeyDoor extends Door {
 
 	private final BasicColor color;
@@ -27,7 +30,7 @@ public class KeyDoor extends Door {
 	
 	/**
 	 * Checks a keyColor to see if it matches the door.
-	 * @param keyColor
+	 * @param key
 	 * 		Color of the key, using the BasicColor enum
 	 * @return
 	 * 		Whether or not the player can unlock this door.
@@ -37,10 +40,9 @@ public class KeyDoor extends Door {
 	}
 	
 	@Override
-	public boolean onTouch(Entity pl) {
+	public boolean onTouch(Player player) {
 
-		if (!(pl instanceof Player)) return false;
-		Player player = (Player) pl;
+		if (player == null) return false;
 		
 		Key key = null;
 		for (Entity e : player.getInventory()) {
@@ -61,6 +63,18 @@ public class KeyDoor extends Door {
 		return false;
 		
 	}
-	
-	
+
+	/**
+	 * Creates a Json representation of this KeyDoor.
+	 * @return Json object representation of this KeyDoor.
+	 */
+	@Override
+	public JsonObject toJSON() {
+		JsonObject value = Json.createObjectBuilder()
+				.add("EntityClass", KeyDoor.class.toString())
+				.add("locked", isLocked())
+				.add("BasicColor", color.toString())
+				.build();
+		return value;
+	}
 }

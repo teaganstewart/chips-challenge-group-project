@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze.Tests;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
+import nz.ac.vuw.ecs.swen225.a3.persistence.SaveUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -8,56 +9,91 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MazeTests {
 
-	private Tile[][] tiles;
-	private Maze maze;
-
-	public MazeTests(){
-		// Setup
-
-		tiles = new Tile[9][9];
-		for(int row=0; row < 9; row++){
-			for(int col=0; col < 9; col++) {
-				tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-			}
-		}
-		maze = new Maze(tiles);
-	}
-
 	@Test
 	public void testMovePlayerValid(){
-		tiles[0][0].setEntity(new Player(0,0));
-		assert(maze.movePlayer(0, 0, 4, 4));
+        // Setup
+
+        Tile[][] tiles = new Tile[9][9];
+        for(int row=0; row < tiles.length; row++){
+            for(int col=0; col < tiles[0].length; col++) {
+                tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
+            }
+        }
+
+        Player player = new Player(new Coordinate(3, 3));
+        Maze maze = new Maze(tiles, player);
+
+		assert(maze.movePlayer(Direction.LEFT));
+		assert(player.getRow() == 3);
+		assert(player.getCol() == 2);
+		assert(maze.movePlayer(Direction.UP));
+		assert(player.getRow() == 2);
+		assert(player.getCol() == 2);
+		assert(maze.movePlayer(Direction.RIGHT));
+		assert(player.getRow() == 2);
+		assert(player.getCol() == 3);
+		assert(maze.movePlayer(Direction.DOWN));
+		assert(player.getRow() == 3);
+		assert(player.getCol() == 3);
 	}
 
-	// TODO Array Index Out of Bounds means this test fails
 	@Test
 	public void testMovePlayerNotValid(){
-		tiles[0][0].setEntity(new Player(0,0));
-		try {
-			maze.movePlayer(0, 0, -1, -1);
-		}
-		catch(ArrayIndexOutOfBoundsException e) {
-			assertTrue(true);
-			return;
-		}
+        // Setup
 
-		assert(false);
+        Tile[][] tiles = new Tile[9][9];
+        for(int row=0; row < tiles.length; row++){
+            for(int col=0; col < tiles[0].length; col++) {
+                tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
+            }
+        }
+
+        Player player = new Player(new Coordinate(0,0));
+        Maze maze = new Maze(tiles, player);
+
+		assertFalse(maze.movePlayer(Direction.LEFT));
 	}
 
 	@Test
-	public void testMovePlayerAndCollectValid(){
-		tiles[0][0].setEntity(new Player(0,0));
-		tiles[4][4].setEntity(new Key(BasicColor.YELLOW));
+	public void testCollectValid(){
+        // Setup
 
-		assert(maze.movePlayer(0, 0, 4, 4));
-		// TODO assert correct item is collected
+        Tile[][] tiles = new Tile[9][9];
+        for(int row=0; row < tiles.length; row++){
+            for(int col=0; col < tiles[0].length; col++) {
+                tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
+            }
+        }
+
+        Player player = new Player(new Coordinate(0, 0));
+        Maze maze = new Maze(tiles, player);
+
+		Key key = new Key(BasicColor.YELLOW);
+		tiles[0][1].setEntity(key);
+
+		assert(maze.movePlayer( Direction.RIGHT));
+		assert(player.getInventory().contains(key));
 	}
 
 	@Test
-	public void testMovePlayerAndCollectNotValid(){
-		tiles[0][0].setEntity(new Player(0,0));
-		tiles[4][4].setEntity(new KeyDoor(BasicColor.RED));
-		assertFalse(maze.movePlayer(0, 0, 4, 4));
+	public void testCollectNotValid(){
+        // Setup
+
+        Tile[][] tiles = new Tile[9][9];
+        for(int row=0; row < tiles.length; row++){
+            for(int col=0; col < tiles[0].length; col++) {
+                tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
+            }
+        }
+
+        Player player = new Player(new Coordinate(3, 3));
+        player.addToInventory(new Key(BasicColor.GREEN));
+        Maze maze = new Maze(tiles, player);
+        Level level = new Level(1, maze, System.currentTimeMillis(), 0);
+		SaveUtils.saveGame(level);
+
+		tiles[3][2].setEntity(new KeyDoor(BasicColor.RED));
+		assertFalse(maze.movePlayer(Direction.LEFT));
 	}
 
 	//-----------------------------//
@@ -65,10 +101,8 @@ public class MazeTests {
 	//-----------------------------//
 
 	@Test
-	void extensionsTest() { 
-		Player p = new Player(1,2);
-		Player p2 = new Player(3,1);
-		assertTrue(p.addToInventory(p2));
-
+	void extensionsTest() {
+		Player p = new Player(new Coordinate(1, 2));
+		assertTrue(p.addToInventory(new TreasureDoor()));
 	}
 }

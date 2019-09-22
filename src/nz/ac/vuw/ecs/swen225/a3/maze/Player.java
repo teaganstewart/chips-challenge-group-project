@@ -1,13 +1,18 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import java.util.*;
 
-public class Player extends Moveable implements Entity {
+public class Player extends Moveable implements Saveable {
 
 	private List<Entity> inventory;
 
-	public Player(int row, int col) {
-		super(row, col);
+	public Player(Coordinate coordinate) {
+		super(coordinate);
 		inventory = new ArrayList<Entity>();
 	}
 
@@ -75,7 +80,7 @@ public class Player extends Moveable implements Entity {
 	
 	/**
 	 * Returns whether or not the player can walk on this entity
-	 * @param ent
+	 * @param entity
 	 * 		the entity checked against
 	 * @return
 	 * 		whether it can or can't overwrite the entity
@@ -85,8 +90,7 @@ public class Player extends Moveable implements Entity {
 		
 		// key
 		if (entity instanceof Key) {
-			Key key = (Key) entity;
-			addToInventory(key);
+			addToInventory(entity);
 			return true;
 		}
 		// treasure
@@ -105,4 +109,21 @@ public class Player extends Moveable implements Entity {
 		return false;
 	}
 
+	/**
+	 * Generate a Json representation of this Player
+	 * @return Json object player
+	 */
+	@Override
+	public JsonObject toJSON() {
+		JsonArrayBuilder inventoryJson = Json.createArrayBuilder();
+		for (Entity entity : inventory){
+			inventoryJson.add(entity.toJSON());
+		}
+
+		JsonObject value = Json.createObjectBuilder()
+				.add("Coordinate", getCoordinate().toJSON())
+				.add("Inventory", inventoryJson)
+				.build();
+		return value;
+	}
 }
