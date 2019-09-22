@@ -1,9 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence.Tests;
 
-import nz.ac.vuw.ecs.swen225.a3.maze.Coordinate;
-import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
-import nz.ac.vuw.ecs.swen225.a3.maze.Player;
-import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 import nz.ac.vuw.ecs.swen225.a3.persistence.SaveUtils;
 
@@ -16,7 +13,13 @@ public class PersistanceTests {
 
     @Test
     public void test01(){
+        Player player = new Player(new Coordinate(0, 0));
+        Tile[][] tiles = new Tile[1][1];
+        tiles[0][0] = new Tile(new Coordinate(0, 0), Tile.TileType.FLOOR);
+        Maze maze = new Maze(tiles, player);
+        Level level = new Level(1, maze, System.currentTimeMillis(), 0);
 
+        assertTrue(SaveUtils.saveGame(level));
 
     }
 }
