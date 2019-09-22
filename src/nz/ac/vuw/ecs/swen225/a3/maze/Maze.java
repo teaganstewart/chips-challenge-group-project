@@ -1,9 +1,22 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+/**
+ * @author Josh
+ * 
+ * Class which holds all information about the maze and its tiles, entities, player, ect.
+ * Also has logic to determine what is allowed to happen with the objects in the maze
+ *
+ */
 public class Maze {
     private Tile[][] tiles;
     private Player player;
 
+    /**
+     * @param tiles
+     * @param player
+     * 
+     * Constructor for a maze. 
+     */
     public Maze(Tile[][] tiles, Player player){
         this.tiles = tiles;
         this.player = player;
@@ -12,6 +25,8 @@ public class Maze {
     /**
      * Returns true if player was moved in the specified direction,
      * else returns false if player was not moved. This method also automatically collects items
+     * @param dir 
+     * @return validity of move
      */
     public boolean movePlayer(Direction dir){
         // Set the players direction, regardless of whether they will actually move
@@ -42,6 +57,9 @@ public class Maze {
     
     /**
      * Returns entity collected, else returns null for no entity collected
+     * @param player 
+     * @param tile 
+     * @return validity
      * */
     public boolean canWalkOn(Player player, Tile tile){
         Entity entity = tile.getEntity();    

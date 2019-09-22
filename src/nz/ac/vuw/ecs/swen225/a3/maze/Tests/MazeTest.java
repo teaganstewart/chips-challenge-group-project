@@ -6,8 +6,20 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MazeTests {
+import java.util.ArrayList;
+import java.util.Arrays;
 
+/**
+ * @author Josh
+ * 
+ * Class which contains all tests that test classes in the maze directory
+ *
+ */
+public class MazeTest {
+
+	/**
+	 * 
+	 */
 	@Test
 	public void testMovePlayerValid(){
         // Setup
@@ -22,6 +34,21 @@ public class MazeTests {
         Player player = new Player(3, 3);
         Maze maze = new Maze(tiles, player);
 
+        // Player starts facing right
+        assert(player.getDirection() == Direction.RIGHT);
+        assert(player.getLastDirection() == null);
+        
+		assert(maze.movePlayer(Direction.DOWN));
+		assert(player.getLastDirection() == Direction.RIGHT);
+		assert(player.getDirection() == Direction.DOWN);
+		assert(player.getPrevPos().equals(new Coordinate(3, 3)));
+		assert(player.getRow() == 4);
+		assert(player.getCol() == 3);
+		
+		assert(maze.movePlayer(Direction.UP));
+		assert(player.getRow() == 3);
+		assert(player.getCol() == 3);
+		
 		assert(maze.movePlayer(Direction.LEFT));
 		assert(player.getRow() == 3);
 		assert(player.getCol() == 2);
@@ -36,8 +63,10 @@ public class MazeTests {
 		assert(player.getCol() == 3);
 	}
 
+	/**
+	 * Testing moving the player off the tiles
+	 */
 	@Test
-	// Testing moving the player off the tiles
 	public void testMovePlayerNotValid(){
         // Setup
 
@@ -54,6 +83,9 @@ public class MazeTests {
 		assertFalse(maze.movePlayer(Direction.LEFT));
 	}
 
+	/**
+	 * Test to see if player correctly unlocks a key door
+	 */
 	@Test
 	public void testUnlockKeyDoor(){
         // Setup
@@ -72,8 +104,16 @@ public class MazeTests {
 		Key key = new Key(BasicColor.YELLOW);
 		tiles[0][1].setEntity(key);
 
+		// Test setting inventory
+		player.setInventory(new ArrayList<Entity>(Arrays.asList(new Key(BasicColor.BLUE))));
+		
 		assert(maze.movePlayer( Direction.RIGHT));
 		assert(player.getInventory().contains(key));
+		assert(player.getInventoryAt(1).equals(key));
+		
+		assert(player.removeInventoryAt(0));
+		assert(player.getInventoryAt(0).equals(key));
+		
 
 		// Unlock door with same color as key
         tiles[0][2].setEntity(new KeyDoor(BasicColor.YELLOW));
@@ -83,8 +123,10 @@ public class MazeTests {
         assert(player.getInventory().contains(key));
 	}
 
+    /**
+     * Test to see if player fails to unlock a key door when player does not have any keys
+     */
     @Test
-    // Test being an idiot and walking into door without key
 	public void testUnlockDoorNotValid01(){
         // Setup
 
@@ -102,8 +144,10 @@ public class MazeTests {
 		assertFalse(maze.movePlayer(Direction.RIGHT));
 	}
 
+    /**
+     * Test to see if player fails to enter key door when they have the wrong colored key
+     */
     @Test
-    // Testing being even more of an idiot and walking into door with wrong colored key!
     public void testUnlockDoorNotValid02(){
         // Setup
 
@@ -132,6 +176,9 @@ public class MazeTests {
         assert(player.getInventory().contains(key));
     }
 
+    /**
+     * Test to see if player unlocks the treasure door after collecting all the treasure
+     */
     @Test
     public void testUnlockTreasureDoor(){
         // Setup
