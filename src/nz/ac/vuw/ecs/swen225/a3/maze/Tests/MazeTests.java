@@ -87,6 +87,7 @@ public class MazeTests {
         }
 
         Player player = new Player(new Coordinate(3, 3));
+        player.addToInventory(new Key(BasicColor.GREEN));
         Maze maze = new Maze(tiles, player);
 		SaveUtils.saveGame(maze);
 

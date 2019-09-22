@@ -2,7 +2,6 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 
 /**
  * The Treasure class. As well as being used to hold Treasure objects, it has a static counter
@@ -22,7 +21,16 @@ public class Treasure implements Entity {
 		totalInLevel++;
 	}
 
-	
+	/**
+	 * Convert this Treasure object to JSON format
+	 * @return this object represented in JSON
+	 */
+	@Override
+	public JsonObject toJSON() {
+		JsonObject value = Json.createObjectBuilder().add("EntityClass", Treasure.class.toString()).build();
+		return value;
+	}
+
 	//-------------------------------------//
 	//           STATIC METHODS            //
 	//-------------------------------------//
@@ -51,9 +59,23 @@ public class Treasure implements Entity {
 		return totalCollected == totalInLevel;
 	}
 
-	@Override
-	public JsonObject toJSON() {
-		JsonObject value = Json.createObjectBuilder().add("EntityClass", "Treasure").build();
+
+	/**
+	 * Serialize the static fields within Treasure to JSON object format
+	 * @return Json object representation of the static fields.
+	 */
+	public static JsonObject toJSONStatic(){
+		JsonObject value = Json.createObjectBuilder().add("totalInLevel", totalInLevel).add("totalCollected", totalCollected).build();
 		return value;
+	}
+
+	/**
+	 * Set the treasure counters to the correct values from the file.
+	 * @param totalInLevelFromFile amount of treasure in the map originally from file.
+	 * @param totalCollectedFromFile amount of treasure the player has already collected.
+	 */
+	public static void setTreasureCountersUponLoad(int totalInLevelFromFile, int totalCollectedFromFile){
+		totalInLevel = totalInLevelFromFile;
+		totalCollected = totalCollectedFromFile;
 	}
 }

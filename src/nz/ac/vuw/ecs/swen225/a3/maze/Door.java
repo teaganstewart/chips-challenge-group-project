@@ -33,7 +33,7 @@ public abstract class Door implements Entity {
 	 * to be public, as we don't want the state of the door being
 	 * controlled by something outside of the door.
 	 */
-	protected void unlock() {
+	public void unlock() {
 		locked = false;
 	}
 	

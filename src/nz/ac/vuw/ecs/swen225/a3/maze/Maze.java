@@ -74,6 +74,7 @@ public class Maze implements Saveable {
                 .add("rows", tiles[0].length)
                 .add("cols", tiles.length)
                 .add("tiles", arrayBuilder)
+                .add("treasureData", Treasure.toJSONStatic())
                 .build();
         return build;
     }

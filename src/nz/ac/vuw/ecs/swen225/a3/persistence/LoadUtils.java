@@ -11,7 +11,7 @@ import java.io.*;
 
 /**
  * The LoadUtils class contains methods that are used for loading games and levels
- * 
+ *
  * @author Matt Rothwell
  */
 public class LoadUtils {
@@ -30,9 +30,7 @@ public class LoadUtils {
 
                 JsonObject save = reader.readObject();
 
-                //TODO ADD IMPLEMENTATION
-
-                System.out.println(save.toString());
+                return loadMaze(save);
 
 
             } catch (FileNotFoundException e) {
@@ -83,7 +81,10 @@ public class LoadUtils {
     private static Player loadPlayer(JsonObject player){
         Player newPlayer = new Player(loadCoordinate(player.getJsonObject("Coordinate")));
         JsonArray inventory = player.getJsonArray("Inventory");
-        //TODO ADD INVENTORY
+        for (int i = 0; i < inventory.size(); i++){
+            JsonObject inventoryItem = inventory.getJsonObject(i);
+            newPlayer.addToInventory(loadEntity(inventoryItem));
+        }
         return newPlayer;
     }
 
@@ -125,10 +126,61 @@ public class LoadUtils {
      * @return Java object identical to that represented in file form
      */
     private static Entity loadEntity(JsonObject entity){
-        //TODO ADD IMPLEMENTATION
+        String entityClass = entity.getString("EntityClass");
+        if (entityClass.equals("Key")){
+            BasicColor basicColor = BasicColor.valueOf(entity.getString("BasicColor"));
+            return new Key(basicColor);
+        }
+        else if (entityClass.equals("KeyDoor")){
+            BasicColor basicColor = BasicColor.valueOf(entity.getString("BasicColor"));
+            KeyDoor newKeyDoor = new KeyDoor(basicColor);
+            boolean locked = entity.getBoolean("locked");
+            if (!locked){
+                newKeyDoor.unlock();
+            }
+            return newKeyDoor;
+        }
+        else if (entityClass.equals("Treasure")){
+            return new Treasure();
+        }
+        else if (entityClass.equals("TreasureDoor")){
+            TreasureDoor treasureDoor = new TreasureDoor();
+            boolean locked = entity.getBoolean("locked");
+            if (!locked){
+                treasureDoor.unlock();
+            }
+            return treasureDoor;
+        }
         return null;
     }
 
+    /**
+     * Load a maze object from a JsonObject
+     * @param maze the maze object in JSON object form
+     * @return a Maze object with the properties from the file.
+     */
+    private static Maze loadMaze(JsonObject maze){
+        Player player = loadPlayer(maze.getJsonObject("player"));
+        int rows = maze.getInt("rows");
+        int cols = maze.getInt("cols");
+        Tile[][] tiles = new Tile[rows][cols];
 
+        JsonArray jsonArray = maze.getJsonArray("tiles");
+
+        int index = 0;
+        for (int row = 0; row < tiles[0].length; row++){
+            for (int col = 0; col < tiles.length; col++){
+                tiles[row][col] = loadTile(jsonArray.getJsonObject(index++));
+            }
+        }
+
+        JsonObject treasureData = maze.getJsonObject("treasureData");
+        int totalInLevel = treasureData.getInt("totalInLevel");
+        int totalCollected = treasureData.getInt("totalCollected");
+
+        Treasure.setTreasureCountersUponLoad(totalInLevel, totalCollected);
+
+        return new Maze(tiles, player);
+    }
 
 }

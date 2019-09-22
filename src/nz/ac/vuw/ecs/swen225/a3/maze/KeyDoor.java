@@ -68,7 +68,7 @@ public class KeyDoor extends Door {
 	@Override
 	public JsonObject toJSON() {
 		JsonObject value = Json.createObjectBuilder()
-				.add("EntityClass", "KeyDoor")
+				.add("EntityClass", KeyDoor.class.toString())
 				.add("locked", isLocked())
 				.add("BasicColor", color.toString())
 				.build();

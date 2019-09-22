@@ -34,7 +34,7 @@ public class Key implements Entity {
 	@Override
 	public JsonObject toJSON() {
 		JsonObject value = Json.createObjectBuilder()
-				.add("EntityClass", "Key")
+				.add("EntityClass", Key.class.getSimpleName())
 				.add("BasicColor", color.toString())
 				.build();
 		return value;
