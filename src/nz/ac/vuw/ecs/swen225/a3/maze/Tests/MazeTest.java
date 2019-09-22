@@ -31,7 +31,7 @@ public class MazeTest {
             }
         }
 
-        Player player = new Player(3, 3);
+        Player player = new Player(new Coordinate(3, 3));
         Maze maze = new Maze(tiles, player);
 
         // Player starts facing right
@@ -77,7 +77,7 @@ public class MazeTest {
             }
         }
 
-        Player player = new Player(0, 0);
+        Player player = new Player(new Coordinate(0, 0));
         Maze maze = new Maze(tiles, player);
 
 		assertFalse(maze.movePlayer(Direction.LEFT));
@@ -97,7 +97,7 @@ public class MazeTest {
             }
         }
 
-        Player player = new Player(0, 0);
+        Player player = new Player(new Coordinate(0, 0));
         Maze maze = new Maze(tiles, player);
 
         // Collect key
@@ -137,7 +137,7 @@ public class MazeTest {
             }
         }
 
-        Player player = new Player(0, 0);
+        Player player = new Player(new Coordinate(0, 0));
         Maze maze = new Maze(tiles, player);
 
 		tiles[0][1].setEntity(new KeyDoor(BasicColor.RED));
@@ -158,7 +158,7 @@ public class MazeTest {
             }
         }
 
-        Player player = new Player(0, 0);
+        Player player = new Player(new Coordinate(0, 0));
         Maze maze = new Maze(tiles, player);
 
         // Collect key
@@ -190,7 +190,7 @@ public class MazeTest {
             }
         }
 
-        Player player = new Player(0, 0);
+        Player player = new Player(new Coordinate(0, 0));
         Maze maze = new Maze(tiles, player);
 
         // Collect treasure
@@ -210,8 +210,8 @@ public class MazeTest {
 
 	@Test
 	void extensionsTest() {
-		Player p = new Player(1,2);
-		Player p2 = new Player(3,1);
-		assertTrue(p.addToInventory(p2));
+		Player p = new Player(new Coordinate(1,2));
+		Key k = new Key(BasicColor.BLUE);
+		assertTrue(p.addToInventory(k));
 	}
 }
