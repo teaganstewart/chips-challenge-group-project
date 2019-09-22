@@ -90,7 +90,8 @@ public class Player extends Moveable implements Saveable {
 		
 		// key
 		if (entity instanceof Key) {
-			addToInventory(entity);
+			Key key = (Key) entity;
+			addToInventory(key);
 			return true;
 		}
 		// treasure

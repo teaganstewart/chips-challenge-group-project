@@ -10,15 +10,15 @@ import javax.json.JsonObject;
  * Comes with an overridden equals method, as well as getters for the row and col.
  * This should never be reused, as it is purely for storing a row and col, so no
  * setters are necessary.
- * 
+ *
  * @author Ethan Munn
  *
  */
 public class Coordinate implements Saveable {
-	
+
 	private final int row;
 	private final int col;
-	
+
 	/**
 	 * Sets up a brand new Coordinate
 	 * @param row
@@ -30,7 +30,7 @@ public class Coordinate implements Saveable {
 		this.row = row;
 		this.col = col;
 	}
-	
+
 	/**
 	 * Returns a row
 	 * @return
@@ -39,7 +39,7 @@ public class Coordinate implements Saveable {
 	public int getRow() {
 		return row;
 	}
-	
+
 	/**
 	 * Returns a column
 	 * @return
@@ -48,14 +48,30 @@ public class Coordinate implements Saveable {
 	public int getCol() {
 		return col;
 	}
-	
+
+//	@Override
+//	public boolean equals(Object o) {
+//		if (!(o instanceof Coordinate)) return false;
+//		Coordinate c = (Coordinate) o;
+//		return c.getRow() == row && c.getCol() == col;
+//	}
+
 	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof Coordinate)) return false;
-		Coordinate c = (Coordinate) o;
-		return c.getRow() == row && c.getCol() == col;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Coordinate other = (Coordinate) obj;
+		if (col != other.col)
+			return false;
+		if (row != other.row)
+			return false;
+		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "[" + row + ", " + col + "]";
