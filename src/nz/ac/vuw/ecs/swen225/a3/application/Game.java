@@ -7,13 +7,22 @@ public class Game {
     int level;
     int time;
     int treasures;
+
+    private Player player;
+    private Maze maze;
     boolean endGame;
 
     public Game(){
 
     }
-    private Player player;
-    private Maze maze;
+
+    public Maze getMaze(){
+        return maze;
+    }
+
+    public Player getPlayer(){
+        return player;
+    }
 
     public void update(){
 
