@@ -3,11 +3,10 @@ package nz.ac.vuw.ecs.swen225.a3.maze.Tests;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Josh
@@ -18,7 +17,7 @@ import java.util.Arrays;
 public class MazeTest {
 
 	/**
-	 * 
+	 * Testing basic player moves
 	 */
 	@Test
 	public void testMovePlayerValid(){
@@ -31,36 +30,24 @@ public class MazeTest {
             }
         }
 
-        Player player = new Player(3, 3);
+        Player player = new Player(new Coordinate(3, 3));
         Maze maze = new Maze(tiles, player);
 
-        // Player starts facing right
-        assert(player.getDirection() == Direction.RIGHT);
-        assert(player.getLastDirection() == null);
-        
-		assert(maze.movePlayer(Direction.DOWN));
-		assert(player.getLastDirection() == Direction.RIGHT);
-		assert(player.getDirection() == Direction.DOWN);
-		assert(player.getPrevPos().equals(new Coordinate(3, 3)));
-		assert(player.getRow() == 4);
-		assert(player.getCol() == 3);
+		assertTrue(maze.movePlayer(Direction.DOWN));
+
+        assertEquals(Direction.RIGHT, player.getLastDirection());
+        assertEquals(Direction.DOWN, player.getDirection());
+        assertEquals(new Coordinate(4, 3), player.getCoordinate());
+        assertEquals(new Coordinate(3, 3), player.getPrevPos());
+
+        assertTrue(maze.movePlayer(Direction.RIGHT));
+        assertEquals(new Coordinate(4, 4), player.getCoordinate());
 		
-		assert(maze.movePlayer(Direction.UP));
-		assert(player.getRow() == 3);
-		assert(player.getCol() == 3);
+		assertTrue(maze.movePlayer(Direction.UP));
+        assertEquals(new Coordinate(3, 4), player.getCoordinate());
 		
-		assert(maze.movePlayer(Direction.LEFT));
-		assert(player.getRow() == 3);
-		assert(player.getCol() == 2);
-		assert(maze.movePlayer(Direction.UP));
-		assert(player.getRow() == 2);
-		assert(player.getCol() == 2);
-		assert(maze.movePlayer(Direction.RIGHT));
-		assert(player.getRow() == 2);
-		assert(player.getCol() == 3);
-		assert(maze.movePlayer(Direction.DOWN));
-		assert(player.getRow() == 3);
-		assert(player.getCol() == 3);
+		assertTrue(maze.movePlayer(Direction.LEFT));
+        assertEquals(new Coordinate(3, 3), player.getCoordinate());
 	}
 
 	/**
@@ -77,7 +64,7 @@ public class MazeTest {
             }
         }
 
-        Player player = new Player(0, 0);
+        Player player = new Player(new Coordinate(0, 0));
         Maze maze = new Maze(tiles, player);
 
 		assertFalse(maze.movePlayer(Direction.LEFT));
@@ -97,30 +84,21 @@ public class MazeTest {
             }
         }
 
-        Player player = new Player(0, 0);
+        Player player = new Player(new Coordinate(0, 0));
         Maze maze = new Maze(tiles, player);
 
-        // Collect key
 		Key key = new Key(BasicColor.YELLOW);
 		tiles[0][1].setEntity(key);
 
-		// Test setting inventory
-		player.setInventory(new ArrayList<Entity>(Arrays.asList(new Key(BasicColor.BLUE))));
-		
-		assert(maze.movePlayer( Direction.RIGHT));
-		assert(player.getInventory().contains(key));
-		assert(player.getInventoryAt(1).equals(key));
-		
-		assert(player.removeInventoryAt(0));
-		assert(player.getInventoryAt(0).equals(key));
-		
+        // Collect key
+		assertTrue(maze.movePlayer( Direction.RIGHT));
 
 		// Unlock door with same color as key
         tiles[0][2].setEntity(new KeyDoor(BasicColor.YELLOW));
-        assert(maze.movePlayer(Direction.RIGHT));
+        assertTrue(maze.movePlayer(Direction.RIGHT));
 
         // Make sure Chap keeps the key after unlocking the door
-        assert(player.getInventory().contains(key));
+        assertTrue(player.getInventory().contains(key));
 	}
 
     /**
@@ -137,7 +115,7 @@ public class MazeTest {
             }
         }
 
-        Player player = new Player(0, 0);
+        Player player = new Player(new Coordinate(0, 0));
         Maze maze = new Maze(tiles, player);
 
 		tiles[0][1].setEntity(new KeyDoor(BasicColor.RED));
@@ -158,22 +136,21 @@ public class MazeTest {
             }
         }
 
-        Player player = new Player(0, 0);
+        Player player = new Player(new Coordinate(0, 0));
         Maze maze = new Maze(tiles, player);
 
-        // Collect key
         Key key = new Key(BasicColor.RED);
         tiles[0][1].setEntity(key);
 
-        assert(maze.movePlayer( Direction.RIGHT));
-        assert(player.getInventory().contains(key));
+        // Collect key
+        assertTrue(maze.movePlayer( Direction.RIGHT));
 
         // Unlock door with WRONG colored key
         tiles[0][2].setEntity(new KeyDoor(BasicColor.YELLOW));
         assertFalse(maze.movePlayer(Direction.RIGHT));
 
         // Make sure Chap still contains key
-        assert(player.getInventory().contains(key));
+        assertTrue(player.getInventory().contains(key));
     }
 
     /**
@@ -190,18 +167,18 @@ public class MazeTest {
             }
         }
 
-        Player player = new Player(0, 0);
+        Player player = new Player(new Coordinate(0, 0));
         Maze maze = new Maze(tiles, player);
 
-        // Collect treasure
         Treasure treasure = new Treasure();
         tiles[0][1].setEntity(treasure);
 
-        assert(maze.movePlayer( Direction.RIGHT));
+        // Collect treasure
+        assertTrue(maze.movePlayer( Direction.RIGHT));
 
         // Unlock treasure door after all treasure is collected
         tiles[0][2].setEntity(new TreasureDoor());
-        assert(maze.movePlayer(Direction.RIGHT));
+        assertTrue(maze.movePlayer(Direction.RIGHT));
     }
 
 	//-----------------------------//
@@ -210,8 +187,10 @@ public class MazeTest {
 
 	@Test
 	void extensionsTest() {
-		Player p = new Player(1,2);
-		Player p2 = new Player(3,1);
-		assertTrue(p.addToInventory(p2));
+		Player p = new Player(new Coordinate(1,2));
+		Player p2 = new Player(new Coordinate(3,1));
+		// Not sure what was trying to be done in this line, but it doesn't compile.
+        // Please tell me your intentions
+//		assertTrue(p.addToInventory(p2));
 	}
 }

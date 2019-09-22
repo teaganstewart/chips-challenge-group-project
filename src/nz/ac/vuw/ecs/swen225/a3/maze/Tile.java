@@ -1,6 +1,12 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-public class Tile {
+import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+
+public class Tile implements Saveable {
 
 	public enum TileType {
 
@@ -64,6 +70,23 @@ public class Tile {
 	 */
 	public boolean isWall() {
 		return type == TileType.WALL;
+	}
+
+	/**
+	 * Produce a JSON derived string so that this Tile can be reloaded.
+	 * @return String in JSON format describing this tile.
+	 */
+	@Override
+	public JsonObject toJSON() {
+		JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+		jsonObjectBuilder.add("TileType", type.toString());
+		jsonObjectBuilder.add("Coordinate", coord.toJSON());
+
+		if (entity != null){
+			jsonObjectBuilder.add("Entity", entity.toJSON());
+		}
+
+		return jsonObjectBuilder.build();
 	}
 
 //	/**
