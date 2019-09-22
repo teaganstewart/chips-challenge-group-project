@@ -16,7 +16,7 @@ import java.io.*;
  */
 public class LoadUtils {
 
-    public static String LEVELS_DIRECTORY = "levels";
+    private static String LEVELS_DIRECTORY = "levels";
 
     /**
      * Resumes the game from the last save made.
@@ -47,12 +47,16 @@ public class LoadUtils {
         long levelStartTime = Long.parseLong(level.getString("levelBeginTime"));
         long levelRunningTime = Long.parseLong(level.getString("totalRunningTime"));
 
+        //Marker for a new level, set the starting time
+        if (levelStartTime == -1){
+            levelStartTime = System.currentTimeMillis();
+        }
+
         boolean completed = level.getBoolean("completed");
 
         Maze maze = loadMaze(level.getJsonObject("maze"));
-        Level newLevel = new Level(levelNumber, maze, levelStartTime, levelRunningTime);
 
-        return newLevel;
+        return new Level(levelNumber, maze, levelStartTime, levelRunningTime);
     }
 
     /**
@@ -87,12 +91,10 @@ public class LoadUtils {
                 InputStream inputStream = new FileInputStream(file);
                 JsonReader reader = Json.createReader(inputStream);
 
-                JsonObject save = reader.readObject();
+                return reader.readObject();
 
-                return save;
-
-
-            } catch (FileNotFoundException e) {
+            }
+            catch (FileNotFoundException e) {
                 return null;
             }
         }
@@ -108,10 +110,12 @@ public class LoadUtils {
     private static Player loadPlayer(JsonObject player){
         Player newPlayer = new Player(loadCoordinate(player.getJsonObject("Coordinate")));
         JsonArray inventory = player.getJsonArray("Inventory");
+
         for (int i = 0; i < inventory.size(); i++){
             JsonObject inventoryItem = inventory.getJsonObject(i);
             newPlayer.addToInventory(loadEntity(inventoryItem));
         }
+
         return newPlayer;
     }
 
