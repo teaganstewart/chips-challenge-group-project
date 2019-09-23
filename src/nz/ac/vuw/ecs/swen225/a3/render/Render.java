@@ -23,18 +23,19 @@ public class Render {
 	}
 
 
-	public void createGrid() {
+	public JLabel[][] createGrid() {
 		Tile[][] tiles = maze.getTiles();
 		board = new JLabel[tiles.length][tiles.length];
 
 		for(int i = 0; i<tiles.length; i++) {
 			for(int j = 0; j<tiles.length; j++) {
 
-				JLabel tile = new JLabel(images.getImageIcon(i,j,maze));
+				JLabel tile = new JLabel(images.getTileIcon(i,j,maze));
 				tile.setLayout(new BorderLayout());
 				board[i][j] = tile;
 			}
 		}
+		return board;
 	}
 
 	public void createBoard() {

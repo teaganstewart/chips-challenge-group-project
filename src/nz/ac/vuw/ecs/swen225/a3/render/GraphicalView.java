@@ -24,11 +24,11 @@ public class GraphicalView {
 	 * @return
 	 * Returns the correct image icon for this tile.
 	 */
-	public ImageIcon getImageIcon(int i, int j, Maze m) {
+	public ImageIcon getTileIcon(int i, int j, Maze m) {
 		Tile[][] tiles = m.getTiles();
 		switch(tiles[i][j].getType()) {
 		case FLOOR:
-			return null;
+			return floor;
 		case WALL:
 			return null;
 		case HINT:
@@ -109,4 +109,6 @@ public class GraphicalView {
 			}
 		}
 	}
+	
+	private final ImageIcon floor = new ImageIcon(getClass().getResource("icons/floor.png"));
 }
