@@ -48,7 +48,7 @@ public class Maze implements Saveable {
         Coordinate dest = player.getNextPos();
         int rowDest = dest.getRow();
         int colDest = dest.getCol();
-        if((rowDest < 0) || (rowDest > tiles.length) || (colDest < 0) || (colDest > tiles[0].length)){
+        if((rowDest < 0) || (rowDest >= tiles.length) || (colDest < 0) || (colDest >= tiles[0].length)){
             return false;
         }
 
@@ -67,6 +67,12 @@ public class Maze implements Saveable {
         return false;
     }
 
+    /** @return
+     * The player in this maze.
+     */
+    public Player getPlayer() {
+        return player;
+    }
     /**
      * Returns entity collected, else returns null for no entity collected
      * @param player
