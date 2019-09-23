@@ -32,7 +32,6 @@ public class RenderTests {
 		GamePanel gp = new GamePanel(game);
         Render render = new Render(game, gp, maze);
         JLabel[][] outcome = render.createGrid();
-        System.out.println(outcome[0][0]);
         JLabel[][] expected = new JLabel[9][9];
         for(int row=0; row < tiles.length; row++){
             for(int col=0; col < tiles[0].length; col++) {
@@ -45,6 +44,28 @@ public class RenderTests {
     
 
   
+	}
+	
+	@Test
+	void drawRemovalTest() {
+		
+		Tile[][] tiles = new Tile[9][9];
+        for(int row=0; row < tiles.length; row++){
+            for(int col=0; col < tiles[0].length; col++) {
+                tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
+            }
+        }
+        
+        Player player = new Player(new Coordinate(3, 3));
+        Maze maze = new Maze(tiles, player);
+        Game game = new Game();
+		GamePanel gp = new GamePanel(game);
+        Render render = new Render(game, gp, maze);
+		
+		render.createGrid();
+        GraphicalView gv = new GraphicalView(render, maze);
+		gv.drawOnGrid();
+
 	}
 
 }

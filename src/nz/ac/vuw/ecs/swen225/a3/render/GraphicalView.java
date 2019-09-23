@@ -94,10 +94,10 @@ public class GraphicalView {
 	 * them in their correct position.
 	 *
 	 */
-	void drawOnGrid() {
+	public JLabel[][] drawOnGrid() {
 
-		for (int i = 0; i < maze.getTiles().length; i++) {
-			for (int j = 0; j <  maze.getTiles().length; j++) {
+		for (int i = 0; i < renderer.getBoard().length; i++) {
+			for (int j = 0; j <  renderer.getBoard().length; j++) {
 
 				try {
 					renderer.getBoard()[i][j].remove(1);
@@ -108,6 +108,8 @@ public class GraphicalView {
 
 			}
 		}
+		
+		return renderer.getBoard();
 	}
 	
 	private final ImageIcon floor = new ImageIcon(getClass().getResource("icons/floor.png"));

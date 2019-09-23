@@ -38,9 +38,6 @@ public class Render {
 		return board;
 	}
 
-	public void createBoard() {
-	}
-
 	/**
 	 *
 	 * @return
@@ -48,6 +45,10 @@ public class Render {
 	 */
 	public JLabel[][] getBoard() {
 		return board;
+	}
+	
+	public void setBoard(JLabel[][] b) {
+		board = b;
 	}
 
 }
