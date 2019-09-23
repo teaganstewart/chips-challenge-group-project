@@ -47,6 +47,10 @@ public class Render {
 		return board;
 	}
 	
+	public JLabel[][] getVisibleBoard() {
+		
+	}
+	
 	public void setBoard(JLabel[][] b) {
 		board = b;
 	}

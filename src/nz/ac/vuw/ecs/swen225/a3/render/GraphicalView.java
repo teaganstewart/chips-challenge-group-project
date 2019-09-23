@@ -5,11 +5,9 @@ import javax.swing.*;
 
 public class GraphicalView {
 	private Render renderer;
-	private Maze maze;
 
-	public GraphicalView(Render r, Maze m) {
+	public GraphicalView(Render r) {
 		renderer = r;
-		maze = m;
 	}
 
 	/**
@@ -30,7 +28,7 @@ public class GraphicalView {
 		case FLOOR:
 			return floor;
 		case WALL:
-			return null;
+			return wall;
 		case HINT:
 			return null;
 		case GOAL:
@@ -113,4 +111,5 @@ public class GraphicalView {
 	}
 	
 	private final ImageIcon floor = new ImageIcon(getClass().getResource("icons/floor.png"));
+	private final ImageIcon wall = new ImageIcon(getClass().getResource("icons/wall.png"));
 }

@@ -61,9 +61,8 @@ public class RenderTests {
         Game game = new Game();
 		GamePanel gp = new GamePanel(game);
         Render render = new Render(game, gp, maze);
-		
 		render.createGrid();
-        GraphicalView gv = new GraphicalView(render, maze);
+        GraphicalView gv = new GraphicalView(render);
 		gv.drawOnGrid();
 
 	}
