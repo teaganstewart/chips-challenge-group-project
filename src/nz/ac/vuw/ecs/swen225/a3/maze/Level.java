@@ -73,4 +73,20 @@ public class Level implements Saveable {
 
         return level;
     }
+
+    /**
+     * Get the maze object.
+     * @return the maze object containing the map.
+     */
+    public Maze getMaze() {
+        return maze;
+    }
+
+    /**
+     * Getter for the current level number.
+     * @return level - the level in the maze.
+     */
+    public int getLevel() {
+        return level;
+    }
 }

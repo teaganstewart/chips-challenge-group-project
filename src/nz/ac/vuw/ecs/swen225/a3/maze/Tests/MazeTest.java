@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Josh
- * 
+ *
  * Class which contains all tests that test classes in the maze directory
  *
  */
@@ -42,10 +42,10 @@ public class MazeTest {
 
         assertTrue(maze.movePlayer(Direction.RIGHT));
         assertEquals(new Coordinate(4, 4), player.getCoordinate());
-		
+
 		assertTrue(maze.movePlayer(Direction.UP));
         assertEquals(new Coordinate(3, 4), player.getCoordinate());
-		
+
 		assertTrue(maze.movePlayer(Direction.LEFT));
         assertEquals(new Coordinate(3, 3), player.getCoordinate());
 	}
@@ -188,9 +188,7 @@ public class MazeTest {
 	@Test
 	void extensionsTest() {
 		Player p = new Player(new Coordinate(1,2));
-		Player p2 = new Player(new Coordinate(3,1));
-		// Not sure what was trying to be done in this line, but it doesn't compile.
-        // Please tell me your intentions
-//		assertTrue(p.addToInventory(p2));
+		Key k = new Key(BasicColor.BLUE);
+		assertTrue(p.addToInventory(k));
 	}
 }
