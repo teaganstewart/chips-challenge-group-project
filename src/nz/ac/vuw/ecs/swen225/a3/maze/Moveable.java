@@ -1,6 +1,14 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+/**
+ *  A class that helps determine where they player should go and where they should be, also helps to tell 
+ *  what direction to render the player.
+ *  
+ * @author Teagan
+ *
+ */
 public abstract class Moveable {
+
 
 	private Coordinate coordinate;
 	// Initialize direction to avoid null pointers and simulate realistic gameplay
@@ -51,16 +59,16 @@ public abstract class Moveable {
 		int row = coordinate.getRow();
 
 		switch(direction) {
-			case DOWN:
-				return new Coordinate(row + 1, col);
-			case UP:
-				return new Coordinate(row - 1, col);
-			case LEFT:
-				return new Coordinate(row, col - 1);
-			case RIGHT:
-				return new Coordinate(row, col + 1);
-			default:
-				return null;
+		case DOWN:
+			return new Coordinate(row + 1, col);
+		case UP:
+			return new Coordinate(row - 1, col);
+		case LEFT:
+			return new Coordinate(row, col - 1);
+		case RIGHT:
+			return new Coordinate(row, col + 1);
+		default:
+			return null;
 		}
 
 	}
@@ -73,17 +81,19 @@ public abstract class Moveable {
 		int col = coordinate.getCol();
 		int row = coordinate.getRow();
 
+
 		switch(direction.inverse()) {
 			case DOWN:
-				return new Coordinate(row + 1, col);
-			case UP:
 				return new Coordinate(row - 1, col);
+			case UP:
+				return new Coordinate(row + 1, col);
 			case LEFT:
-				return new Coordinate(row, col - 1);
-			case RIGHT:
 				return new Coordinate(row, col + 1);
+			case RIGHT:
+				return new Coordinate(row, col - 1);
 			default:
 				return null;
+
 		}
 
 	}

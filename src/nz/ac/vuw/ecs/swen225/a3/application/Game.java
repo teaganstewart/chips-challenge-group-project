@@ -1,25 +1,50 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
-import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
-import nz.ac.vuw.ecs.swen225.a3.maze.Player;
+import nz.ac.vuw.ecs.swen225.a3.maze.*;
+import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 
 public class Game {
     int level;
     int time;
     int treasures;
+
+    private Player player;
+    private Maze maze;
     boolean endGame;
 
     public Game(){
-
+        loadGame();
     }
-    private Player player;
-    private Maze maze;
+
+    public Maze getMaze(){
+        return maze;
+    }
+    
+    /** Just for integration day **/
+    public void setTiles(Tile[][] t){
+       this.maze.setTiles(t);
+    }
+
+    public Player getPlayer(){
+        return player;
+    }
 
     public void update(){
 
     }
 
     public void loadGame(){
+        Level level;
+        try{
+            level = LoadUtils.resumeGame();
+        }
+        catch (NullPointerException e){
+            level = LoadUtils.loadLevel(1);
+        }
+
+        maze = level.getMaze();
+        player = maze.getPlayer();
+
 
     }
 
