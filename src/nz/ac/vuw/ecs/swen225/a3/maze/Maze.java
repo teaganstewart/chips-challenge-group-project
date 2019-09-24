@@ -2,10 +2,11 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 
 import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
-
+import nz.ac.vuw.ecs.swen225.a3.render.Render;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.swing.JLabel;
 
 /**
  * @author Josh
@@ -20,7 +21,8 @@ public class Maze implements Saveable {
 
     private Tile[][] tiles;
     private Player player;
-
+    private Render render;
+    
     /**
      * @param tiles
      * @param player
@@ -31,8 +33,7 @@ public class Maze implements Saveable {
         this.tiles = tiles;
         this.player = player;
     }
-
-    // NEEDS TO BE MOVED INTO APPLICATION
+    
 
     /**
      * Returns true if player was moved in the specified direction,
@@ -43,12 +44,14 @@ public class Maze implements Saveable {
     public boolean movePlayer(Direction dir){
         // Set the players direction, regardless of whether they will actually move
         player.setDirection(dir);
-
+        
+		
+	
         // Check for player moving out of bounds
         Coordinate dest = player.getNextPos();
         int rowDest = dest.getRow();
         int colDest = dest.getCol();
-        if((rowDest < 0) || (rowDest > tiles.length) || (colDest < 0) || (colDest > tiles[0].length)){
+        if((rowDest < 0) || (rowDest >= tiles.length) || (colDest < 0) || (colDest >= tiles[0].length)){
             return false;
         }
 
@@ -57,13 +60,22 @@ public class Maze implements Saveable {
         // Check if entity can be collected/walked on. If so, collect and move player. "canWalkOn"
         // automatically collects item if this is possible
         if(canWalkOn(player, endTile)){
-
+        	
+        	//remove player from old destination
+        	int row = player.getCoordinate().getRow();
+        	int col = player.getCoordinate().getCol();
+        	
+            //render.getBoard()[row][col].remove(0);
             // Move player onto destination tile
+        	
             player.setRow(endTile.getCoordinate().getRow());
             player.setCol(endTile.getCoordinate().getCol());
+        	//render.getBoard()[rowDest][colDest].add(new JLabel(render.getImages().getPlayerIcon("chip")));
+    
+        	
             return true;
         }
-
+    	
         return false;
     }
 
@@ -76,6 +88,7 @@ public class Maze implements Saveable {
     public boolean canWalkOn(Player player, Tile tile){
         Entity entity = tile.getEntity();
 
+        if(tile.getType()==Tile.TileType.WALL) return false;
         if (entity == null) return true;
         else return player.canWalkOn(entity);
 
@@ -133,5 +146,9 @@ public class Maze implements Saveable {
      */
     public Player getPlayer() {
         return player;
+    }
+    
+    public void setRender(Render r) {
+    	render = r;
     }
 }
