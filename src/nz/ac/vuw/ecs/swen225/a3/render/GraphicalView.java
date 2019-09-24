@@ -1,13 +1,24 @@
 package nz.ac.vuw.ecs.swen225.a3.render;
 
+import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
+
 import javax.swing.*;
 
 public class GraphicalView {
 	private Render renderer;
+	private Game game;
 
-	public GraphicalView(Render r) {
+	public GraphicalView(Game g, Render r) {
 		renderer = r;
+		game = g;
+	}
+
+	public ImageIcon getPlayerIcon(String type) {
+		if(type.equals("chip")) {
+			return chip;
+		}
+		return null;
 	}
 
 	/**
@@ -97,6 +108,11 @@ public class GraphicalView {
 		for (int i = 0; i < renderer.getBoard().length; i++) {
 			for (int j = 0; j <  renderer.getBoard().length; j++) {
 
+				JLabel player = checkForPlayer(j,i);
+				if (player != null) {
+					renderer.getBoard()[i][j].add(player);
+				}
+
 				try {
 					renderer.getBoard()[i][j].remove(1);
 				}
@@ -106,10 +122,30 @@ public class GraphicalView {
 
 			}
 		}
-		
+
 		return renderer.getBoard();
 	}
-	
-	private final ImageIcon floor = new ImageIcon(getClass().getResource("icons/floor.png"));
-	private final ImageIcon wall = new ImageIcon(getClass().getResource("icons/wall.png"));
+
+	/**
+	 * 	Allows our other methods to check where the players are/ if a player is on a tile.
+	 * 
+	 * @param x
+	 * 		x-coordinate value of tile we are checking.
+	 * @param y
+	 * 		y-coordinate value of tile we are checking.
+	 * @return
+	 * 		Returns the image of the player that should be on the tile at the give coordinates.
+	 */
+	private JLabel checkForPlayer(int x, int y) {
+		Player p = game.getMaze().getPlayer();
+		if (p.getCoordinate().getCol() == x && p.getCoordinate().getRow() == y) {
+			return new JLabel(getPlayerIcon("chip"));
+		}
+
+		return null;
+	}
+
+	private final ImageIcon floor = new ImageIcon(getClass().getResource("icons/wall.png"));
+	private final ImageIcon wall = new ImageIcon(getClass().getResource("icons/floor2.png"));
+	private final ImageIcon chip = new ImageIcon(getClass().getResource("icons/chip.png"));
 }

@@ -40,21 +40,25 @@ public class GUI extends JFrame {
                     System.out.println("up");
                     maze.movePlayer(Direction.UP);
                     System.out.println(player.getCoordinate());
+                    gamePanel.updateUI();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     System.out.println("down");
                     maze.movePlayer(Direction.DOWN);
                     System.out.println(player.getCoordinate());
+                    gamePanel.updateUI();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     System.out.println("left");
                     maze.movePlayer(Direction.LEFT);
                     System.out.println(player.getCoordinate());
+                    gamePanel.updateUI();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     System.out.println("right");
                     maze.movePlayer(Direction.RIGHT);
                     System.out.println(player.getCoordinate());
+                    gamePanel.updateUI();
                 }
 
 
@@ -82,6 +86,7 @@ public class GUI extends JFrame {
 
         //Set window size
         main.setSize(new Dimension(800,600));
+        main.setResizable(false);
         main.setMinimumSize(new Dimension(800,600));
         main.setMaximumSize(new Dimension(1600,1800));
 

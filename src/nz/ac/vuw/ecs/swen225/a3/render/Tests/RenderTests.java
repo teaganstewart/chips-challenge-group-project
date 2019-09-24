@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
+import nz.ac.vuw.ecs.swen225.a3.persistence.LevelMaker;
 import nz.ac.vuw.ecs.swen225.a3.render.*;
 
 /**
@@ -27,15 +28,16 @@ public class RenderTests {
         }
 
         Player player = new Player(new Coordinate(3, 3));
-        Maze maze = new Maze(tiles, player);
+
         Game game = new Game();
+        game.setTiles(tiles);
 		GamePanel gp = new GamePanel(game);
-        Render render = new Render(game, gp, maze);
+        Render render = new Render(game, gp, game.getMaze());
         JLabel[][] outcome = render.createGrid();
         JLabel[][] expected = new JLabel[9][9];
         for(int row=0; row < tiles.length; row++){
             for(int col=0; col < tiles[0].length; col++) {
-                JLabel floor = new JLabel(new ImageIcon(getClass().getResource("../icons/floor.png")));
+                JLabel floor = new JLabel(new ImageIcon(getClass().getResource("../icons/wall.png")));
                 expected[row][col] = floor;
             }
         }
@@ -57,12 +59,12 @@ public class RenderTests {
         }
         
         Player player = new Player(new Coordinate(3, 3));
-        Maze maze = new Maze(tiles, player);
         Game game = new Game();
+        game.setTiles(tiles);
 		GamePanel gp = new GamePanel(game);
-        Render render = new Render(game, gp, maze);
+        Render render = new Render(game, gp,game.getMaze());
 		render.createGrid();
-        GraphicalView gv = new GraphicalView(render);
+        GraphicalView gv = new GraphicalView(game,render);
 		gv.drawOnGrid();
 
 	}

@@ -1,8 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
-import nz.ac.vuw.ecs.swen225.a3.maze.Level;
-import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
-import nz.ac.vuw.ecs.swen225.a3.maze.Player;
+import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 
 public class Game {
@@ -20,6 +18,11 @@ public class Game {
 
     public Maze getMaze(){
         return maze;
+    }
+    
+    /** Just for integration day **/
+    public void setTiles(Tile[][] t){
+       this.maze.setTiles(t);
     }
 
     public Player getPlayer(){

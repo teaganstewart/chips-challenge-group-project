@@ -27,7 +27,7 @@ public class LevelMaker {
         tiles = new Tile[map.length][map[0].length];
         generateMap(map);
         Maze maze = new Maze(tiles, player);
-        Level level = new Level(1, maze, System.currentTimeMillis(), 0);
+        Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
         SaveUtils.saveGame(level);
     }
 
@@ -57,6 +57,10 @@ public class LevelMaker {
             return new Tile(new Coordinate(row, col), Tile.TileType.WALL);
         }
         return null;
+    }
+    
+    public Tile[][] getTiles() {
+    	return tiles;
     }
 
 
