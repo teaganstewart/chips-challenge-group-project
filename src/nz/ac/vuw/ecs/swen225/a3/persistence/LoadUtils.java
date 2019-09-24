@@ -32,8 +32,8 @@ public class LoadUtils {
      * Loads the specified level in JSON format from default source
      * @param levelNumber - the level to load
      */
-    private static Level loadLevel(int levelNumber){
-        File levelFile = new File(LEVELS_DIRECTORY+"\\"+levelNumber);
+    public static Level loadLevel(int levelNumber){
+        File levelFile = new File(LEVELS_DIRECTORY+"\\"+levelNumber+".json");
         return loadLevel(readJsonFromFile(levelFile));
     }
 

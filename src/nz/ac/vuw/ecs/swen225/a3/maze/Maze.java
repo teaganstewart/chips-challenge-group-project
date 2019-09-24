@@ -64,12 +64,12 @@ public class Maze implements Saveable {
         	//remove player from old destination
         	int row = player.getCoordinate().getRow();
         	int col = player.getCoordinate().getCol();
-            render.getBoard()[row][col].remove(0);
+            //render.getBoard()[row][col].remove(0);
             // Move player onto destination tile
         	
             player.setRow(endTile.getCoordinate().getRow());
             player.setCol(endTile.getCoordinate().getCol());
-        	render.getBoard()[rowDest][colDest].add(new JLabel(render.getImages().getPlayerIcon("chip")));
+        	//render.getBoard()[rowDest][colDest].add(new JLabel(render.getImages().getPlayerIcon("chip")));
     
         	
             return true;

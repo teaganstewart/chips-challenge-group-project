@@ -34,7 +34,14 @@ public class Game {
     }
 
     public void loadGame(){
-        Level level = LoadUtils.resumeGame();
+        Level level;
+        try{
+            level = LoadUtils.resumeGame();
+        }
+        catch (NullPointerException e){
+            level = LoadUtils.loadLevel(1);
+        }
+
         maze = level.getMaze();
         player = maze.getPlayer();
 
