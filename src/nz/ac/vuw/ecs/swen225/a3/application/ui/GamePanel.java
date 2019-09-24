@@ -17,23 +17,24 @@ public class GamePanel extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(30,30,30,20));
         
         
+        
         // just for the basic version for integration day
-        LevelMaker lm = new LevelMaker();
-        game.getMaze().setTiles(lm.getTiles());
+        game.getMaze().setTiles(game.getMaze().getTiles());
         Render render = new Render(game,this,game.getMaze());
         game.getMaze().setRender(render);
         render.createGrid();
         JLabel[][] visibleBoard = render.getVisibleBoard();
        
         for (int y = 0; y < 9; y++) {
-			for (int x1 = 0; x1 < 9; x1++) {
-				this.add(visibleBoard[y][x1]);
+            for (int x1 = 0; x1 < 9; x1++) {
+                System.out.println("hi");
+                this.add(visibleBoard[y][x1]);
 
-			}
-		}
+            }
+        }
         
         
-		
+        
         setVisible(true);
     }
     

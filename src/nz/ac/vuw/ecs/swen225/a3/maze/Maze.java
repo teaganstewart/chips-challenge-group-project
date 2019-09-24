@@ -64,6 +64,7 @@ public class Maze implements Saveable {
         	//remove player from old destination
         	int row = player.getCoordinate().getRow();
         	int col = player.getCoordinate().getCol();
+        	
             //render.getBoard()[row][col].remove(0);
             // Move player onto destination tile
         	
