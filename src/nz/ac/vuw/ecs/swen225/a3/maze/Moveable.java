@@ -9,6 +9,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  */
 public abstract class Moveable {
 
+
 	private Coordinate coordinate;
 	// Initialize direction to avoid null pointers and simulate realistic gameplay
 	private Direction direction = Direction.RIGHT;
@@ -83,13 +84,13 @@ public abstract class Moveable {
 
 		switch(direction.inverse()) {
 			case DOWN:
-				return new Coordinate(row + 1, col);
-			case UP:
 				return new Coordinate(row - 1, col);
+			case UP:
+				return new Coordinate(row + 1, col);
 			case LEFT:
-				return new Coordinate(row, col - 1);
-			case RIGHT:
 				return new Coordinate(row, col + 1);
+			case RIGHT:
+				return new Coordinate(row, col - 1);
 			default:
 				return null;
 
