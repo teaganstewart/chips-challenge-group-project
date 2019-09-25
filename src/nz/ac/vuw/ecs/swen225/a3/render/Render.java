@@ -42,6 +42,7 @@ public class Render {
 		}
 		return board;
 	}
+	
 
 	/**
 	 *
@@ -58,19 +59,32 @@ public class Render {
 
 		System.out.println(checkTop(playerCoord));
 		System.out.println(checkBottom(playerCoord));
-		if(checkTop(playerCoord) && checkLeft(playerCoord) && 
-				checkRight(playerCoord) && checkBottom(playerCoord)) {
+		int startRow = playerCoord.getRow()-4;
+		int startCol = playerCoord.getCol() -4;
+
+		if(!checkTop(playerCoord)) {
+			startRow = 0;
 			
-			int startRow = playerCoord.getRow()-4;
-			int startCol = playerCoord.getCol() -4;
-	
-			for(int i=0; i<9; i++) {
-				for(int j=0; j<9; j++) {
-					
-					visibleBoard[i][j] = board[startRow+i][startCol+j];
-					
-					
-				}
+		}
+		if(!checkBottom(playerCoord)) {
+			startRow = board.length-5;
+			
+		}
+		if(!checkLeft(playerCoord)) {
+			startCol = 0;
+			
+		}
+		if(!checkRight(playerCoord)) {
+			startCol = board[0].length-5;
+			
+		}
+		
+		for(int i=0; i<9; i++) {
+			for(int j=0; j<9; j++) {
+				
+				visibleBoard[i][j] = board[startRow+i][startCol+j];
+				
+				
 			}
 		}
 		

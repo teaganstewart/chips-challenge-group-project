@@ -20,7 +20,7 @@ public class Maze implements Saveable {
 
     private Tile[][] tiles;
     private Player player;
-    //private Render render;
+    private Render render;
     private boolean goalReached;
     private String hintMessage = "";
 
@@ -189,7 +189,7 @@ public class Maze implements Saveable {
         return player;
     }
 
-//    public void setRender(Render r) {
-//    	render = r;
-//    }
+    public void setRender(Render r) {
+    	render = r;
+    }
 }

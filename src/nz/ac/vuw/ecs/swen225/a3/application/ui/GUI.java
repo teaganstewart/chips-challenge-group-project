@@ -14,7 +14,7 @@ public class GUI extends JFrame {
 
     private Game game;
     private JFrame main;
-    private JPanel gamePanel;
+    private GamePanel gamePanel;
     private JPanel infoPanel;
 
     public GUI(){
@@ -40,24 +40,31 @@ public class GUI extends JFrame {
                     System.out.println("up");
                     maze.movePlayer(Direction.UP);
                     System.out.println(player.getCoordinate());
+                    gamePanel.clearBoard();
+                    gamePanel.drawBoard();
                     gamePanel.updateUI();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     System.out.println("down");
                     maze.movePlayer(Direction.DOWN);
                     System.out.println(player.getCoordinate());
+                    gamePanel.clearBoard();
+                    gamePanel.drawBoard();
                     gamePanel.updateUI();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     System.out.println("left");
                     maze.movePlayer(Direction.LEFT);
                     System.out.println(player.getCoordinate());
+                    gamePanel.clearBoard();
+                    gamePanel.drawBoard();
                     gamePanel.updateUI();
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     System.out.println("right");
                     maze.movePlayer(Direction.RIGHT);
-                    System.out.println(player.getCoordinate());
+                    gamePanel.clearBoard();
+                    gamePanel.drawBoard();
                     gamePanel.updateUI();
                 }
 
