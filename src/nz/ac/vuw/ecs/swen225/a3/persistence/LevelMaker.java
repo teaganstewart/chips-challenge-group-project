@@ -10,19 +10,20 @@ public class LevelMaker {
         Player player = new Player(new Coordinate(6, 7));
 
         Integer[][] map = { {0,0,1,1,1,1,1,0,1,1,1,1,1,0,0},
-                            {0,0,1,0,0,0,1,1,1,0,0,0,1,0,0},
-                            {0,0,1,0,0,0,1,0,1,0,0,0,1,0,0},
-                            {1,1,1,1,1,1,1,0,1,1,1,1,1,1,1},
-                            {1,0,0,0,1,0,0,0,0,0,1,0,0,0,1},
-                            {1,0,0,0,1,0,0,0,0,0,1,0,0,0,1},
-                            {1,1,1,1,1,0,0,0,0,0,1,1,1,1,1},
-                            {1,0,0,0,1,0,0,0,0,0,1,0,0,0,1},
-                            {1,0,0,0,1,0,0,0,0,0,1,0,0,0,1},
-                            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                            {0,0,0,0,1,0,0,1,0,0,1,0,0,0,0},
-                            {0,0,0,0,1,0,0,1,0,0,1,0,0,0,0},
-                            {0,0,0,0,1,0,0,1,0,0,1,0,0,0,0},
-                            {0,0,0,0,1,1,1,1,1,1,1,0,0,0,0}};
+			                {0,0,1,0,0,0,1,1,1,0,0,0,1,0,0},
+			                {0,0,1,0,4,0,1,2,1,0,4,0,1,0,0},
+			                {1,1,1,1,1,1,1,0,1,1,1,1,1,1,1},
+			                {1,0,0,0,1,0,0,0,0,0,1,0,0,0,1},
+			                {1,0,4,0,1,0,0,0,0,0,6,0,4,0,1},
+			                {1,1,1,1,1,4,0,0,0,4,1,1,1,1,1},
+			                {1,0,4,0,1,0,0,0,0,0,1,0,4,0,1},
+			                {1,0,0,0,1,0,0,4,0,0,1,0,0,0,1},
+			                {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+			                {0,0,0,0,1,0,0,1,0,0,1,0,0,0,0},
+			                {0,0,0,0,1,0,4,1,4,0,1,0,0,0,0},
+			                {0,0,0,0,1,0,0,1,0,0,1,0,0,0,0},
+			                {0,0,0,0,1,1,1,1,1,1,1,0,0,0,0}};
+        
 
         tiles = new Tile[map.length][map[0].length];
         generateMap(map);
@@ -41,6 +42,8 @@ public class LevelMaker {
                 tiles[i][j] = parseType(i,j,map[i][j]);
             }
         }
+        
+        tiles[5][5].setEntity(new Key(BasicColor.YELLOW));
     }
 
     /**
@@ -55,6 +58,23 @@ public class LevelMaker {
             return new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
         }else if(type == 1){
             return new Tile(new Coordinate(row, col), Tile.TileType.WALL);
+        }else if(type == 2){
+            return new Tile(new Coordinate(row, col), Tile.TileType.GOAL);
+        }else if(type == 3){
+            return new HintTile(new Coordinate(row, col), "Collect Treasures to Unlock the Treasure Door! Collect the right coloured keys to unlock doors");
+        } else {
+            Tile t = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
+            if (type == 4) {
+                t.setEntity(new Treasure());
+                return t;
+            } else if (type == 5) {
+                t.setEntity(new TreasureDoor());
+                return t;
+            }
+            else if (type ==6) {
+            	t.setEntity(new KeyDoor(BasicColor.YELLOW));
+            	return t;
+            }
         }
         return null;
     }

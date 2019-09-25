@@ -41,9 +41,9 @@ public class GraphicalView {
 		case WALL:
 			return wall;
 		case HINT:
-			return null;
+			return hint;
 		case GOAL:
-			return null;
+			return goal;
 		default:
 			return null;
 		}
@@ -60,13 +60,13 @@ public class GraphicalView {
 	public ImageIcon getKeyIcon(BasicColor color) {
 		switch(color) {
 		case RED:
-			return null;
+			return redKey;
 		case GREEN:
-			return null;
+			return greenKey;
 		case YELLOW:
-			return null;
+			return yellowKey;
 		case BLUE:
-			return null;
+			return blueKey;
 		default:
 			return null;
 		}
@@ -84,19 +84,27 @@ public class GraphicalView {
 	public ImageIcon getDoorIcon(BasicColor color) {
 		switch(color) {
 		case RED:
-			return null;
+			return redDoor;
 		case GREEN:
-			return null;
+			return greenDoor;
 		case YELLOW:
-			return null;
+			return yellowDoor;
 		case BLUE:
-			return null;
+			return blueDoor;
 		default:
 			return null;
 		}
 
 	}
 
+	
+	public ImageIcon getEntityIcon(Entity entity) {
+		if(entity instanceof Treasure) {
+			return treasure;
+		}
+		
+		return null;
+	}
 
 	/**
 	 * A method that both resets all of the players and weapons on a grid, then draws
@@ -145,7 +153,28 @@ public class GraphicalView {
 		return null;
 	}
 
+	// Characters
+	private final ImageIcon chip = new ImageIcon(getClass().getResource("icons/chip.png"));
+	
+	// Tiles
 	private final ImageIcon floor = new ImageIcon(getClass().getResource("icons/wall.png"));
 	private final ImageIcon wall = new ImageIcon(getClass().getResource("icons/floor2.png"));
-	private final ImageIcon chip = new ImageIcon(getClass().getResource("icons/chip.png"));
+	private final ImageIcon hint = new ImageIcon(getClass().getResource("icons/hint.png"));
+	private final ImageIcon goal = new ImageIcon(getClass().getResource("icons/goal.png"));
+	
+	// Keys
+	private final ImageIcon greenKey = new ImageIcon(getClass().getResource("icons/green-key.png"));
+	private final ImageIcon blueKey = new ImageIcon(getClass().getResource("icons/blue-key.png"));
+	private final ImageIcon redKey = new ImageIcon(getClass().getResource("icons/red-key.png"));
+	private final ImageIcon yellowKey = new ImageIcon(getClass().getResource("icons/yellow-key.png"));
+	
+	// Doors
+	private final ImageIcon greenDoor = new ImageIcon(getClass().getResource("icons/green-keydoor.png"));
+	private final ImageIcon blueDoor = new ImageIcon(getClass().getResource("icons/blue-keydoor.png"));
+	private final ImageIcon redDoor = new ImageIcon(getClass().getResource("icons/red-keydoor.png"));
+	private final ImageIcon yellowDoor = new ImageIcon(getClass().getResource("icons/yellow-keydoor.png"));
+
+	// Entities
+	private final ImageIcon treasure = new ImageIcon(getClass().getResource("icons/treasure.png"));
+	
 }
