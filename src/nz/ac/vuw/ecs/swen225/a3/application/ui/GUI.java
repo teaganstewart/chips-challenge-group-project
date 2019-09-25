@@ -61,6 +61,33 @@ public class GUI extends JFrame {
             }
         });
 
+        main.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                exitPopup();
+            }
+        });
+
+    }
+
+    public void exitPopup(){
+        int prompt = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the game?", "Close Window?",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (prompt == JOptionPane.YES_OPTION){
+            int save = JOptionPane.showConfirmDialog(null, "Would you like to save before leaving?", "Save option",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if(save == JOptionPane.YES_OPTION){
+                saveAndExitPopup();
+            }else{
+                JOptionPane.showMessageDialog(null, "Game has not been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
+            }
+        }
+    }
+
+    public void saveAndExitPopup(){
+        game.saveGame();
+        JOptionPane.showMessageDialog(null, "Game has been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
+        System.exit(0);
     }
 
     /**
@@ -115,12 +142,12 @@ public class GUI extends JFrame {
         exitItem = new JMenuItem("Exit");
         KeyStroke ctrlXKeyStroke = KeyStroke.getKeyStroke("control X");
         exitItem.setAccelerator(ctrlXKeyStroke);
-        exitItem.addActionListener((event) -> System.out.println("Exit"));
+        exitItem.addActionListener((event) -> main.dispatchEvent(new WindowEvent(main, WindowEvent.WINDOW_CLOSING)));
 
         saveAndExitItem = new JMenuItem("Save & Exit");
         KeyStroke ctrlSKeyStroke = KeyStroke.getKeyStroke("control S");
         saveAndExitItem.setAccelerator(ctrlSKeyStroke);
-        saveAndExitItem.addActionListener((event) -> System.out.println("Save & Exit"));
+        saveAndExitItem.addActionListener((event) -> saveAndExitPopup());
 
         loadGameItem = new JMenuItem("Load game");
         KeyStroke ctrlRKeyStroke = KeyStroke.getKeyStroke("control R");
