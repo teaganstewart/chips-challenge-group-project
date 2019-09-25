@@ -14,7 +14,7 @@ public class LevelMaker {
 			                {0,0,1,0,4,0,1,2,1,0,4,0,1,0,0},
 			                {1,1,1,1,1,1,1,0,1,1,1,1,1,1,1},
 			                {1,0,0,0,1,0,0,0,0,0,1,0,0,0,1},
-			                {1,0,4,0,1,0,0,0,0,0,1,0,4,0,1},
+			                {1,0,4,0,1,0,0,0,0,0,6,0,4,0,1},
 			                {1,1,1,1,1,4,0,0,0,4,1,1,1,1,1},
 			                {1,0,4,0,1,0,0,0,0,0,1,0,4,0,1},
 			                {1,0,0,0,1,0,0,4,0,0,1,0,0,0,1},
@@ -23,6 +23,7 @@ public class LevelMaker {
 			                {0,0,0,0,1,0,4,1,4,0,1,0,0,0,0},
 			                {0,0,0,0,1,0,0,1,0,0,1,0,0,0,0},
 			                {0,0,0,0,1,1,1,1,1,1,1,0,0,0,0}};
+        
 
         tiles = new Tile[map.length][map[0].length];
         generateMap(map);
@@ -69,6 +70,10 @@ public class LevelMaker {
             } else if (type == 5) {
                 t.setEntity(new TreasureDoor());
                 return t;
+            }
+            else if (type ==6) {
+            	t.setEntity(new KeyDoor(BasicColor.YELLOW));
+            	return t;
             }
         }
         return null;

@@ -37,9 +37,11 @@ public class GUI extends JFrame {
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
 					maze.movePlayer(Direction.UP);
 					updateBoard();
+					
 				}
 				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 					maze.movePlayer(Direction.DOWN);
+					
 					updateBoard();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -220,6 +222,7 @@ public class GUI extends JFrame {
 	 * Redraws the game panel.
 	 */
 	public void updateBoard() {
+	
 		gamePanel.clearBoard();
 		gamePanel.drawBoard();
 		gamePanel.updateUI();

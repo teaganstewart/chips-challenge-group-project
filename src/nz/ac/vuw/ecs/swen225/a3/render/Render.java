@@ -3,7 +3,6 @@ package nz.ac.vuw.ecs.swen225.a3.render;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 
 import java.awt.BorderLayout;
-
 import javax.swing.*;
 import nz.ac.vuw.ecs.swen225.a3.application.*;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.*;
@@ -71,7 +70,7 @@ public class Render {
 			
 		}
 		if(!checkBottom(playerCoord)) {
-			startRow = board.length-5;
+			startRow = board.length-9;
 			
 		}
 		if(!checkLeft(playerCoord)) {
@@ -79,7 +78,7 @@ public class Render {
 			
 		}
 		if(!checkRight(playerCoord)) {
-			startCol = board[0].length-5;
+			startCol = board[0].length-9;
 			
 		}
 		

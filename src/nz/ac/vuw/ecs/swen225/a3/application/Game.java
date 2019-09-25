@@ -28,6 +28,15 @@ public class Game {
     public Player getPlayer(){
         return player;
     }
+ 
+    public void setPlayer(Player p) {
+    	player = p;
+    }
+    
+    public void setMaze(Maze m) {
+    	maze = m;
+    }
+
 
     public void update(){
 

@@ -1,13 +1,16 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 
+import nz.ac.vuw.ecs.swen225.a3.application.Game;
+import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
+
+import java.util.ArrayList;
+
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.swing.JLabel;
-
 /**
  * @author Josh
  *
@@ -20,6 +23,7 @@ public class Maze implements Saveable {
 
     private Tile[][] tiles;
     private Player player;
+    private Game game;
     private boolean goalReached;
     private String hintMessage = "";
 
@@ -63,11 +67,8 @@ public class Maze implements Saveable {
         if(canWalkOn(player, endTile)){
         	endTile.setEntity(null);
         	// get the destination coordinates
+        	
         	player.setCoordinate(dest);
-
-            //render.getBoard()[row][col].remove(0);
-
-        	//render.getBoard()[rowDest][colDest].add(new JLabel(render.getImages().getPlayerIcon("chip")));
 
             return true;
         }
@@ -103,8 +104,19 @@ public class Maze implements Saveable {
 
     	//-- ALL TRUE CASES, regardless --//
 
-    	// if it's a goal, set goalReached to true
-    	if (type == Tile.TileType.GOAL) goalReached = true;
+    	// if it's a goal, set goalReached to true 
+    	if (type == Tile.TileType.GOAL) {
+    		goalReached = true;  
+    		Level l = LoadUtils.loadLevel(game.getLevel()+2);
+    		game.setLevel(game.getLevel()+2); 
+ 
+    		game.setPlayer(l.getMaze().getPlayer());
+    		tiles = l.getMaze().getTiles();
+    		player = l.getMaze().getPlayer();
+    		player.setInventory(new ArrayList<Entity>());
+    		
+       		
+    	}
     	// if it's a hint tile, then set the hint message. otherwise, ensure it's blank
     	// this can be referenced in the render class
     	if (type == Tile.TileType.HINT) {
@@ -187,6 +199,11 @@ public class Maze implements Saveable {
     public Player getPlayer() {
         return player;
     }
-
+    
+    public void setGame(Game g) {
+    	game = g;
+    }
+    
+     
 
 }
