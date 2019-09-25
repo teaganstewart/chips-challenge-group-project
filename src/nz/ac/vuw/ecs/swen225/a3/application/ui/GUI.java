@@ -20,6 +20,7 @@ public class GUI extends JFrame {
     public GUI(){
         game = new Game();
         createWindow();
+        main.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         main.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -81,6 +82,7 @@ public class GUI extends JFrame {
             }else{
                 JOptionPane.showMessageDialog(null, "Game has not been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
             }
+            System.exit(0);
         }
     }
 
