@@ -62,7 +62,7 @@ public class Render {
 		JLabel[][] visibleBoard = new JLabel[9][9];
 		Coordinate playerCoord= maze.getPlayer().getCoordinate();
 
-		int startRow = playerCoord.getRow()-4;
+		int startRow = playerCoord.getRow() -4;
 		int startCol = playerCoord.getCol() -4;
 
 		if(!checkTop(playerCoord)) {
@@ -159,6 +159,10 @@ public class Render {
 	 */
 	public JLabel[][] getBoard() {
 		return board;
+	}
+	
+	public void setMaze(Maze m) {
+		this.maze = m;
 	}
 
 }

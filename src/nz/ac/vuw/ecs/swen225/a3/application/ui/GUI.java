@@ -2,13 +2,17 @@ package nz.ac.vuw.ecs.swen225.a3.application.ui;
 
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.maze.Direction;
+import nz.ac.vuw.ecs.swen225.a3.maze.Entity;
+import nz.ac.vuw.ecs.swen225.a3.maze.Level;
 import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
+import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class GUI extends JFrame {
 
@@ -41,7 +45,6 @@ public class GUI extends JFrame {
 				}
 				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 					maze.movePlayer(Direction.DOWN);
-					
 					updateBoard();
 				}
 				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -52,7 +55,10 @@ public class GUI extends JFrame {
 					maze.movePlayer(Direction.RIGHT);
 					updateBoard();
 				}
-
+				if (maze.isGoalReached()) {
+					game.nextLevel(gamePanel);
+					updateBoard();
+				}
 
 			}
 		});
@@ -222,12 +228,9 @@ public class GUI extends JFrame {
 	 * Redraws the game panel.
 	 */
 	public void updateBoard() {
-	
 		gamePanel.clearBoard();
 		gamePanel.drawBoard();
 		gamePanel.updateUI();
 	}
-
-
 
 }

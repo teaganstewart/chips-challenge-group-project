@@ -107,15 +107,6 @@ public class Maze implements Saveable {
     	// if it's a goal, set goalReached to true 
     	if (type == Tile.TileType.GOAL) {
     		goalReached = true;  
-    		Level l = LoadUtils.loadLevel(game.getLevel()+2);
-    		game.setLevel(game.getLevel()+2); 
- 
-    		game.setPlayer(l.getMaze().getPlayer());
-    		tiles = l.getMaze().getTiles();
-    		player = l.getMaze().getPlayer();
-    		player.setInventory(new ArrayList<Entity>());
-    		
-       		
     	}
     	// if it's a hint tile, then set the hint message. otherwise, ensure it's blank
     	// this can be referenced in the render class

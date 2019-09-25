@@ -51,5 +51,9 @@ public class GamePanel extends JPanel {
 			}
 		}
 	}
+	
+	public Render getRender() {
+		return render;
+	}
 
 }
