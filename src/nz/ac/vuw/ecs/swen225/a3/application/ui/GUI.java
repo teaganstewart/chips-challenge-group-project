@@ -14,7 +14,7 @@ public class GUI extends JFrame {
 
     private Game game;
     private JFrame main;
-    private JPanel gamePanel;
+    private GamePanel gamePanel;
     private JPanel infoPanel;
 
     public GUI(){
