@@ -10,15 +10,13 @@ import nz.ac.vuw.ecs.swen225.a3.application.ui.*;
 
 public class Render {
 	private Game game;
-	private GamePanel gamePanel;
 	private Maze maze;
 	private GraphicalView images;
 	private JLabel[][] board;
 
-	public Render(Game g, GamePanel gp, Maze m) {
+	public Render(Game g, Maze m) {
 		images = new GraphicalView(g, this);
 		game = g;
-		gamePanel = gp;
 		maze = m;
 	}
 
@@ -57,8 +55,6 @@ public class Render {
 		JLabel[][] visibleBoard = new JLabel[9][9];
 		Coordinate playerCoord= maze.getPlayer().getCoordinate();
 
-		System.out.println(checkTop(playerCoord));
-		System.out.println(checkBottom(playerCoord));
 		int startRow = playerCoord.getRow()-4;
 		int startCol = playerCoord.getCol() -4;
 
@@ -95,18 +91,54 @@ public class Render {
 		return images;
 	}
 
+	/**
+	 * 
+	 * Checks whether the player is within 4 tiles of the top of the board.
+	 * 
+	 * @param playerCoord
+	 * 		The coordinate where the player is on the board.
+	 * @return
+	 * 		Returns whether player is close to top.
+	 */
 	public boolean checkTop(Coordinate playerCoord) {
 		return (playerCoord.getRow() < 4) ? false : true;
 	}
 
+	/**
+	 * 
+	 * Checks whether the player is within 4 tiles of the left of the board.
+	 * 
+	 * @param playerCoord
+	 * 		The coordinate where the player is on the board.
+	 * @return
+	 * 		Returns whether player is close to left.
+	 */
 	public boolean checkLeft(Coordinate playerCoord) {
 		return (playerCoord.getCol() < 4) ? false : true;
 	}
 
+	/**
+	 * 
+	 * Checks whether the player is within 4 tiles of the right of the board.
+	 * 
+	 * @param playerCoord
+	 * 		The coordinate where the player is on the board.
+	 * @return
+	 * 		Returns whether player is close to right.
+	 */
 	public boolean checkRight(Coordinate playerCoord) {
 		return (playerCoord.getCol() > board[0].length-5)  ? false : true;
 	}
 
+	/**
+	 * 
+	 * Checks whether the player is within 4 tiles of the bottom of the board.
+	 * 
+	 * @param playerCoord
+	 * 		The coordinate where the player is on the board.
+	 * @return
+	 * 		Returns whether player is close to bottom.
+	 */
 	public boolean checkBottom(Coordinate playerCoord) {
 		
 		return (playerCoord.getRow() > board.length-5) ? false : true;
