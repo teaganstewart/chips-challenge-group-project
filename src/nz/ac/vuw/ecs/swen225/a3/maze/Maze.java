@@ -18,10 +18,11 @@ import javax.swing.JLabel;
 
 public class Maze implements Saveable {
 
-
     private Tile[][] tiles;
     private Player player;
-    private Render render;
+    //private Render render;
+    private boolean goalReached;
+    private String hintMessage = "";
     
     /**
      * @param tiles
@@ -32,6 +33,7 @@ public class Maze implements Saveable {
     public Maze(Tile[][] tiles, Player player){
         this.tiles = tiles;
         this.player = player;
+        this.goalReached = false;
     }
     
 
@@ -61,24 +63,19 @@ public class Maze implements Saveable {
         // automatically collects item if this is possible
         if(canWalkOn(player, endTile)){
         	
-        	//remove player from old destination
-        	int row = player.getCoordinate().getRow();
-        	int col = player.getCoordinate().getCol();
+        	// get the destination coordinates
+        	player.setCoordinate(dest);
         	
             //render.getBoard()[row][col].remove(0);
-            // Move player onto destination tile
         	
-            player.setRow(endTile.getCoordinate().getRow());
-            player.setCol(endTile.getCoordinate().getCol());
         	//render.getBoard()[rowDest][colDest].add(new JLabel(render.getImages().getPlayerIcon("chip")));
     
-        	
             return true;
         }
     	
         return false;
     }
-
+    
     /**
      * Returns entity collected, else returns null for no entity collected
      * @param player
@@ -86,14 +83,58 @@ public class Maze implements Saveable {
      * @return validity
      * */
     public boolean canWalkOn(Player player, Tile tile){
-        Entity entity = tile.getEntity();
-
-        if(tile.getType()==Tile.TileType.WALL) return false;
-        if (entity == null) return true;
-        else return player.canWalkOn(entity);
-
+        // checks the type, first and foremost. if it can't be walked on, returns false here
+        if(!checkType(player,tile)) return false;     
+        // then checks for the entity type
+        else return player.canWalkOn(tile.getEntity());
     }
-
+    
+    /**
+     * Checks the tiletype first of all, and sees whether or not the tile should do
+     * something unique if the player steps on this.
+     * @param player
+     * @param tile
+     * @return validity
+     */
+    public boolean checkType(Player player, Tile tile) {
+    	Tile.TileType type = tile.getType();
+    	
+    	// can't walk on walls
+    	if (type == Tile.TileType.WALL) return false;
+    	
+    	//-- ALL TRUE CASES, regardless --//
+    	
+    	// if it's a goal, set goalReached to true
+    	if (type == Tile.TileType.GOAL) goalReached = true;
+    	// if it's a hint tile, then set the hint message. otherwise, ensure it's blank
+    	// this can be referenced in the render class
+    	if (type == Tile.TileType.HINT) {
+    		HintTile hint = (HintTile) tile;
+    		hintMessage = hint.getMessage();
+    	}
+    	else hintMessage = "";
+    	
+    	return true;
+    }
+    
+    /**
+     * Returns whether or not the goal has been reached
+     * @return
+     * 		whether or not the player has touched the goal tile
+     */
+    public boolean isGoalReached() {
+    	return goalReached;
+    }
+    
+    /**
+     * Returns the hintMessage, regardless if it is blank or not
+     * @return
+     * 		"", or an actual hint
+     */
+    public String getHintMessage() {
+    	return hintMessage;
+    }
+    
     /**
      * Serialise this Java Object to Json
      * @return Json representation of this object.
@@ -148,7 +189,7 @@ public class Maze implements Saveable {
         return player;
     }
     
-    public void setRender(Render r) {
-    	render = r;
-    }
+//    public void setRender(Render r) {
+//    	render = r;
+//    }
 }

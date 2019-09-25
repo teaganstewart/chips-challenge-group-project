@@ -102,6 +102,10 @@ public abstract class Moveable {
 		return coordinate;
 	}
 
+	public void setCoordinate(Coordinate c) {
+		this.coordinate = c;
+	}
+	
 	@Deprecated
 	public int getRow() {
 		return coordinate.getRow();
