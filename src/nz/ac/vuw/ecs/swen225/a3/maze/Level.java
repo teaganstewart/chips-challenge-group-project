@@ -79,7 +79,7 @@ public class Level implements Saveable {
                 .add("levelBeginTime", levelBeginTime.toString())
                 .add("totalRunningTime", levelRunningTime.toString())
                 .add("timeAllowed", timeAllowed)
-                .add("completed", false)
+                .add("completed", maze.isGoalReached())
                 .add("maze", maze.toJSON())
                 .build();
 
