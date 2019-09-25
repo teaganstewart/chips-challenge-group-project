@@ -175,6 +175,6 @@ public class GraphicalView {
 	private final ImageIcon yellowDoor = new ImageIcon(getClass().getResource("icons/yellow-keydoor.png"));
 
 	// Entities
-	private final ImageIcon treasure = new ImageIcon(getClass().getResource("icons/goal.png"));
+	private final ImageIcon treasure = new ImageIcon(getClass().getResource("icons/treasure.png"));
 	
 }

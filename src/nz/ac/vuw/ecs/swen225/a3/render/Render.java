@@ -30,25 +30,33 @@ public class Render {
 			for(int j = 0; j<tiles.length; j++) {
 				JLabel tile = new JLabel(images.getTileIcon(i,j,maze));
 
-
 				tile.setLayout(new BorderLayout());
 				board[i][j] = tile;
 				if(playerCoordinate.getRow()==i && playerCoordinate.getCol()==j) {
 					board[i][j].add(new JLabel(images.getPlayerIcon("chip")));
 				}
+				renderEntities(i,j,tiles);
 			}
 		}
 		return board;
 	}
-	
 
-	/**
-	 *
-	 * @return
-	 * Returns the board as an array of image icons
-	 */
-	public JLabel[][] getBoard() {
-		return board;
+	public void renderEntities(int i, int j, Tile[][] tiles) {
+		if(tiles[i][j].getEntity()!=null) {
+			Entity onTile = tiles[i][j].getEntity();
+			if(onTile instanceof Key) {
+				BasicColor keyColor = ((Key) onTile).getColor();
+				board[i][j].add(new JLabel((images.getKeyIcon(keyColor))));
+			}
+			else if(onTile instanceof KeyDoor) {
+				BasicColor doorColor = ((KeyDoor) onTile).getColor();
+				board[i][j].add(new JLabel((images.getDoorIcon(doorColor))));
+			}
+			else {
+				board[i][j].add(new JLabel((images.getEntityIcon(onTile))));
+			}
+		}
+		
 	}
 
 	public JLabel[][] getVisibleBoard() {
@@ -144,6 +152,15 @@ public class Render {
 		return (playerCoord.getRow() > board.length-5) ? false : true;
 	}
 
+
+	/**
+	 *
+	 * @return
+	 * Returns the board as an array of image icons
+	 */
+	public JLabel[][] getBoard() {
+		return board;
+	}
 
 }
 
