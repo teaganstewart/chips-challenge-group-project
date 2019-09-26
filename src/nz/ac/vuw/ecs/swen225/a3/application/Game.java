@@ -49,6 +49,9 @@ public class Game {
         Level level;
         try{
             level = LoadUtils.resumeGame();
+            if(level.getMaze().getTiles().length<9 || level.getMaze().getTiles()[0].length<9) {
+            	throw new NullPointerException();
+            }
         }
         catch (NullPointerException e){
             level = LoadUtils.loadLevel(1);
@@ -56,6 +59,8 @@ public class Game {
         }
 
         maze = level.getMaze();
+       
+       
         player = maze.getPlayer();
 
 
