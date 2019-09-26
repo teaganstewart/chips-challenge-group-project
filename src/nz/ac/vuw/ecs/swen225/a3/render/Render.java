@@ -23,10 +23,10 @@ public class Render {
 	public JLabel[][] createGrid() {
 
 		Tile[][] tiles = maze.getTiles();
-		board = new JLabel[tiles.length][tiles.length];
+		board = new JLabel[tiles.length][tiles[0].length];
 		Coordinate playerCoordinate =  maze.getPlayer().getCoordinate();
 		for(int i = 0; i<tiles.length; i++) {
-			for(int j = 0; j<tiles.length; j++) {
+			for(int j = 0; j<tiles[0].length; j++) {
 				JLabel tile = new JLabel(images.getTileIcon(i,j,maze));
 
 				tile.setLayout(new BorderLayout());

@@ -74,8 +74,7 @@ public abstract class Moveable {
 	}
 
 	/**
-	 *
-	 * 		The direction that the player was at before it moved.
+     * The direction that the player was at before it moved.
 	 */
 	public Coordinate getPrevPos() {
 		int col = coordinate.getCol();
@@ -84,13 +83,13 @@ public abstract class Moveable {
 
 		switch(direction.inverse()) {
 			case DOWN:
-				return new Coordinate(row - 1, col);
-			case UP:
 				return new Coordinate(row + 1, col);
+			case UP:
+				return new Coordinate(row - 1, col);
 			case LEFT:
-				return new Coordinate(row, col + 1);
-			case RIGHT:
 				return new Coordinate(row, col - 1);
+			case RIGHT:
+				return new Coordinate(row, col + 1);
 			default:
 				return null;
 
