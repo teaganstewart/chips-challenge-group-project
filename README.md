@@ -13,5 +13,3 @@ To Open the IntelliJ Project in Eclipse: <br>
 2.) Right click on the project folder, go to build path, add libraries. Add JUnit <br>
 <br>
 **Program bugs (supotted by Josh)** <br>
-<br>
--Player can walk through treasure door without collecting all the treasure <br>
