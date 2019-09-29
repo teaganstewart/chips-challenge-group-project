@@ -10,14 +10,13 @@ import java.io.PrintStream;
 
 /**
  *
- * The SaveUtils contains methods relevant to saving of the current game state to a json file.
+ * The SaveUtils contains methods relevant to saving of the current game state to a Json file.
  *
  * @author Matt Rothwell
  */
 public class SaveUtils {
 
     public static String SAVES_DIRECTORY = "saves";
-
 
     /**
      * Save the game state so that the player can resume next time the program is
@@ -26,6 +25,7 @@ public class SaveUtils {
      */
     public static boolean saveGame(Level level){
         try{
+            constructSaves();
             JsonWriter writer = Json.createWriter(new PrintStream(new File(SAVES_DIRECTORY+"\\"+System.currentTimeMillis()+".json")));
             writer.write(level.toJSON());
             writer.close();
@@ -42,6 +42,18 @@ public class SaveUtils {
      */
     public static void saveLevel(){
 
+    }
+
+    /**
+     * Create the saves directory if it does not exist
+     * @return whether or not it exists.
+     */
+    private static boolean constructSaves(){
+        File directory = new File(SAVES_DIRECTORY);
+        if (!directory.exists()){
+            return directory.mkdir();
+        }
+        return true;
     }
 
 
