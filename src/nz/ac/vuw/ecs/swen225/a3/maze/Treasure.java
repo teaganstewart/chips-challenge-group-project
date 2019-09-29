@@ -27,7 +27,7 @@ public class Treasure implements Entity {
 	 */
 	@Override
 	public JsonObject toJSON() {
-		JsonObject value = Json.createObjectBuilder().add("EntityClass", Treasure.class.getSimpleName()).build();
+		JsonObject value = Json.createObjectBuilder().add("EntityClass", Treasure.class.toString()).build();
 		return value;
 	}
 
