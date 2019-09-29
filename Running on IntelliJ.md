@@ -1,6 +1,6 @@
-To import the Project through IntelliJ (just in case we forget or have problems):
-
+To import the Project through IntelliJ (just in case we forget or have problems): <br>
+<br>
 1.) Create a New Project from source control (git). Use the HTTPS URL <br>
-2.) Select Java JDK and version 8
-3.) Add JUnit 5.4 to class path
-4.) Mark src folder blue in the modules window
+2.) Select Java JDK and version 8<br>
+3.) Add JUnit 5.4 to class path<br>
+4.) Mark src folder blue in the modules window<br>
