@@ -1,3 +1,5 @@
+**Running in IntelliJ** <br>
+<br>
 To import the Project through IntelliJ (just in case we forget or have problems): <br>
 <br>
 1.) Create a New Project from source control (git). Use the HTTPS URL <br>
@@ -9,3 +11,7 @@ To Open the IntelliJ Project in Eclipse: <br>
 <br>
 1.) Open Projects form file system. Select "Directory" and choose the gitlab folder <br>
 2.) Right click on the project folder, go to build path, add libraries. Add JUnit <br>
+<br>
+**Program bugs (supotted by Josh)** <br>
+<br>
+-Player can walk through treasure door without collecting all the treasure <br>
