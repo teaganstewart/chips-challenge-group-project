@@ -27,7 +27,7 @@ public class Key implements Entity {
 	 * @return
 	 * 		The color.
 	 */
-	BasicColor getColor() {
+	public BasicColor getColor() {
 		return color;
 	}
 
