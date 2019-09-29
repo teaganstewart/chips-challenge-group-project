@@ -88,6 +88,8 @@ public class Player extends Moveable implements Saveable {
 	@Override
 	public boolean canWalkOn(Entity entity) {
 		
+		// null
+		if (entity == null) return true;
 		// key
 		if (entity instanceof Key) {
 			Key key = (Key) entity;
