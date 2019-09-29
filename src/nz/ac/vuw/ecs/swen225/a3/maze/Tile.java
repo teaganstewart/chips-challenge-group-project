@@ -6,88 +6,110 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
+/**
+ * @author Ethan
+ * 
+ *         Represents a tile of the maze
+ *
+ */
 public class Tile implements Saveable {
 
-	public enum TileType {
+  /**
+   * @author Ethan
+   *
+   */
+  public enum TileType {
 
-		FLOOR, WALL, HINT, GOAL
-		
-	}
-	
-	private final TileType type;
-	private Coordinate coord;
-	private Entity entity;
-	
-	/**
-	 * Constructs a new Tile object
-	 */
-	public Tile(Coordinate coord, TileType type) {
-		this.coord = coord;
-		this.type = type;
-	}
+    FLOOR, WALL, HINT, GOAL
 
-	/* Getters and Setters*/
-	
-	public void setCoordinate(Coordinate coord){
-		this.coord = coord;
-	}
+  }
 
-	public Coordinate getCoordinate(){
-		return this.coord;
-	}
-	
-	/**
-	 * A simple getter for the Entity on this tile, if it exists.
-	 * @return
-	 * 		The entity
-	 */
-	public Entity getEntity() {
-		return entity;
-	}
-	
-	/**
-	 * Sets the entity on this tile to an object, or removes an object
-	 * if one already existed here.
-	 * @param entity
-	 */
-	public void setEntity(Entity entity) {
-		this.entity = entity;
-	}
-	
-	/**
-	 * Return the type of tile this is
-	 * @return
-	 * 		the TileType
-	 */
-	public TileType getType() {
-		return type;
-	}
-	
-	/**
-	 * Returns whether or not this tile is a wall. Prevents the player from moving across it,
-	 * if this is the case
-	 * @return
-	 */
-	public boolean isWall() {
-		return type == TileType.WALL;
-	}
+  private final TileType type;
+  private Coordinate coord;
+  private Entity entity;
 
-	/**
-	 * Produce a JSON derived string so that this Tile can be reloaded.
-	 * @return String in JSON format describing this tile.
-	 */
-	@Override
-	public JsonObject toJSON() {
-		JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
-		jsonObjectBuilder.add("TileType", type.toString());
-		jsonObjectBuilder.add("Coordinate", coord.toJSON());
+  /**
+   * Constructs a new Tile object
+   * 
+   * @param coord
+   * @param type
+   */
+  public Tile(Coordinate coord, TileType type) {
+    this.coord = coord;
+    this.type = type;
+  }
 
-		if (entity != null){
-			jsonObjectBuilder.add("Entity", entity.toJSON());
-		}
+  /* Getters and Setters */
 
-		return jsonObjectBuilder.build();
-	}
+  /**
+   * @param coord
+   */
+  public void setCoordinate(Coordinate coord) {
+    this.coord = coord;
+  }
+
+  /**
+   * @return coord
+   */
+  public Coordinate getCoordinate() {
+    return this.coord;
+  }
+
+  /**
+   * A simple getter for the Entity on this tile, if it exists.
+   * 
+   * @return The entity
+   */
+  public Entity getEntity() {
+    return entity;
+  }
+
+  /**
+   * Sets the entity on this tile to an object, or removes an object if one
+   * already existed here.
+   * 
+   * @param entity
+   */
+  public void setEntity(Entity entity) {
+    this.entity = entity;
+  }
+
+  /**
+   * Return the type of tile this is
+   * 
+   * @return the TileType
+   */
+  public TileType getType() {
+    return type;
+  }
+
+  /**
+   * Returns whether or not this tile is a wall. Prevents the player from moving
+   * across it, if this is the case
+   * 
+   * @return validity
+   */
+  public boolean isWall() {
+    return type == TileType.WALL;
+  }
+
+  /**
+   * Produce a JSON derived string so that this Tile can be reloaded.
+   * 
+   * @return String in JSON format describing this tile.
+   */
+  @Override
+  public JsonObject toJSON() {
+    JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+    jsonObjectBuilder.add("TileType", type.toString());
+    jsonObjectBuilder.add("Coordinate", coord.toJSON());
+
+    if (entity != null) {
+      jsonObjectBuilder.add("Entity", entity.toJSON());
+    }
+
+    return jsonObjectBuilder.build();
+  }
 
 //	/**
 //	 * Returns the player, if it exists on this tile

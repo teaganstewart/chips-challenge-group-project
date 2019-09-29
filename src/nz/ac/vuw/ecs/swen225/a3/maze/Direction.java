@@ -1,33 +1,33 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 /**
- *  Directions for the four ways you can move in Cluedo.
+ * Directions for the four ways you can move in Cluedo.
  * 
- * @author 
+ * @author
  */
 public enum Direction {
-	UP, RIGHT, DOWN, LEFT;
+  UP, RIGHT, DOWN, LEFT;
 
-	/**
-	 * Inverse direction used for movements.
-	 *
-	 * @return
-	 */
-	public Direction inverse() {
+  /**
+   * Inverse direction used for movements.
+   *
+   * @return inverse
+   */
+  public Direction inverse() {
 
-		switch (this) {
-		case UP:
-			return DOWN;
+    switch (this) {
+    case UP:
+      return DOWN;
 
-		case RIGHT:
-			return LEFT;
+    case RIGHT:
+      return LEFT;
 
-		case DOWN:
-			return UP;
+    case DOWN:
+      return UP;
 
-		default:
-			return RIGHT;
-		}
-	}
+    default:
+      return RIGHT;
+    }
+  }
 
 }
