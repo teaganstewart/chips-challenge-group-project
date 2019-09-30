@@ -81,7 +81,7 @@ public class InfoPanel extends JPanel {
 	}
 
 	/** 
-	 *  Draws the tiles that can be seen and creates the rest of the board.
+	 *  Draws the inventory.
 	 */
 	public void drawInventory() {
 		Render render = game.getRender();

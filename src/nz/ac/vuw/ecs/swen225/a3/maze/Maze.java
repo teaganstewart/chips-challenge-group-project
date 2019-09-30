@@ -25,6 +25,7 @@ public class Maze implements Saveable {
     private Player player;
     private Game game;
     private boolean goalReached;
+    private boolean onHint;
     private String hintMessage = "";
 
     /**
@@ -37,6 +38,7 @@ public class Maze implements Saveable {
         this.tiles = tiles;
         this.player = player;
         this.goalReached = false;
+        this.onHint = false;
     }
 
 
@@ -97,6 +99,7 @@ public class Maze implements Saveable {
      * @return validity
      */
     public boolean checkType(Player player, Tile tile) {
+    	onHint = false;
     	Tile.TileType type = tile.getType();
 
     	// can't walk on walls
@@ -111,6 +114,7 @@ public class Maze implements Saveable {
     	// if it's a hint tile, then set the hint message. otherwise, ensure it's blank
     	// this can be referenced in the render class
     	if (type == Tile.TileType.HINT) {
+    		onHint = true;
     		HintTile hint = (HintTile) tile;
     		hintMessage = hint.getMessage();
     	}
@@ -126,6 +130,15 @@ public class Maze implements Saveable {
      */
     public boolean isGoalReached() {
     	return goalReached;
+    }
+    
+    /**
+     * Returns whether or not the goal has been reached
+     * @return
+     * 		whether or not the player has touched the goal tile
+     */
+    public boolean isOnHint() {
+    	return onHint;
     }
 
     /**

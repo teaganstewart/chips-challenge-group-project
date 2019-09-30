@@ -58,7 +58,11 @@ public class GUI extends JFrame {
 				if (maze.isGoalReached()) {
 					game.nextLevel(gamePanel);
 					updateBoard();
+					
 				}
+				
+				
+				
 
 			}
 		});
@@ -228,12 +232,16 @@ public class GUI extends JFrame {
 	 * Redraws the game panel.
 	 */
 	public void updateBoard() {
+		
 		gamePanel.clearBoard();
 		gamePanel.drawBoard();
 		
 		infoPanel.clearInventory();
 		infoPanel.drawInventory();
 		gamePanel.updateUI();
+
+		
+
 		
 	}
 
