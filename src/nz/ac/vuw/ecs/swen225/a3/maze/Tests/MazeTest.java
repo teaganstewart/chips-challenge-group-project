@@ -136,18 +136,17 @@ public class MazeTest {
     @Test
     public void testUnlockTreasureDoor() {
 
+        TreasureDoor treasureDoor = new TreasureDoor();
         tiles[3][4].setEntity(new Treasure());
-        tiles[3][5].setEntity(new TreasureDoor());
+        tiles[3][5].setEntity(treasureDoor);
 
         // Collect treasure
         assertTrue(maze.movePlayer(Direction.RIGHT));
 
         assertTrue(Treasure.allCollected());
-
-        // Unlock treasure door after all treasure is collected
-        System.out.println("Valid Move?: "+maze.movePlayer(Direction.RIGHT));
-        System.out.println("Passed faulty move");
-//        assertTrue(maze.movePlayer(Direction.RIGHT));
+        assertTrue(maze.movePlayer(Direction.RIGHT));
+        // Make sure door is still there
+        assertEquals(treasureDoor, tiles[3][5].getEntity());
     }
 
     /**

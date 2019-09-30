@@ -65,8 +65,12 @@ public class Maze implements Saveable {
     // "canWalkOn"
     // automatically collects item if this is possible
     if (canWalkOn(player, endTile)) {
-      endTile.setEntity(null);
-      // get the destination coordinates
+
+      // Only set to null if entity can be picked up
+      Entity destEntity = endTile.getEntity();
+      if (destEntity instanceof Key || destEntity instanceof Treasure) {
+        endTile.setEntity(null);
+      }
 
       player.setCoordinate(dest);
 
