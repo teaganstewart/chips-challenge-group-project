@@ -162,6 +162,28 @@ public class MazeTest {
         assertFalse(maze.movePlayer(Direction.RIGHT));
     }
 
+    /**
+     * Test to see if player fails to walk on a Fire Tile
+     */
+    @Test
+    public void testWalkFireBlockNotValid(){
+        tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.FIRE);
+
+        assertFalse(maze.movePlayer(Direction.RIGHT));
+    }
+
+    /**
+     * Test to see if player collects firBoots and walks on fire block
+     */
+    @Test
+    public void testWalkFireBlockValid(){
+        tiles[3][4].setEntity(new FireBoots());
+        tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.FIRE);
+        assertTrue(maze.movePlayer(Direction.RIGHT));
+        assertTrue(player.isInInventory(new FireBoots()));
+        assertTrue(maze.movePlayer(Direction.RIGHT));
+    }
+
     // -----------------------------//
     // -------GENERAL TESTS --------//
     // -----------------------------//

@@ -108,6 +108,10 @@ public class Maze implements Saveable {
     if (type == Tile.TileType.WALL)
       return false;
 
+    if (type == Tile.TileType.FIRE){
+      return player.isInInventory(new FireBoots());
+    }
+
     // -- ALL TRUE CASES, regardless --//
 
     // if it's a goal, set goalReached to true

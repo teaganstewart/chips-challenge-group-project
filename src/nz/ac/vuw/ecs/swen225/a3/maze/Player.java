@@ -83,6 +83,24 @@ public class Player extends Moveable implements Saveable {
   }
 
   /**
+   *
+   * Check if the inventory contains a certain type of Entity. This additional method
+   * is needed when the player is about to walk on a particular tile which requires
+   * the player to have a particular type of entity in their inventory (e.g. Fire tile
+   * requires FireBoots)
+   *
+   * @return validity
+   */
+  public boolean isInInventory(Entity queryEntity){
+    for(Entity entity : inventory){
+      if(entity.getClass().equals(queryEntity.getClass())){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Returns whether or not the player can walk on this entity
    * 
    * @param entity the entity checked against
@@ -110,6 +128,12 @@ public class Player extends Moveable implements Saveable {
       Door door = (Door) entity;
       return door.onTouch(this);
     }
+    // Fire boots
+    else if(entity instanceof FireBoots){
+      addToInventory(entity);
+      return true;
+    }
+
     // ...
 
     // none of the above

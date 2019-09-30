@@ -20,7 +20,7 @@ public class Tile implements Saveable {
    */
   public enum TileType {
 
-    FLOOR, WALL, HINT, GOAL
+    FLOOR, WALL, HINT, GOAL, FIRE, ICE
 
   }
 
