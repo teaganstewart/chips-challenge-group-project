@@ -145,8 +145,6 @@ public class MazeTest {
 
         assertTrue(Treasure.allCollected());
         assertTrue(maze.movePlayer(Direction.RIGHT));
-        // Make sure door is still there
-        assertEquals(treasureDoor, tiles[3][5].getEntity());
     }
 
     /**
