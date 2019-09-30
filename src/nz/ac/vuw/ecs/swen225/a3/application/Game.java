@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
+import nz.ac.vuw.ecs.swen225.a3.persistence.LevelMaker;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 
 public class Game {
@@ -47,6 +48,8 @@ public class Game {
 
     public void loadGame(){
         Level level;
+        LevelMaker levelMaker = new LevelMaker();
+
         try{
             level = LoadUtils.resumeGame();
             if(level.getMaze().getTiles().length<9 || level.getMaze().getTiles()[0].length<9) {

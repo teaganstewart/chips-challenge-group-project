@@ -10,19 +10,19 @@ public class LevelMaker {
         Player player = new Player(new Coordinate(6, 7));
 
         Integer[][] map = { {0,0,1,1,1,1,1,0,1,1,1,1,1,0,0},
-			                {0,0,1,0,0,0,1,1,1,0,0,0,1,0,0},
-			                {0,0,1,0,4,0,1,2,1,0,4,0,1,0,0},
-			                {1,1,1,1,1,1,1,0,1,1,1,1,1,1,1},
-			                {1,0,0,0,1,0,0,0,0,0,1,0,0,0,1},
-			                {1,0,4,0,1,0,0,0,0,0,6,0,4,0,1},
-			                {1,1,1,1,1,4,0,0,0,4,1,1,1,1,1},
-			                {1,0,4,0,1,0,0,0,0,0,1,0,4,0,1},
-			                {1,0,0,0,1,0,0,4,0,0,1,0,0,0,1},
-			                {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-			                {0,0,0,0,1,0,0,1,0,0,1,0,0,0,0},
-			                {0,0,0,0,1,0,4,1,4,0,1,0,0,0,0},
-			                {0,0,0,0,1,0,0,1,0,0,1,0,0,0,0},
-			                {0,0,0,0,1,1,1,1,1,1,1,0,0,0,0}};
+                            {0,0,1,0,0,0,1,1,1,0,0,0,1,0,0},
+                            {0,0,1,0,4,0,1,2,1,0,4,0,1,0,0},
+                            {1,1,1,1,1,8,1,0,1,8,1,1,1,1,1},
+                            {1,0,11,0,9,0,0,0,0,0,6,0,11,0,1},
+                            {1,0,4,0,1,13,0,0,0,10,1,0,4,0,1},
+                            {1,1,1,1,1,4,0,3,0,4,1,1,1,1,1},
+                            {1,0,4,0,1,13,0,0,0,10,1,0,4,0,1},
+                            {1,0,0,0,6,0,0,4,0,0,9,0,0,0,1},
+                            {1,1,1,1,1,1,7,1,7,1,1,1,1,1,1},
+                            {0,0,0,0,1,0,0,1,0,0,1,0,0,0,0},
+                            {0,0,0,0,1,0,4,1,4,0,1,0,0,0,0},
+                            {0,0,0,0,1,0,12,1,12,0,1,0,0,0,0},
+                            {0,0,0,0,1,1,1,1,1,1,1,0,0,0,1}};
         
 
         tiles = new Tile[map.length][map[0].length];
@@ -43,7 +43,8 @@ public class LevelMaker {
             }
         }
         
-        tiles[5][5].setEntity(new Key(BasicColor.YELLOW));
+        //tiles[5][5].setEntity(new Key(BasicColor.BLUE));
+
     }
 
     /**
@@ -72,8 +73,32 @@ public class LevelMaker {
                 return t;
             }
             else if (type ==6) {
-            	t.setEntity(new KeyDoor(BasicColor.YELLOW));
+            	t.setEntity(new KeyDoor(BasicColor.RED));
             	return t;
+            }
+            else if (type ==7) {
+                t.setEntity(new KeyDoor(BasicColor.YELLOW));
+                return t;
+            }
+            else if (type ==8) {
+                t.setEntity(new KeyDoor(BasicColor.GREEN));
+                return t;
+            }
+            else if (type ==9) {
+                t.setEntity(new KeyDoor(BasicColor.BLUE));
+                return t;
+            }else if (type ==10) {
+                t.setEntity(new Key(BasicColor.RED));
+                return t;
+            }else if (type ==11) {
+                t.setEntity(new Key(BasicColor.YELLOW));
+                return t;
+            }else if (type ==12) {
+                t.setEntity(new Key(BasicColor.GREEN));
+                return t;
+            }else if (type ==13) {
+                t.setEntity(new Key(BasicColor.BLUE));
+                return t;
             }
         }
         return null;
