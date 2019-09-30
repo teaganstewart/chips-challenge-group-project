@@ -114,8 +114,12 @@ public class GraphicalView {
 		if(entity instanceof TreasureDoor) {
 			return treasureDoor;
 		}
-		
 		return null;
+
+	}
+	
+	public ImageIcon getSlotIcon() {
+		return slot;
 	}
 
 	/**
@@ -192,6 +196,6 @@ public class GraphicalView {
 	private final ImageIcon treasureDoor = new ImageIcon(getClass().getResource("icons/treasure-door.png"));
 	// Entities
 	private final ImageIcon treasure = new ImageIcon(getClass().getResource("icons/treasure.png"));
-	
+	private final ImageIcon slot = new ImageIcon(getClass().getResource("icons/slot.png"));
 	
 }

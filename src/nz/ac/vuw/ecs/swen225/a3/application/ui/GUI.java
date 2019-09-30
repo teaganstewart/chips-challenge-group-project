@@ -19,7 +19,7 @@ public class GUI extends JFrame {
 	private Game game;
 	private JFrame main;
 	private GamePanel gamePanel;
-	private JPanel infoPanel;
+	private InfoPanel infoPanel;
 
 	public GUI(){
 		game = new Game();
@@ -78,7 +78,7 @@ public class GUI extends JFrame {
 		//window layout
 		gamePanel = new GamePanel(game);
 		infoPanel = new InfoPanel(game);
-
+		infoPanel.setBackground(Color.BLUE);
 		main.add(gamePanel, BorderLayout.CENTER);
 		main.add(infoPanel, BorderLayout.LINE_END);
 
@@ -230,7 +230,11 @@ public class GUI extends JFrame {
 	public void updateBoard() {
 		gamePanel.clearBoard();
 		gamePanel.drawBoard();
+		
+		infoPanel.clearInventory();
+		infoPanel.drawInventory();
 		gamePanel.updateUI();
+		
 	}
 
 }

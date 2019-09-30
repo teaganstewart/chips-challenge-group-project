@@ -18,6 +18,7 @@ public class GamePanel extends JPanel {
 		game.getMaze().setTiles(game.getMaze().getTiles());
 		game.getMaze().setGame(game);	
 		render = new Render(game,game.getMaze());
+		game.setRender(render);
 		drawBoard();
 		
 		setVisible(true);
@@ -52,8 +53,4 @@ public class GamePanel extends JPanel {
 		}
 	}
 	
-	public Render getRender() {
-		return render;
-	}
-
 }

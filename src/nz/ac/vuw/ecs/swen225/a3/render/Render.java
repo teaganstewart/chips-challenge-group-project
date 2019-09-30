@@ -1,7 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.render;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
-
 import java.awt.BorderLayout;
 import javax.swing.*;
 import nz.ac.vuw.ecs.swen225.a3.application.*;
@@ -12,13 +11,13 @@ public class Render {
 	private Maze maze;
 	private GraphicalView images;
 	private JLabel[][] board;
+	private JLabel[] inventory;
 
 	public Render(Game g, Maze m) {
 		images = new GraphicalView(g, this);
 		game = g;
 		maze = m;
 	}
-
 
 	public JLabel[][] createGrid() {
 
@@ -55,7 +54,30 @@ public class Render {
 				board[i][j].add(new JLabel((images.getEntityIcon(onTile))));
 			}
 		}
+
+	}
+
+	public JLabel[] renderInventory() {
+		Player player = maze.getPlayer();
+		inventory = new JLabel[8];
+
+		for(int i=0; i<player.getInventory().size(); i++) {
+			Entity entity = player.getInventoryAt(i);
+			
+			inventory[i] = new JLabel(images.getSlotIcon());
+			inventory[i].setLayout(new BorderLayout());
+			if(entity instanceof Key) {
+				
+				BasicColor keyColor = ((Key) entity).getColor();
+
+				inventory[i].add(new JLabel((images.getKeyIcon(keyColor))));
+			}
+		}
+		for(int i= player.getInventory().size(); i<8; i++) {
+			inventory[i] = new JLabel(images.getSlotIcon());
+		}
 		
+		return inventory;
 	}
 
 	public JLabel[][] getVisibleBoard() {
@@ -67,33 +89,33 @@ public class Render {
 
 		if(!checkTop(playerCoord)) {
 			startRow = 0;
-			
+
 		}
 		if(!checkBottom(playerCoord)) {
 			startRow = board.length-9;
-			
+
 		}
 		if(!checkLeft(playerCoord)) {
 			startCol = 0;
-			
+
 		}
 		if(!checkRight(playerCoord)) {
 			startCol = board[0].length-9;
-			
+
 		}
-		
+
 		for(int i=0; i<9; i++) {
 			for(int j=0; j<9; j++) {
-				
+
 				visibleBoard[i][j] = board[startRow+i][startCol+j];
-				
-				
+
+
 			}
 		}
-		
+
 		return visibleBoard;
 	}
-	
+
 	public GraphicalView getImages() {
 		return images;
 	}
@@ -147,7 +169,7 @@ public class Render {
 	 * 		Returns whether player is close to bottom.
 	 */
 	public boolean checkBottom(Coordinate playerCoord) {
-		
+
 		return (playerCoord.getRow() > board.length-5) ? false : true;
 	}
 
@@ -160,7 +182,7 @@ public class Render {
 	public JLabel[][] getBoard() {
 		return board;
 	}
-	
+
 	public void setMaze(Maze m) {
 		this.maze = m;
 	}

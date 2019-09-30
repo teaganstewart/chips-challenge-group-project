@@ -6,6 +6,7 @@ import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LevelMaker;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
+import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 public class Game {
     int level;
@@ -14,6 +15,7 @@ public class Game {
 
     private Player player;
     private Maze maze;
+    private Render render;
     boolean endGame;
 
     public Game(){
@@ -48,8 +50,6 @@ public class Game {
 
     public void loadGame(){
         Level level;
-        LevelMaker levelMaker = new LevelMaker();
-
         try{
             level = LoadUtils.resumeGame();
             if(level.getMaze().getTiles().length<9 || level.getMaze().getTiles()[0].length<9) {
@@ -62,10 +62,7 @@ public class Game {
         }
 
         maze = level.getMaze();
-       
-       
         player = maze.getPlayer();
-
 
     }
 
@@ -93,10 +90,17 @@ public class Game {
         return treasures;
     }
     
+    public void setRender(Render r) {
+    	render = r;
+    }
+    public Render getRender() {
+    	return render;
+    }
+    
     public void nextLevel(GamePanel gp) {
 		setLevel(getLevel()+1); 
 		Level l = LoadUtils.loadLevel(getLevel());
-		gp.getRender().setMaze(l.getMaze());
+		render.setMaze(l.getMaze());
 		setMaze(l.getMaze());
 		setPlayer(l.getMaze().getPlayer());
 		setTiles(l.getMaze().getTiles());
@@ -105,4 +109,6 @@ public class Game {
 //		Player player = game.getPlayer();
 //		player.setInventory(new ArrayList<Entity>());
     }
+    
+  
 }
