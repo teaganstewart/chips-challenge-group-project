@@ -12,7 +12,7 @@ public abstract class Moveable {
 
 	private Coordinate coordinate;
 	// Initialize direction to avoid null pointers and simulate realistic gameplay
-	private Direction direction = Direction.RIGHT;
+	private Direction direction = Direction.DOWN;
 	private Direction lastDirection;
 
 	public Moveable(Coordinate coordinate) {

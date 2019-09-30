@@ -32,7 +32,7 @@ public class Render {
 				tile.setLayout(new BorderLayout());
 				board[i][j] = tile;
 				if(playerCoordinate.getRow()==i && playerCoordinate.getCol()==j) {
-					board[i][j].add(new JLabel(images.getPlayerIcon("chip")));
+					board[i][j].add(new JLabel(images.getPlayerIcon(maze.getPlayer().getDirection())));
 				}
 				renderEntities(i,j,tiles);
 			}
