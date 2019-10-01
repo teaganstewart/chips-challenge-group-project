@@ -60,6 +60,11 @@ public class GUI extends JFrame {
           updateBoard();
         }
 
+        // Check if level needs to be reset. This could be if the player dies for example
+        if(maze.isResetLevel()){
+          game.loadGame();
+        }
+
       }
     });
 

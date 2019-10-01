@@ -28,6 +28,8 @@ public class Maze implements Saveable {
   private boolean goalReached;
   private String hintMessage = "";
 
+  private boolean resetLevel = false;
+
   /**
    * @param tiles
    * @param player
@@ -109,7 +111,13 @@ public class Maze implements Saveable {
       return false;
 
     if (type == Tile.TileType.FIRE){
-      return player.isInInventory(new FireBoots());
+      if(player.isInInventory(new FireBoots())){
+        return true;
+      }else{
+        // Player has died. Restart the level
+        resetLevel = true;
+        return false;
+      }
     }
 
     // -- ALL TRUE CASES, regardless --//
@@ -168,6 +176,14 @@ public class Maze implements Saveable {
   }
 
   /* Getters and Setters */
+
+  public boolean isResetLevel() {
+    return resetLevel;
+  }
+
+  public void setResetLevel(boolean resetLevel) {
+    this.resetLevel = resetLevel;
+  }
 
   /**
    *

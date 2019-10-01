@@ -169,7 +169,9 @@ public class MazeTest {
     public void testWalkFireBlockNotValid(){
         tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.FIRE);
 
+        // If Player dies and level is restarted. This does not count as a move
         assertFalse(maze.movePlayer(Direction.RIGHT));
+        // At this point, player has died and level will be restarted. It is too difficult to test here
     }
 
     /**
