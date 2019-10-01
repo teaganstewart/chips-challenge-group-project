@@ -7,13 +7,13 @@ import javax.json.JsonObject;
  * */
 public class FireBoots implements Entity {
 
-    public FireBoots(){
+	public FireBoots() {
 
-    }
+	}
 
-    @Override
-    public JsonObject toJSON() {
-        // TODO return proper JSON object
-        return null;
-    }
+	@Override
+	public JsonObject toJSON() {
+		// TODO return proper JSON object
+		return null;
+	}
 }

@@ -16,37 +16,37 @@ import javax.json.JsonObject;
  */
 public class Coordinate implements Saveable {
 
-  private final int row;
-  private final int col;
+	private final int row;
+	private final int col;
 
-  /**
-   * Sets up a brand new Coordinate
-   * 
-   * @param row the row
-   * @param col the col
-   */
-  public Coordinate(int row, int col) {
-    this.row = row;
-    this.col = col;
-  }
+	/**
+	 * Sets up a brand new Coordinate
+	 * 
+	 * @param row the row
+	 * @param col the col
+	 */
+	public Coordinate(int row, int col) {
+		this.row = row;
+		this.col = col;
+	}
 
-  /**
-   * Returns a row
-   * 
-   * @return the row
-   */
-  public int getRow() {
-    return row;
-  }
+	/**
+	 * Returns a row
+	 * 
+	 * @return the row
+	 */
+	public int getRow() {
+		return row;
+	}
 
-  /**
-   * Returns a column
-   * 
-   * @return the column
-   */
-  public int getCol() {
-    return col;
-  }
+	/**
+	 * Returns a column
+	 * 
+	 * @return the column
+	 */
+	public int getCol() {
+		return col;
+	}
 
 //	@Override
 //	public boolean equals(Object o) {
@@ -55,31 +55,31 @@ public class Coordinate implements Saveable {
 //		return c.getRow() == row && c.getCol() == col;
 //	}
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Coordinate other = (Coordinate) obj;
-    if (col != other.col)
-      return false;
-    if (row != other.row)
-      return false;
-    return true;
-  }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Coordinate other = (Coordinate) obj;
+		if (col != other.col)
+			return false;
+		if (row != other.row)
+			return false;
+		return true;
+	}
 
-  @Override
-  public String toString() {
-    return "[" + row + ", " + col + "]";
-  }
+	@Override
+	public String toString() {
+		return "[" + row + ", " + col + "]";
+	}
 
-  @Override
-  public JsonObject toJSON() {
-    JsonObject coord = Json.createObjectBuilder().add("row", row).add("col", col).build();
+	@Override
+	public JsonObject toJSON() {
+		JsonObject coord = Json.createObjectBuilder().add("row", row).add("col", col).build();
 
-    return coord;
-  }
+		return coord;
+	}
 }

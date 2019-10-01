@@ -7,13 +7,13 @@ import javax.json.JsonObject;
  * */
 public class IceBoots implements Entity {
 
-    public IceBoots(){
+	public IceBoots() {
 
-    }
+	}
 
-    @Override
-    public JsonObject toJSON() {
-        // TODO return proper JSON object
-        return null;
-    }
+	@Override
+	public JsonObject toJSON() {
+		// TODO return proper JSON object
+		return null;
+	}
 }

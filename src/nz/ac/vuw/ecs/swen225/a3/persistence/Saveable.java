@@ -10,11 +10,11 @@ import javax.json.JsonObject;
  */
 public interface Saveable {
 
-  /**
-   * Returns a JSON formatted string for the object this is implemented on.
-   * 
-   * @return JSON representation of an object.
-   */
-  JsonObject toJSON();
+	/**
+	 * Returns a JSON formatted string for the object this is implemented on.
+	 * 
+	 * @return JSON representation of an object.
+	 */
+	JsonObject toJSON();
 
 }

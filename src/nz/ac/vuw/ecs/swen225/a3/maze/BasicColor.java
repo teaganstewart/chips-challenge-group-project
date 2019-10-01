@@ -10,6 +10,6 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  */
 public enum BasicColor {
 
-  RED, GREEN, YELLOW, BLUE;
+	RED, GREEN, YELLOW, BLUE;
 
 }

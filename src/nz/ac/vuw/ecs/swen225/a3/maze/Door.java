@@ -9,40 +9,40 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  */
 public abstract class Door implements Entity {
 
-  private boolean locked;
+	private boolean locked;
 
-  /**
-   * Creates a new door object. By default, every new door should be locked.
-   *
-   */
-  public Door() {
-    this.locked = true;
-  }
+	/**
+	 * Creates a new door object. By default, every new door should be locked.
+	 *
+	 */
+	public Door() {
+		this.locked = true;
+	}
 
-  /**
-   * Used to check whether or not the door is locked.
-   * 
-   * @return if the door is locked or unlocked
-   */
-  public boolean isLocked() {
-    return locked;
-  }
+	/**
+	 * Used to check whether or not the door is locked.
+	 * 
+	 * @return if the door is locked or unlocked
+	 */
+	public boolean isLocked() {
+		return locked;
+	}
 
-  /**
-   * A protected method for unlocking the door. We don't want this to be public,
-   * as we don't want the state of the door being controlled by something outside
-   * of the door.
-   */
-  public void unlock() {
-    locked = false;
-  }
+	/**
+	 * A protected method for unlocking the door. We don't want this to be public,
+	 * as we don't want the state of the door being controlled by something outside
+	 * of the door.
+	 */
+	public void unlock() {
+		locked = false;
+	}
 
-  /**
-   * Used for the different forms of unlocking
-   * 
-   * @param player
-   * @return validity
-   */
-  public abstract boolean onTouch(Player player);
+	/**
+	 * Used for the different forms of unlocking
+	 * 
+	 * @param player
+	 * @return validity
+	 */
+	public abstract boolean onTouch(Player player);
 
 }
