@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
+import nz.ac.vuw.ecs.swen225.a3.persistence.LevelMaker;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 
 public class Game {
