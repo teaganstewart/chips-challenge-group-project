@@ -163,9 +163,6 @@ public class Render {
 		return (playerCoord.getRow() > board.length-5) ? false : true;
 	}
 
-		return (playerCoord.getRow() > board.length - 5) ? false : true;
-	}
-
 	/**
 	 *
 	 * @return Returns the board as an array of image icons

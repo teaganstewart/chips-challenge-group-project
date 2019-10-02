@@ -47,18 +47,6 @@ public class Game {
 
   }
 
-  public void loadGame() {
-    Level level;
-    try {
-      level = LoadUtils.resumeGame();
-      if (level.getMaze().getTiles().length < 9 || level.getMaze().getTiles()[0].length < 9) {
-        throw new NullPointerException();
-      }
-    } catch (NullPointerException e) {
-      level = LoadUtils.loadLevel(1);
-      setLevel(1);
-    }
-
     public void loadGame(){
         Level level;
         try{
@@ -100,24 +88,6 @@ public class Game {
   public int getTreasures() {
     return treasures;
   }
-
-  public void nextLevel(GamePanel gp) {
-    setLevel(getLevel() + 1);
-    Level l = LoadUtils.loadLevel(getLevel());
-    gp.getRender().setMaze(l.getMaze());
-    setMaze(l.getMaze());
-    setPlayer(l.getMaze().getPlayer());
-    setTiles(l.getMaze().getTiles());
-
-    public int getTime(){
-        return time;
-    }
-    public int getLevel(){
-        return level;
-    }
-    public int getTreasures(){
-        return treasures;
-    }
     
     public void setRender(Render r) {
     	render = r;
