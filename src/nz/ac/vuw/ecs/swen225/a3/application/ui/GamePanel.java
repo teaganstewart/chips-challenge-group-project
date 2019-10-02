@@ -50,28 +50,6 @@ public class GamePanel extends JPanel {
 			}
 		}
 	}
-
-
-	public void drawString(Graphics g2, String string) {
-		// TODO Auto-generated method stub
-		g2.drawString("hiiiiiiiiiiiiiiiiidsadsadsadadajsdhahadjhdasdasaiisaddddddddddddddddddddddddddiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"
-				+ "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"
-				+ "iiiiiiiiiiiiiiiiiiiiii",300,100);
-	}
-	
-	public void paintComponent(Graphics g){
-		
-		super.paintComponent(g);
-		
-		Graphics2D g2 = (Graphics2D)g;
-
-		if(game.getMaze().isOnHint()) {
-			drawString(g2, "");
-		}
-		
-		
-		
-	}
 	
 	
 }

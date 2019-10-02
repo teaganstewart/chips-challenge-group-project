@@ -221,6 +221,10 @@ public class GUI extends JFrame {
 		gamePanel.clearBoard();
 		gamePanel.drawBoard();
 		
+		//infoPanel.hintPanel();
+		if (game.getMaze().isOnHint()) infoPanel.setHint(game.getMaze().getHintMessage());
+		else infoPanel.setDefaultHint();
+		
 		infoPanel.clearInventory();
 		infoPanel.drawInventory();
 		gamePanel.updateUI();
