@@ -12,39 +12,39 @@ import javax.json.JsonObject;
  */
 public class TreasureDoor extends Door {
 
-  /**
-   * Creates a new door object, corresponding to a certain key colour. By default,
-   * every new door should be locked.
-   *
-   */
-  public TreasureDoor() {
-  }
+	/**
+	 * Creates a new door object, corresponding to a certain key colour. By default,
+	 * every new door should be locked.
+	 *
+	 */
+	public TreasureDoor() {
+	}
 
-  @Override
-  public boolean onTouch(Player pl) {
+	@Override
+	public boolean onTouch(Player pl) {
 
-    // safety check that the player has touched the door
-    if (pl == null)
-      return false;
+		// safety check that the player has touched the door
+		if (pl == null)
+			return false;
 
-    if (Treasure.allCollected()) {
-      unlock();
-      return true;
-    }
+		if (Treasure.allCollected()) {
+			unlock();
+			return true;
+		}
 
-    return false;
+		return false;
 
-  }
+	}
 
-  /**
-   * Produce a JSON object for this TreasureDoor
-   * 
-   * @return Json object representing this TreasureDoor
-   */
-  @Override
-  public JsonObject toJSON() {
-    JsonObject value = Json.createObjectBuilder().add("EntityClass", TreasureDoor.class.getSimpleName())
-        .add("locked", isLocked()).build();
-    return value;
-  }
+	/**
+	 * Produce a JSON object for this TreasureDoor
+	 * 
+	 * @return Json object representing this TreasureDoor
+	 */
+	@Override
+	public JsonObject toJSON() {
+		JsonObject value = Json.createObjectBuilder().add("EntityClass", TreasureDoor.class.getSimpleName())
+				.add("locked", isLocked()).build();
+		return value;
+	}
 }
