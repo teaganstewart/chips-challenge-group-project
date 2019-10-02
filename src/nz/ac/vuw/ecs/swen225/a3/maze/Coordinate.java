@@ -6,10 +6,10 @@ import javax.json.Json;
 import javax.json.JsonObject;
 
 /**
- * The Coordinate class, purely to store coordinates of objects in a simpler way.
- * Comes with an overridden equals method, as well as getters for the row and col.
- * This should never be reused, as it is purely for storing a row and col, so no
- * setters are necessary.
+ * The Coordinate class, purely to store coordinates of objects in a simpler
+ * way. Comes with an overridden equals method, as well as getters for the row
+ * and col. This should never be reused, as it is purely for storing a row and
+ * col, so no setters are necessary.
  *
  * @author Ethan Munn
  *
@@ -21,10 +21,9 @@ public class Coordinate implements Saveable {
 
 	/**
 	 * Sets up a brand new Coordinate
-	 * @param row
-	 * 		the row
-	 * @param col
-	 * 		the col
+	 * 
+	 * @param row the row
+	 * @param col the col
 	 */
 	public Coordinate(int row, int col) {
 		this.row = row;
@@ -33,8 +32,8 @@ public class Coordinate implements Saveable {
 
 	/**
 	 * Returns a row
-	 * @return
-	 * 		the row
+	 * 
+	 * @return the row
 	 */
 	public int getRow() {
 		return row;
@@ -42,8 +41,8 @@ public class Coordinate implements Saveable {
 
 	/**
 	 * Returns a column
-	 * @return
-	 * 		the column
+	 * 
+	 * @return the column
 	 */
 	public int getCol() {
 		return col;
@@ -79,9 +78,7 @@ public class Coordinate implements Saveable {
 
 	@Override
 	public JsonObject toJSON() {
-		JsonObject coord = Json.createObjectBuilder()
-				.add("row", row)
-				.add("col", col).build();
+		JsonObject coord = Json.createObjectBuilder().add("row", row).add("col", col).build();
 
 		return coord;
 	}

@@ -7,8 +7,9 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 /**
- * The HintTile class, which allows the player to view a hint message. This class may be viewed
- * as extraneous as it only holds a string, but in my opinion it helps keep the classes clean.
+ * The HintTile class, which allows the player to view a hint message. This
+ * class may be viewed as extraneous as it only holds a string, but in my
+ * opinion it helps keep the classes clean.
  * 
  * @author Ethan Munn
  *
@@ -16,11 +17,12 @@ import javax.json.JsonObjectBuilder;
 public class HintTile extends Tile implements Saveable {
 
 	private final String message;
-	
+
 	/**
-	 * 		The tile the hint is on
-	 * @param message
-	 * 		The message to display upon this hint being touched.
+	 * The tile the hint is on
+	 * 
+	 * @param coord
+	 * @param message The message to display upon this hint being touched.
 	 */
 	public HintTile(Coordinate coord, String message) {
 		super(coord, TileType.HINT);
@@ -29,8 +31,8 @@ public class HintTile extends Tile implements Saveable {
 
 	/**
 	 * Gets the helpful hint so the player knows what to do.
-	 * @return
-	 * 		The message
+	 * 
+	 * @return The message
 	 */
 	public String getMessage() {
 		return message;
@@ -38,6 +40,7 @@ public class HintTile extends Tile implements Saveable {
 
 	/**
 	 * Produce a Json representation of this HintTile
+	 * 
 	 * @return Json object representation
 	 */
 	@Override
@@ -47,12 +50,11 @@ public class HintTile extends Tile implements Saveable {
 		jsonObjectBuilder.add("Coordinate", getCoordinate().toJSON());
 		jsonObjectBuilder.add("Message", message);
 
-		if (getEntity() != null){
+		if (getEntity() != null) {
 			jsonObjectBuilder.add("Entity", getEntity().toJSON());
 		}
 
 		return jsonObjectBuilder.build();
 	}
 
-	
 }

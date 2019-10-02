@@ -1,6 +1,5 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
@@ -11,11 +10,13 @@ import java.util.ArrayList;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+
 /**
  * @author Josh
  *
- * Class which holds all information about the maze and its tiles, entities, player, ect.
- * Also has logic to determine what is allowed to happen with the objects in the maze
+ *         Class which holds all information about the maze and its tiles,
+ *         entities, player, ect. Also has logic to determine what is allowed to
+ *         happen with the objects in the maze
  *
  */
 

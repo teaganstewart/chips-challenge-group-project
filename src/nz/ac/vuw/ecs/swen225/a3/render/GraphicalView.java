@@ -33,18 +33,14 @@ public class GraphicalView {
 	/**
 	 * Used to create the board grid.
 	 *
-	 * @param i
-	 * x-coordinate value of tile we are checking.
-	 * @param j
-	 * y-coordinate value of tile we are checking.
-	 * @param m
-	 * The current maze.
-	 * @return
-	 * Returns the correct image icon for this tile.
+	 * @param i x-coordinate value of tile we are checking.
+	 * @param j y-coordinate value of tile we are checking.
+	 * @param m The current maze.
+	 * @return Returns the correct image icon for this tile.
 	 */
 	public ImageIcon getTileIcon(int i, int j, Maze m) {
 		Tile[][] tiles = m.getTiles();
-		switch(tiles[i][j].getType()) {
+		switch (tiles[i][j].getType()) {
 		case FLOOR:
 			return floor;
 		case WALL:
@@ -61,13 +57,11 @@ public class GraphicalView {
 	/**
 	 * Gets the key's icon.
 	 *
-	 * @param color
-	 * The color of the key.
-	 * @return
-	 * The image of the key.
+	 * @param color The color of the key.
+	 * @return The image of the key.
 	 */
 	public ImageIcon getKeyIcon(BasicColor color) {
-		switch(color) {
+		switch (color) {
 		case RED:
 			return redKey;
 		case GREEN:
@@ -85,13 +79,11 @@ public class GraphicalView {
 	/**
 	 * Gets the door's icon.
 	 *
-	 * @param color
-	 * The color of the door.
-	 * @return
-	 * The image of the door..
+	 * @param color The color of the door.
+	 * @return The image of the door..
 	 */
 	public ImageIcon getDoorIcon(BasicColor color) {
-		switch(color) {
+		switch (color) {
 		case RED:
 			return redDoor;
 		case GREEN:
@@ -106,9 +98,8 @@ public class GraphicalView {
 
 	}
 
-	
 	public ImageIcon getEntityIcon(Entity entity) {
-		if(entity instanceof Treasure) {
+		if (entity instanceof Treasure) {
 			return treasure;
 		}
 		if(entity instanceof TreasureDoor) {
@@ -123,24 +114,23 @@ public class GraphicalView {
 	}
 
 	/**
-	 * A method that both resets all of the players and weapons on a grid, then draws
-	 * them in their correct position.
+	 * A method that both resets all of the players and weapons on a grid, then
+	 * draws them in their correct position.
 	 *
 	 */
 	public JLabel[][] drawOnGrid() {
 
 		for (int i = 0; i < renderer.getBoard().length; i++) {
-			for (int j = 0; j <  renderer.getBoard().length; j++) {
+			for (int j = 0; j < renderer.getBoard().length; j++) {
 
-				JLabel player = checkForPlayer(j,i);
+				JLabel player = checkForPlayer(j, i);
 				if (player != null) {
 					renderer.getBoard()[i][j].add(player);
 				}
 
 				try {
 					renderer.getBoard()[i][j].remove(1);
-				}
-				catch(ArrayIndexOutOfBoundsException e) {
+				} catch (ArrayIndexOutOfBoundsException e) {
 
 				}
 
@@ -151,14 +141,13 @@ public class GraphicalView {
 	}
 
 	/**
-	 * 	Allows our other methods to check where the players are/ if a player is on a tile.
+	 * Allows our other methods to check where the players are/ if a player is on a
+	 * tile.
 	 * 
-	 * @param x
-	 * 		x-coordinate value of tile we are checking.
-	 * @param y
-	 * 		y-coordinate value of tile we are checking.
-	 * @return
-	 * 		Returns the image of the player that should be on the tile at the give coordinates.
+	 * @param x x-coordinate value of tile we are checking.
+	 * @param y y-coordinate value of tile we are checking.
+	 * @return Returns the image of the player that should be on the tile at the
+	 *         give coordinates.
 	 */
 	private JLabel checkForPlayer(int x, int y) {
 		Player p = game.getMaze().getPlayer();
@@ -181,13 +170,13 @@ public class GraphicalView {
 	private final ImageIcon wall = new ImageIcon(getClass().getResource("icons/floor2.png"));
 	private final ImageIcon hint = new ImageIcon(getClass().getResource("icons/hint.png"));
 	private final ImageIcon goal = new ImageIcon(getClass().getResource("icons/goal.png"));
-	
+
 	// Keys
 	private final ImageIcon greenKey = new ImageIcon(getClass().getResource("icons/green-key.png"));
 	private final ImageIcon blueKey = new ImageIcon(getClass().getResource("icons/blue-key.png"));
 	private final ImageIcon redKey = new ImageIcon(getClass().getResource("icons/red-key.png"));
 	private final ImageIcon yellowKey = new ImageIcon(getClass().getResource("icons/yellow-key.png"));
-	
+
 	// Doors
 	private final ImageIcon greenDoor = new ImageIcon(getClass().getResource("icons/green-keydoor.png"));
 	private final ImageIcon blueDoor = new ImageIcon(getClass().getResource("icons/blue-keydoor.png"));

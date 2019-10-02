@@ -21,7 +21,7 @@ public class GUI extends JFrame {
 	private GamePanel gamePanel;
 	private InfoPanel infoPanel;
 
-	public GUI(){
+	public GUI() {
 		game = new Game();
 		createWindow();
 		main.addKeyListener(new KeyListener() {
@@ -41,7 +41,7 @@ public class GUI extends JFrame {
 				if (e.getKeyCode() == KeyEvent.VK_UP) {
 					maze.movePlayer(Direction.UP);
 					updateBoard();
-					
+
 				}
 				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 					maze.movePlayer(Direction.DOWN);
@@ -64,6 +64,12 @@ public class GUI extends JFrame {
 				
 				
 
+				// Check if level needs to be reset. This could be if the player dies for
+				// example
+				if (maze.isResetLevel()) {
+					game.loadGame();
+				}
+
 			}
 		});
 
@@ -72,53 +78,53 @@ public class GUI extends JFrame {
 	/**
 	 * Create Game window
 	 */
-	public void createWindow(){
+	public void createWindow() {
 		main = new JFrame("Chap's Challenge");
 		main.setLayout(new BorderLayout());
 
-		//Generate menu
+		// Generate menu
 		createMenuBar();
 
-		//window layout
+		// window layout
 		gamePanel = new GamePanel(game);
 		infoPanel = new InfoPanel(game);
 		infoPanel.setBackground(Color.BLUE);
 		main.add(gamePanel, BorderLayout.CENTER);
 		main.add(infoPanel, BorderLayout.LINE_END);
 
-		//Set window size
-		main.setSize(new Dimension(800,600));
+		// Set window size
+		main.setSize(new Dimension(800, 600));
 		main.setResizable(false);
-		main.setMinimumSize(new Dimension(800,600));
-		main.setMaximumSize(new Dimension(1600,1800));
+		main.setMinimumSize(new Dimension(800, 600));
+		main.setMaximumSize(new Dimension(1600, 1800));
 
-
-		//Display window at the center of the screen
+		// Display window at the center of the screen
 		main.pack();
 		main.setVisible(true);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		main.setLocation(dim.width/2-main.getSize().width/2, dim.height/2-main.getSize().height/2);
+		main.setLocation(dim.width / 2 - main.getSize().width / 2, dim.height / 2 - main.getSize().height / 2);
 		main.setFocusable(true);
 	}
 
 	/**
 	 * Create menu bar with all the menu items
 	 */
-	public void createMenuBar(){
+	public void createMenuBar() {
 
-		//Declare variable
+		// Declare variable
 		JMenuBar menuBar;
 		JMenu fileMenu, gameMenu;
-		JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, resume_Item, pause_Item, help_Item;
+		JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, resume_Item,
+				pause_Item, help_Item;
 
-		//Initialize variables
+		// Initialize variables
 		menuBar = new JMenuBar();
 		fileMenu = new JMenu("File");
 		gameMenu = new JMenu("Game");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		gameMenu.setMnemonic(KeyEvent.VK_G);
 
-		//File Menu item initialize and key bind
+		// File Menu item initialize and key bind
 		exitItem = new JMenuItem("Exit");
 		KeyStroke ctrlXKeyStroke = KeyStroke.getKeyStroke("control X");
 		exitItem.setAccelerator(ctrlXKeyStroke);
@@ -134,7 +140,7 @@ public class GUI extends JFrame {
 		loadGameItem.setAccelerator(ctrlRKeyStroke);
 		loadGameItem.addActionListener((event) -> System.out.println("Load"));
 
-		//Game Menu item initialize and key bind
+		// Game Menu item initialize and key bind
 		restart_level_Item = new JMenuItem("Restart Level");
 		KeyStroke ctrlPKeyStroke = KeyStroke.getKeyStroke("control P");
 		restart_level_Item.setAccelerator(ctrlPKeyStroke);
@@ -149,7 +155,7 @@ public class GUI extends JFrame {
 		pause_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0));
 		pause_Item.addActionListener((event) -> System.out.println("Pause game"));
 
-		resume_Item = new JMenuItem("Resume game",KeyEvent.VK_ESCAPE);
+		resume_Item = new JMenuItem("Resume game", KeyEvent.VK_ESCAPE);
 		resume_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
 		resume_Item.addActionListener((event) -> System.out.println("Resume game"));
 
@@ -157,76 +163,58 @@ public class GUI extends JFrame {
 		KeyStroke ctrlHKeyStroke = KeyStroke.getKeyStroke("control H");
 		help_Item.setAccelerator(ctrlHKeyStroke);
 		help_Item.addActionListener(e -> {
-			if(JOptionPane.showConfirmDialog(
-					main,
-					"Welcome to the help page  :D\n" +
-							"Below are some instructions to helps get you started:\n\n" +
-							"1. Player can move by using the arrow keys.\n" +
-							"2. Different key color are use to unlock different door color.\n" +
-							"3. Player must collect all the treasures to pass the level.\n" +
-							"4. Player must complete the level before the timer runs out.\n\n" +
+			if (JOptionPane.showConfirmDialog(main,
+					"Welcome to the help page  :D\n" + "Below are some instructions to helps get you started:\n\n"
+							+ "1. Player can move by using the arrow keys.\n"
+							+ "2. Different key color are use to unlock different door color.\n"
+							+ "3. Player must collect all the treasures to pass the level.\n"
+							+ "4. Player must complete the level before the timer runs out.\n\n" +
 
-                            "KeyBoard shortcuts:\n" +
-                            "Ctrl+X - Exit\n" +
-                            "Ctrl+S - Save & Exit\n" +
-                            "Ctrl+R - Load\n" +
-                            "Ctrl+P - Restart Level\n" +
-                            "Ctrl+1 - Restart Game\n" +
-                            "Space Bar - Pause\n" +
-                            "Esc - Resume\n\n\n" +
-                            "Lastly do not forget to have fun   ; )",
+							"KeyBoard shortcuts:\n" + "Ctrl+X - Exit\n" + "Ctrl+S - Save & Exit\n" + "Ctrl+R - Load\n"
+							+ "Ctrl+P - Restart Level\n" + "Ctrl+1 - Restart Game\n" + "Space Bar - Pause\n"
+							+ "Esc - Resume\n\n\n" + "Lastly do not forget to have fun   ; )",
 
+					"Help Page",
 
-                            "Help Page",
-
-                            JOptionPane.CLOSED_OPTION) == JOptionPane.YES_OPTION){
+					JOptionPane.CLOSED_OPTION) == JOptionPane.YES_OPTION) {
 			}
 		});
 
-		//Add file items to file menu
+		// Add file items to file menu
 		fileMenu.add(loadGameItem);
 		fileMenu.add(saveAndExitItem);
 		fileMenu.add(exitItem);
 
-		//Add game items to game menu
+		// Add game items to game menu
 		gameMenu.add(restart_level_Item);
 		gameMenu.add(restart_game_Item);
 		gameMenu.add(pause_Item);
 		gameMenu.add(resume_Item);
 		gameMenu.add(help_Item);
 
-		//Add file and game menu to menu bar
+		// Add file and game menu to menu bar
 		menuBar.add(fileMenu);
 		menuBar.add(gameMenu);
 		main.setJMenuBar(menuBar);
 
 		/**
-		 * File Menu
-		 *      Load Game
-		 *      Save & Exit
-		 *      Exit
-		 * Game Menu
+		 * File Menu Load Game Save & Exit Exit Game Menu
 		 *
-		 *      Restart Level
-		 *      Restart Game
-		 *      Pause
-		 *      Resume
-		 *      Help
+		 * Restart Level Restart Game Pause Resume Help
 		 */
 	}
 
-	public void displayTime(){
+	public void displayTime() {
 		int time = game.getTime();
 	}
 
-	public void displayLevel(){
+	public void displayLevel() {
 		int level = game.getLevel();
 	}
 
 	public void displayTreasure() {
 		int treasures = game.getTreasures();
 	}
-
 
 	/**
 	 * Redraws the game panel.

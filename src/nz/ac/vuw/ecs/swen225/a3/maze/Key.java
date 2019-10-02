@@ -10,22 +10,22 @@ import javax.json.JsonObject;
  *
  */
 public class Key implements Entity {
-	
+
 	final BasicColor color;
-	
+
 	/**
 	 * Sets up a brand new key.
-	 * @param color
-	 * 		The color of this key.
+	 * 
+	 * @param color The color of this key.
 	 */
-	public Key (BasicColor color) {
+	public Key(BasicColor color) {
 		this.color = color;
 	}
-	
+
 	/**
 	 * Returns the color of this key
-	 * @return
-	 * 		The color.
+	 * 
+	 * @return The color.
 	 */
 	public BasicColor getColor() {
 		return color;
@@ -33,14 +33,13 @@ public class Key implements Entity {
 
 	/**
 	 * Produce a JSON representation of this Key
+	 * 
 	 * @return Json object identical to this key
 	 */
 	@Override
 	public JsonObject toJSON() {
-		JsonObject value = Json.createObjectBuilder()
-				.add("EntityClass", Key.class.getSimpleName())
-				.add("BasicColor", color.toString())
-				.build();
+		JsonObject value = Json.createObjectBuilder().add("EntityClass", Key.class.getSimpleName())
+				.add("BasicColor", color.toString()).build();
 		return value;
 	}
 }

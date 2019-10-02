@@ -1,64 +1,74 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 /**
- *  A class that helps determine where they player should go and where they should be, also helps to tell 
- *  what direction to render the player.
- *  
+ * A class that helps determine where they player should go and where they
+ * should be, also helps to tell what direction to render the player.
+ * 
  * @author Teagan
  *
  */
 public abstract class Moveable {
-
 
 	private Coordinate coordinate;
 	// Initialize direction to avoid null pointers and simulate realistic gameplay
 	private Direction direction = Direction.DOWN;
 	private Direction lastDirection;
 
+	/**
+	 * @param coordinate
+	 * 
+	 *                   Creates a Movable object
+	 */
 	public Moveable(Coordinate coordinate) {
 		this.coordinate = coordinate;
 	}
 
+	/**
+	 * @param entity
+	 * @return validity
+	 */
 	public abstract boolean canWalkOn(Entity entity);
 
-	/*Getters and Setters*/
+	/* Getters and Setters */
 
 	/**
-	 * @return
-	 * 		Returns the direction that the player is facing.
+	 * @return Returns the direction that the player is facing.
 	 */
-	public Direction getDirection(){
+	public Direction getDirection() {
 		return direction;
 	}
 
 	/**
-	 * @param dir
-	 * 		The direction that you want the player to be facing.
+	 * @param dir The direction that you want the player to be facing.
 	 */
-	public void setDirection(Direction dir){
+	public void setDirection(Direction dir) {
 		// Update last direction first
 		lastDirection = direction;
 		direction = dir;
 	}
 
 	/**
-	 * @return
-	 * 		Returns the direction that the player was facing.
+	 * @return Returns the direction that the player was facing.
 	 */
-	public Direction getLastDirection(){
+	public Direction getLastDirection() {
 		return lastDirection;
 	}
 
 	/**
 	 *
-	 * 		The next position that player would move to.
+	 * The next position that player would move to.
+	 * 
+	 * @return coordinate
 	 */
 	public Coordinate getNextPos() {
+
+		if (direction == null)
+			return null;
 
 		int col = coordinate.getCol();
 		int row = coordinate.getRow();
 
-		switch(direction) {
+		switch (direction) {
 		case DOWN:
 			return new Coordinate(row + 1, col);
 		case UP:
@@ -74,37 +84,48 @@ public abstract class Moveable {
 	}
 
 	/**
-     * The direction that the player was at before it moved.
+	 * The direction that the player was at before it moved.
+	 * 
+	 * @return coordinate
 	 */
 	public Coordinate getPrevPos() {
+
+		if (direction == null)
+			return null;
+
 		int col = coordinate.getCol();
 		int row = coordinate.getRow();
 
-
-		switch(direction.inverse()) {
-			case DOWN:
-				return new Coordinate(row + 1, col);
-			case UP:
-				return new Coordinate(row - 1, col);
-			case LEFT:
-				return new Coordinate(row, col - 1);
-			case RIGHT:
-				return new Coordinate(row, col + 1);
-			default:
-				return null;
+		switch (direction.inverse()) {
+		case DOWN:
+			return new Coordinate(row + 1, col);
+		case UP:
+			return new Coordinate(row - 1, col);
+		case LEFT:
+			return new Coordinate(row, col - 1);
+		case RIGHT:
+			return new Coordinate(row, col + 1);
+		default:
+			return null;
 
 		}
 
 	}
 
+	/**
+	 * @return coordinate
+	 */
 	public Coordinate getCoordinate() {
 		return coordinate;
 	}
 
+	/**
+	 * @param c
+	 */
 	public void setCoordinate(Coordinate c) {
 		this.coordinate = c;
 	}
-	
+
 	@Deprecated
 	public int getRow() {
 		return coordinate.getRow();
@@ -112,7 +133,7 @@ public abstract class Moveable {
 
 	@Deprecated
 	public void setRow(int row) {
-		this.coordinate = new Coordinate(row , this.coordinate.getCol());
+		this.coordinate = new Coordinate(row, this.coordinate.getCol());
 	}
 
 	@Deprecated

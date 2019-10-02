@@ -11,19 +11,18 @@ public class GamePanel extends JPanel {
 	private Game game;
 	private Render render;
 
-	public GamePanel(Game game){
+	public GamePanel(Game game) {
 		this.game = game;
-		this.setLayout(new GridLayout(9,9,0,0));
-		this.setBorder(BorderFactory.createEmptyBorder(30,30,30,20));
+		this.setLayout(new GridLayout(9, 9, 0, 0));
+		this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 20));
 		game.getMaze().setTiles(game.getMaze().getTiles());
 		game.getMaze().setGame(game);	
 		render = new Render(game,game.getMaze());
 		game.setRender(render);
 		drawBoard();
-		
+
 		setVisible(true);
 	}
-
 
 	/**
 	 * Clears the game panel so it can be redrawn.
@@ -35,14 +34,13 @@ public class GamePanel extends JPanel {
 			}
 		}
 	}
-	
-	/** 
-	 *  Draws the tiles that can be seen and creates the rest of the board.
+
+	/**
+	 * Draws the tiles that can be seen and creates the rest of the board.
 	 */
 	public void drawBoard() {
 		render.createGrid();
 		JLabel[][] visibleBoard = render.getVisibleBoard();
-
 
 		for (int y = 0; y < 9; y++) {
 			for (int x1 = 0; x1 < 9; x1++) {

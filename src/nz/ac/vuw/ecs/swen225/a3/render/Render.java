@@ -23,34 +23,32 @@ public class Render {
 
 		Tile[][] tiles = maze.getTiles();
 		board = new JLabel[tiles.length][tiles[0].length];
-		Coordinate playerCoordinate =  maze.getPlayer().getCoordinate();
-		for(int i = 0; i<tiles.length; i++) {
-			for(int j = 0; j<tiles[0].length; j++) {
-				JLabel tile = new JLabel(images.getTileIcon(i,j,maze));
+		Coordinate playerCoordinate = maze.getPlayer().getCoordinate();
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[0].length; j++) {
+				JLabel tile = new JLabel(images.getTileIcon(i, j, maze));
 
 				tile.setLayout(new BorderLayout());
 				board[i][j] = tile;
 				if(playerCoordinate.getRow()==i && playerCoordinate.getCol()==j) {
 					board[i][j].add(new JLabel(images.getPlayerIcon(maze.getPlayer().getDirection())));
 				}
-				renderEntities(i,j,tiles);
+				renderEntities(i, j, tiles);
 			}
 		}
 		return board;
 	}
 
 	public void renderEntities(int i, int j, Tile[][] tiles) {
-		if(tiles[i][j].getEntity()!=null) {
+		if (tiles[i][j].getEntity() != null) {
 			Entity onTile = tiles[i][j].getEntity();
-			if(onTile instanceof Key) {
+			if (onTile instanceof Key) {
 				BasicColor keyColor = ((Key) onTile).getColor();
 				board[i][j].add(new JLabel((images.getKeyIcon(keyColor))));
-			}
-			else if(onTile instanceof KeyDoor) {
+			} else if (onTile instanceof KeyDoor) {
 				BasicColor doorColor = ((KeyDoor) onTile).getColor();
 				board[i][j].add(new JLabel((images.getDoorIcon(doorColor))));
-			}
-			else {
+			} else {
 				board[i][j].add(new JLabel((images.getEntityIcon(onTile))));
 			}
 		}
@@ -82,12 +80,12 @@ public class Render {
 
 	public JLabel[][] getVisibleBoard() {
 		JLabel[][] visibleBoard = new JLabel[9][9];
-		Coordinate playerCoord= maze.getPlayer().getCoordinate();
+		Coordinate playerCoord = maze.getPlayer().getCoordinate();
 
-		int startRow = playerCoord.getRow() -4;
-		int startCol = playerCoord.getCol() -4;
+		int startRow = playerCoord.getRow() - 4;
+		int startCol = playerCoord.getCol() - 4;
 
-		if(!checkTop(playerCoord)) {
+		if (!checkTop(playerCoord)) {
 			startRow = 0;
 
 		}
@@ -95,7 +93,7 @@ public class Render {
 			startRow = board.length-9;
 
 		}
-		if(!checkLeft(playerCoord)) {
+		if (!checkLeft(playerCoord)) {
 			startCol = 0;
 
 		}
@@ -124,10 +122,8 @@ public class Render {
 	 * 
 	 * Checks whether the player is within 4 tiles of the top of the board.
 	 * 
-	 * @param playerCoord
-	 * 		The coordinate where the player is on the board.
-	 * @return
-	 * 		Returns whether player is close to top.
+	 * @param playerCoord The coordinate where the player is on the board.
+	 * @return Returns whether player is close to top.
 	 */
 	public boolean checkTop(Coordinate playerCoord) {
 		return (playerCoord.getRow() < 4) ? false : true;
@@ -137,10 +133,8 @@ public class Render {
 	 * 
 	 * Checks whether the player is within 4 tiles of the left of the board.
 	 * 
-	 * @param playerCoord
-	 * 		The coordinate where the player is on the board.
-	 * @return
-	 * 		Returns whether player is close to left.
+	 * @param playerCoord The coordinate where the player is on the board.
+	 * @return Returns whether player is close to left.
 	 */
 	public boolean checkLeft(Coordinate playerCoord) {
 		return (playerCoord.getCol() < 4) ? false : true;
@@ -150,34 +144,31 @@ public class Render {
 	 * 
 	 * Checks whether the player is within 4 tiles of the right of the board.
 	 * 
-	 * @param playerCoord
-	 * 		The coordinate where the player is on the board.
-	 * @return
-	 * 		Returns whether player is close to right.
+	 * @param playerCoord The coordinate where the player is on the board.
+	 * @return Returns whether player is close to right.
 	 */
 	public boolean checkRight(Coordinate playerCoord) {
-		return (playerCoord.getCol() > board[0].length-5)  ? false : true;
+		return (playerCoord.getCol() > board[0].length - 5) ? false : true;
 	}
 
 	/**
 	 * 
 	 * Checks whether the player is within 4 tiles of the bottom of the board.
 	 * 
-	 * @param playerCoord
-	 * 		The coordinate where the player is on the board.
-	 * @return
-	 * 		Returns whether player is close to bottom.
+	 * @param playerCoord The coordinate where the player is on the board.
+	 * @return Returns whether player is close to bottom.
 	 */
 	public boolean checkBottom(Coordinate playerCoord) {
 
 		return (playerCoord.getRow() > board.length-5) ? false : true;
 	}
 
+		return (playerCoord.getRow() > board.length - 5) ? false : true;
+	}
 
 	/**
 	 *
-	 * @return
-	 * Returns the board as an array of image icons
+	 * @return Returns the board as an array of image icons
 	 */
 	public JLabel[][] getBoard() {
 		return board;
@@ -188,4 +179,3 @@ public class Render {
 	}
 
 }
-
