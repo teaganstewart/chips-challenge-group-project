@@ -16,203 +16,209 @@ import java.util.ArrayList;
 
 public class GUI extends JFrame {
 
-  private Game game;
-  private JFrame main;
-  private GamePanel gamePanel;
-  private JPanel infoPanel;
+	private Game game;
+	private JFrame main;
+	private GamePanel gamePanel;
+	private JPanel infoPanel;
 
-  public GUI() {
-    game = new Game();
-    createWindow();
-    main.addKeyListener(new KeyListener() {
-      @Override
-      public void keyTyped(KeyEvent e) {
+	public GUI() {
+		game = new Game();
+		createWindow();
+		main.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
 
-      }
+			}
 
-      @Override
-      public void keyPressed(KeyEvent e) {
+			@Override
+			public void keyPressed(KeyEvent e) {
 
-      }
+			}
 
-      @Override
-      public void keyReleased(KeyEvent e) {
-        Maze maze = game.getMaze();
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-          maze.movePlayer(Direction.UP);
-          updateBoard();
+			@Override
+			public void keyReleased(KeyEvent e) {
+				Maze maze = game.getMaze();
+				if (e.getKeyCode() == KeyEvent.VK_UP) {
+					maze.movePlayer(Direction.UP);
+					updateBoard();
 
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-          maze.movePlayer(Direction.DOWN);
-          updateBoard();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-          maze.movePlayer(Direction.LEFT);
-          updateBoard();
-        }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-          maze.movePlayer(Direction.RIGHT);
-          updateBoard();
-        }
-        if (maze.isGoalReached()) {
-          game.nextLevel(gamePanel);
-          updateBoard();
-        }
+				}
+				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+					maze.movePlayer(Direction.DOWN);
+					updateBoard();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+					maze.movePlayer(Direction.LEFT);
+					updateBoard();
+				}
+				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+					maze.movePlayer(Direction.RIGHT);
+					updateBoard();
+				}
+				if (maze.isGoalReached()) {
+					game.nextLevel(gamePanel);
+					updateBoard();
+				}
 
-      }
-    });
+				// Check if level needs to be reset. This could be if the player dies for
+				// example
+				if (maze.isResetLevel()) {
+					game.loadGame();
+				}
 
-  }
+			}
+		});
 
-  /**
-   * Create Game window
-   */
-  public void createWindow() {
-    main = new JFrame("Chap's Challenge");
-    main.setLayout(new BorderLayout());
+	}
 
-    // Generate menu
-    createMenuBar();
+	/**
+	 * Create Game window
+	 */
+	public void createWindow() {
+		main = new JFrame("Chap's Challenge");
+		main.setLayout(new BorderLayout());
 
-    // window layout
-    gamePanel = new GamePanel(game);
-    infoPanel = new InfoPanel(game);
+		// Generate menu
+		createMenuBar();
 
-    main.add(gamePanel, BorderLayout.CENTER);
-    main.add(infoPanel, BorderLayout.LINE_END);
+		// window layout
+		gamePanel = new GamePanel(game);
+		infoPanel = new InfoPanel(game);
 
-    // Set window size
-    main.setSize(new Dimension(800, 600));
-    main.setResizable(false);
-    main.setMinimumSize(new Dimension(800, 600));
-    main.setMaximumSize(new Dimension(1600, 1800));
+		main.add(gamePanel, BorderLayout.CENTER);
+		main.add(infoPanel, BorderLayout.LINE_END);
 
-    // Display window at the center of the screen
-    main.pack();
-    main.setVisible(true);
-    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-    main.setLocation(dim.width / 2 - main.getSize().width / 2, dim.height / 2 - main.getSize().height / 2);
-    main.setFocusable(true);
-  }
+		// Set window size
+		main.setSize(new Dimension(800, 600));
+		main.setResizable(false);
+		main.setMinimumSize(new Dimension(800, 600));
+		main.setMaximumSize(new Dimension(1600, 1800));
 
-  /**
-   * Create menu bar with all the menu items
-   */
-  public void createMenuBar() {
+		// Display window at the center of the screen
+		main.pack();
+		main.setVisible(true);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		main.setLocation(dim.width / 2 - main.getSize().width / 2, dim.height / 2 - main.getSize().height / 2);
+		main.setFocusable(true);
+	}
 
-    // Declare variable
-    JMenuBar menuBar;
-    JMenu fileMenu, gameMenu;
-    JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, resume_Item, pause_Item,
-        help_Item;
+	/**
+	 * Create menu bar with all the menu items
+	 */
+	public void createMenuBar() {
 
-    // Initialize variables
-    menuBar = new JMenuBar();
-    fileMenu = new JMenu("File");
-    gameMenu = new JMenu("Game");
-    fileMenu.setMnemonic(KeyEvent.VK_F);
-    gameMenu.setMnemonic(KeyEvent.VK_G);
+		// Declare variable
+		JMenuBar menuBar;
+		JMenu fileMenu, gameMenu;
+		JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, resume_Item,
+				pause_Item, help_Item;
 
-    // File Menu item initialize and key bind
-    exitItem = new JMenuItem("Exit");
-    KeyStroke ctrlXKeyStroke = KeyStroke.getKeyStroke("control X");
-    exitItem.setAccelerator(ctrlXKeyStroke);
-    exitItem.addActionListener((event) -> System.out.println("Exit"));
+		// Initialize variables
+		menuBar = new JMenuBar();
+		fileMenu = new JMenu("File");
+		gameMenu = new JMenu("Game");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		gameMenu.setMnemonic(KeyEvent.VK_G);
 
-    saveAndExitItem = new JMenuItem("Save & Exit");
-    KeyStroke ctrlSKeyStroke = KeyStroke.getKeyStroke("control S");
-    saveAndExitItem.setAccelerator(ctrlSKeyStroke);
-    saveAndExitItem.addActionListener((event) -> System.out.println("Save & Exit"));
+		// File Menu item initialize and key bind
+		exitItem = new JMenuItem("Exit");
+		KeyStroke ctrlXKeyStroke = KeyStroke.getKeyStroke("control X");
+		exitItem.setAccelerator(ctrlXKeyStroke);
+		exitItem.addActionListener((event) -> System.out.println("Exit"));
 
-    loadGameItem = new JMenuItem("Load game");
-    KeyStroke ctrlRKeyStroke = KeyStroke.getKeyStroke("control R");
-    loadGameItem.setAccelerator(ctrlRKeyStroke);
-    loadGameItem.addActionListener((event) -> System.out.println("Load"));
+		saveAndExitItem = new JMenuItem("Save & Exit");
+		KeyStroke ctrlSKeyStroke = KeyStroke.getKeyStroke("control S");
+		saveAndExitItem.setAccelerator(ctrlSKeyStroke);
+		saveAndExitItem.addActionListener((event) -> System.out.println("Save & Exit"));
 
-    // Game Menu item initialize and key bind
-    restart_level_Item = new JMenuItem("Restart Level");
-    KeyStroke ctrlPKeyStroke = KeyStroke.getKeyStroke("control P");
-    restart_level_Item.setAccelerator(ctrlPKeyStroke);
-    restart_level_Item.addActionListener((event) -> System.out.println("Restart level"));
+		loadGameItem = new JMenuItem("Load game");
+		KeyStroke ctrlRKeyStroke = KeyStroke.getKeyStroke("control R");
+		loadGameItem.setAccelerator(ctrlRKeyStroke);
+		loadGameItem.addActionListener((event) -> System.out.println("Load"));
 
-    restart_game_Item = new JMenuItem("Restart game");
-    KeyStroke ctrl1KeyStroke = KeyStroke.getKeyStroke("control 1");
-    restart_game_Item.setAccelerator(ctrl1KeyStroke);
-    restart_game_Item.addActionListener((event) -> System.out.println("Restart game"));
+		// Game Menu item initialize and key bind
+		restart_level_Item = new JMenuItem("Restart Level");
+		KeyStroke ctrlPKeyStroke = KeyStroke.getKeyStroke("control P");
+		restart_level_Item.setAccelerator(ctrlPKeyStroke);
+		restart_level_Item.addActionListener((event) -> System.out.println("Restart level"));
 
-    pause_Item = new JMenuItem("Pause game");
-    pause_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0));
-    pause_Item.addActionListener((event) -> System.out.println("Pause game"));
+		restart_game_Item = new JMenuItem("Restart game");
+		KeyStroke ctrl1KeyStroke = KeyStroke.getKeyStroke("control 1");
+		restart_game_Item.setAccelerator(ctrl1KeyStroke);
+		restart_game_Item.addActionListener((event) -> System.out.println("Restart game"));
 
-    resume_Item = new JMenuItem("Resume game", KeyEvent.VK_ESCAPE);
-    resume_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
-    resume_Item.addActionListener((event) -> System.out.println("Resume game"));
+		pause_Item = new JMenuItem("Pause game");
+		pause_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0));
+		pause_Item.addActionListener((event) -> System.out.println("Pause game"));
 
-    help_Item = new JMenuItem("Help");
-    KeyStroke ctrlHKeyStroke = KeyStroke.getKeyStroke("control H");
-    help_Item.setAccelerator(ctrlHKeyStroke);
-    help_Item.addActionListener(e -> {
-      if (JOptionPane.showConfirmDialog(main,
-          "Welcome to the help page  :D\n" + "Below are some instructions to helps get you started:\n\n"
-              + "1. Player can move by using the arrow keys.\n"
-              + "2. Different key color are use to unlock different door color.\n"
-              + "3. Player must collect all the treasures to pass the level.\n"
-              + "4. Player must complete the level before the timer runs out.\n\n" +
+		resume_Item = new JMenuItem("Resume game", KeyEvent.VK_ESCAPE);
+		resume_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+		resume_Item.addActionListener((event) -> System.out.println("Resume game"));
 
-              "KeyBoard shortcuts:\n" + "Ctrl+X - Exit\n" + "Ctrl+S - Save & Exit\n" + "Ctrl+R - Load\n"
-              + "Ctrl+P - Restart Level\n" + "Ctrl+1 - Restart Game\n" + "Space Bar - Pause\n" + "Esc - Resume\n\n\n"
-              + "Lastly do not forget to have fun   ; )",
+		help_Item = new JMenuItem("Help");
+		KeyStroke ctrlHKeyStroke = KeyStroke.getKeyStroke("control H");
+		help_Item.setAccelerator(ctrlHKeyStroke);
+		help_Item.addActionListener(e -> {
+			if (JOptionPane.showConfirmDialog(main,
+					"Welcome to the help page  :D\n" + "Below are some instructions to helps get you started:\n\n"
+							+ "1. Player can move by using the arrow keys.\n"
+							+ "2. Different key color are use to unlock different door color.\n"
+							+ "3. Player must collect all the treasures to pass the level.\n"
+							+ "4. Player must complete the level before the timer runs out.\n\n" +
 
-          "Help Page",
+							"KeyBoard shortcuts:\n" + "Ctrl+X - Exit\n" + "Ctrl+S - Save & Exit\n" + "Ctrl+R - Load\n"
+							+ "Ctrl+P - Restart Level\n" + "Ctrl+1 - Restart Game\n" + "Space Bar - Pause\n"
+							+ "Esc - Resume\n\n\n" + "Lastly do not forget to have fun   ; )",
 
-          JOptionPane.CLOSED_OPTION) == JOptionPane.YES_OPTION) {
-      }
-    });
+					"Help Page",
 
-    // Add file items to file menu
-    fileMenu.add(loadGameItem);
-    fileMenu.add(saveAndExitItem);
-    fileMenu.add(exitItem);
+					JOptionPane.CLOSED_OPTION) == JOptionPane.YES_OPTION) {
+			}
+		});
 
-    // Add game items to game menu
-    gameMenu.add(restart_level_Item);
-    gameMenu.add(restart_game_Item);
-    gameMenu.add(pause_Item);
-    gameMenu.add(resume_Item);
-    gameMenu.add(help_Item);
+		// Add file items to file menu
+		fileMenu.add(loadGameItem);
+		fileMenu.add(saveAndExitItem);
+		fileMenu.add(exitItem);
 
-    // Add file and game menu to menu bar
-    menuBar.add(fileMenu);
-    menuBar.add(gameMenu);
-    main.setJMenuBar(menuBar);
+		// Add game items to game menu
+		gameMenu.add(restart_level_Item);
+		gameMenu.add(restart_game_Item);
+		gameMenu.add(pause_Item);
+		gameMenu.add(resume_Item);
+		gameMenu.add(help_Item);
 
-    /**
-     * File Menu Load Game Save & Exit Exit Game Menu
-     *
-     * Restart Level Restart Game Pause Resume Help
-     */
-  }
+		// Add file and game menu to menu bar
+		menuBar.add(fileMenu);
+		menuBar.add(gameMenu);
+		main.setJMenuBar(menuBar);
 
-  public void displayTime() {
-    int time = game.getTime();
-  }
+		/**
+		 * File Menu Load Game Save & Exit Exit Game Menu
+		 *
+		 * Restart Level Restart Game Pause Resume Help
+		 */
+	}
 
-  public void displayLevel() {
-    int level = game.getLevel();
-  }
+	public void displayTime() {
+		int time = game.getTime();
+	}
 
-  public void displayTreasure() {
-    int treasures = game.getTreasures();
-  }
+	public void displayLevel() {
+		int level = game.getLevel();
+	}
 
-  /**
-   * Redraws the game panel.
-   */
-  public void updateBoard() {
-    gamePanel.clearBoard();
-    gamePanel.drawBoard();
-    gamePanel.updateUI();
-  }
+	public void displayTreasure() {
+		int treasures = game.getTreasures();
+	}
+
+	/**
+	 * Redraws the game panel.
+	 */
+	public void updateBoard() {
+		gamePanel.clearBoard();
+		gamePanel.drawBoard();
+		gamePanel.updateUI();
+	}
 
 }

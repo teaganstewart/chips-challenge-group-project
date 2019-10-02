@@ -101,5 +101,5 @@ public class Game {
 
 //		Player player = game.getPlayer();
 //		player.setInventory(new ArrayList<Entity>());
-  }
+	}
 }

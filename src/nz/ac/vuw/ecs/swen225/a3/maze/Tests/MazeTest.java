@@ -1,7 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.maze.Tests;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,197 +10,194 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Josh
- *
+ *         <p>
  *         Class which contains most tests that test classes in the maze
  *         directory
- *
  */
 public class MazeTest {
 
-  /**
-   * Testing basic player moves
-   */
-  @Test
-  public void testMovePlayerValid() {
-    // Setup
+	private Tile[][] tiles;
+	private Player player;
+	private Maze maze;
 
-    Tile[][] tiles = new Tile[9][9];
-    for (int row = 0; row < tiles.length; row++) {
-      for (int col = 0; col < tiles[0].length; col++) {
-        tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-      }
-    }
+	@BeforeEach
+	public void setUp() {
+		tiles = new Tile[9][9];
+		for (int row = 0; row < tiles.length; row++) {
+			for (int col = 0; col < tiles[0].length; col++) {
+				tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
+			}
+		}
+		player = new Player(new Coordinate(3, 3));
+		maze = new Maze(tiles, player);
+	}
 
-    Player player = new Player(new Coordinate(3, 3));
-    Maze maze = new Maze(tiles, player);
+	@AfterEach
+	public void tearDown() {
+		Treasure.reset();
+	}
 
-    assertNull(player.getNextPos());
-    assertNull(player.getPrevPos());
+	/**
+	 * Testing basic player moves
+	 */
+	@Test
+	public void testMovePlayerValid() {
 
-    assertTrue(maze.movePlayer(Direction.DOWN));
+		assertNull(player.getNextPos());
+		assertNull(player.getPrevPos());
 
-    assertNull(player.getLastDirection());
-    assertEquals(Direction.DOWN, player.getDirection());
-    assertEquals(new Coordinate(4, 3), player.getCoordinate());
-    assertEquals(new Coordinate(3, 3), player.getPrevPos());
+		assertTrue(maze.movePlayer(Direction.DOWN));
 
-    assertTrue(maze.movePlayer(Direction.RIGHT));
-    assertEquals(new Coordinate(4, 4), player.getCoordinate());
-    assertEquals(new Coordinate(4, 3), player.getPrevPos());
+		assertNull(player.getLastDirection());
+		assertEquals(Direction.DOWN, player.getDirection());
+		assertEquals(new Coordinate(4, 3), player.getCoordinate());
+		assertEquals(new Coordinate(3, 3), player.getPrevPos());
 
-    assertTrue(maze.movePlayer(Direction.UP));
-    assertEquals(new Coordinate(3, 4), player.getCoordinate());
-    assertEquals(new Coordinate(4, 4), player.getPrevPos());
+		assertTrue(maze.movePlayer(Direction.RIGHT));
+		assertEquals(new Coordinate(4, 4), player.getCoordinate());
+		assertEquals(new Coordinate(4, 3), player.getPrevPos());
 
-    assertTrue(maze.movePlayer(Direction.LEFT));
-    assertEquals(new Coordinate(3, 3), player.getCoordinate());
-    assertEquals(new Coordinate(3, 4), player.getPrevPos());
-  }
+		assertTrue(maze.movePlayer(Direction.UP));
+		assertEquals(new Coordinate(3, 4), player.getCoordinate());
+		assertEquals(new Coordinate(4, 4), player.getPrevPos());
 
-  /**
-   * Testing moving the player off the tiles
-   */
-  @Test
-  public void testMovePlayerNotValid() {
-    // Setup
+		assertTrue(maze.movePlayer(Direction.LEFT));
+		assertEquals(new Coordinate(3, 3), player.getCoordinate());
+		assertEquals(new Coordinate(3, 4), player.getPrevPos());
+	}
 
-    Tile[][] tiles = new Tile[9][9];
-    for (int row = 0; row < tiles.length; row++) {
-      for (int col = 0; col < tiles[0].length; col++) {
-        tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-      }
-    }
+	/**
+	 * Testing moving the player off the tiles
+	 */
+	@Test
+	public void testMovePlayerNotValid() {
+		assertTrue(maze.movePlayer(Direction.LEFT));
+		assertTrue(maze.movePlayer(Direction.LEFT));
+		assertTrue(maze.movePlayer(Direction.LEFT));
+		assertFalse(maze.movePlayer(Direction.LEFT));
+	}
 
-    Player player = new Player(new Coordinate(0, 0));
-    Maze maze = new Maze(tiles, player);
+	/**
+	 * Test to see if player correctly unlocks a key door
+	 */
+	@Test
+	public void testUnlockKeyDoor() {
 
-    assertFalse(maze.movePlayer(Direction.LEFT));
-  }
+		Key key = new Key(BasicColor.YELLOW);
+		tiles[3][4].setEntity(key);
 
-  /**
-   * Test to see if player correctly unlocks a key door
-   */
-  @Test
-  public void testUnlockKeyDoor() {
-    // Setup
+		// Collect key
+		assertTrue(maze.movePlayer(Direction.RIGHT));
 
-    Tile[][] tiles = new Tile[9][9];
-    for (int row = 0; row < tiles.length; row++) {
-      for (int col = 0; col < tiles[0].length; col++) {
-        tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-      }
-    }
+		// Unlock door with same color as key
+		tiles[3][5].setEntity(new KeyDoor(BasicColor.YELLOW));
+		assertTrue(maze.movePlayer(Direction.RIGHT));
 
-    Player player = new Player(new Coordinate(0, 0));
-    Maze maze = new Maze(tiles, player);
+		// Make sure Chap keeps the key after unlocking the door
+		assertTrue(player.getInventory().contains(key));
+	}
 
-    Key key = new Key(BasicColor.YELLOW);
-    tiles[0][1].setEntity(key);
+	/**
+	 * Test to see if player fails to unlock a key door when player does not have
+	 * any keys
+	 */
+	@Test
+	public void testUnlockDoorNotValid01() {
 
-    // Collect key
-    assertTrue(maze.movePlayer(Direction.RIGHT));
+		tiles[3][4].setEntity(new KeyDoor(BasicColor.RED));
+		assertFalse(maze.movePlayer(Direction.RIGHT));
+	}
 
-    // Unlock door with same color as key
-    tiles[0][2].setEntity(new KeyDoor(BasicColor.YELLOW));
-    assertTrue(maze.movePlayer(Direction.RIGHT));
+	/**
+	 * Test to see if player fails to enter key door when they have the wrong
+	 * colored key
+	 */
+	@Test
+	public void testUnlockDoorNotValid02() {
 
-    // Make sure Chap keeps the key after unlocking the door
-    assertTrue(player.getInventory().contains(key));
-  }
+		Key key = new Key(BasicColor.RED);
+		tiles[3][4].setEntity(key);
 
-  /**
-   * Test to see if player fails to unlock a key door when player does not have
-   * any keys
-   */
-  @Test
-  public void testUnlockDoorNotValid01() {
-    // Setup
+		// Collect key
+		assertTrue(maze.movePlayer(Direction.RIGHT));
 
-    Tile[][] tiles = new Tile[9][9];
-    for (int row = 0; row < tiles.length; row++) {
-      for (int col = 0; col < tiles[0].length; col++) {
-        tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-      }
-    }
+		// Unlock door with WRONG colored key
+		tiles[3][5].setEntity(new KeyDoor(BasicColor.YELLOW));
+		assertFalse(maze.movePlayer(Direction.RIGHT));
 
-    Player player = new Player(new Coordinate(0, 0));
-    Maze maze = new Maze(tiles, player);
+		// Make sure Chap still contains key
+		assertTrue(player.getInventory().contains(key));
+	}
 
-    tiles[0][1].setEntity(new KeyDoor(BasicColor.RED));
-    assertFalse(maze.movePlayer(Direction.RIGHT));
-  }
+	/**
+	 * Test to see if player unlocks the treasure door after collecting all the
+	 * treasure
+	 */
+	@Test
+	public void testUnlockTreasureDoor() {
 
-  /**
-   * Test to see if player fails to enter key door when they have the wrong
-   * colored key
-   */
-  @Test
-  public void testUnlockDoorNotValid02() {
-    // Setup
+		TreasureDoor treasureDoor = new TreasureDoor();
+		tiles[3][4].setEntity(new Treasure());
+		tiles[3][5].setEntity(treasureDoor);
 
-    Tile[][] tiles = new Tile[9][9];
-    for (int row = 0; row < tiles.length; row++) {
-      for (int col = 0; col < tiles[0].length; col++) {
-        tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-      }
-    }
+		// Collect treasure
+		assertTrue(maze.movePlayer(Direction.RIGHT));
 
-    Player player = new Player(new Coordinate(0, 0));
-    Maze maze = new Maze(tiles, player);
+		assertTrue(Treasure.allCollected());
+		assertTrue(maze.movePlayer(Direction.RIGHT));
+	}
 
-    Key key = new Key(BasicColor.RED);
-    tiles[0][1].setEntity(key);
+	/**
+	 * Test to see if player does NOT unlock the treasure door
+	 */
+	@Test
+	public void testNotUnlockTreasureDoor() {
 
-    // Collect key
-    assertTrue(maze.movePlayer(Direction.RIGHT));
+		Treasure treasure = new Treasure();
+		tiles[7][3].setEntity(treasure);
 
-    // Unlock door with WRONG colored key
-    tiles[0][2].setEntity(new KeyDoor(BasicColor.YELLOW));
-    assertFalse(maze.movePlayer(Direction.RIGHT));
+		tiles[3][5].setEntity(new TreasureDoor());
+		assertTrue(maze.movePlayer(Direction.RIGHT));
+		// Player cannot enter door
+		assertFalse(maze.movePlayer(Direction.RIGHT));
+	}
 
-    // Make sure Chap still contains key
-    assertTrue(player.getInventory().contains(key));
-  }
+	/**
+	 * Test to see if player fails to walk on a Fire Tile
+	 */
+	@Test
+	public void testWalkFireBlockNotValid() {
+		tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.FIRE);
 
-  /**
-   * Test to see if player unlocks the treasure door after collecting all the
-   * treasure
-   */
-  @Test
-  public void testUnlockTreasureDoor() {
-    // Setup
+		// If Player dies and level is restarted. This does not count as a move
+		assertFalse(maze.movePlayer(Direction.RIGHT));
+		// At this point, player has died and level will be restarted. It is too
+		// difficult to test here
+	}
 
-    Tile[][] tiles = new Tile[9][9];
-    for (int row = 0; row < tiles.length; row++) {
-      for (int col = 0; col < tiles[0].length; col++) {
-        tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-      }
-    }
+	/**
+	 * Test to see if player collects firBoots and walks on fire block
+	 */
+	@Test
+	public void testWalkFireBlockValid() {
+		tiles[3][4].setEntity(new FireBoots());
+		tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.FIRE);
+		assertTrue(maze.movePlayer(Direction.RIGHT));
+		assertTrue(player.isInInventory(new FireBoots()));
+		assertTrue(maze.movePlayer(Direction.RIGHT));
+	}
 
-    Player player = new Player(new Coordinate(0, 0));
-    Maze maze = new Maze(tiles, player);
+	// -----------------------------//
+	// -------GENERAL TESTS --------//
+	// -----------------------------//
 
-    Treasure treasure = new Treasure();
-    tiles[0][1].setEntity(treasure);
-
-    // Collect treasure
-    assertTrue(maze.movePlayer(Direction.RIGHT));
-
-    // Unlock treasure door after all treasure is collected
-    tiles[0][2].setEntity(new TreasureDoor());
-    assertTrue(maze.movePlayer(Direction.RIGHT));
-  }
-
-  // -----------------------------//
-  // -------GENERAL TESTS --------//
-  // -----------------------------//
-
-  @Test
-  void extensionsTest() {
-    Player p = new Player(new Coordinate(1, 2));
-    Player p2 = new Player(new Coordinate(3, 1));
-    // Not sure what was trying to be done in this line, but it doesn't compile.
-    // Please tell me your intentions
+	@Test
+	void extensionsTest() {
+		Player p = new Player(new Coordinate(1, 2));
+		Player p2 = new Player(new Coordinate(3, 1));
+		// Not sure what was trying to be done in this line, but it doesn't compile.
+		// Please tell me your intentions
 //		assertTrue(p.addToInventory(p2));
-  }
+	}
+
 }

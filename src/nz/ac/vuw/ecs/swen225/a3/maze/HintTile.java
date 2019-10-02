@@ -16,45 +16,45 @@ import javax.json.JsonObjectBuilder;
  */
 public class HintTile extends Tile implements Saveable {
 
-  private final String message;
+	private final String message;
 
-  /**
-   * The tile the hint is on
-   * 
-   * @param coord
-   * @param message The message to display upon this hint being touched.
-   */
-  public HintTile(Coordinate coord, String message) {
-    super(coord, TileType.HINT);
-    this.message = message;
-  }
+	/**
+	 * The tile the hint is on
+	 * 
+	 * @param coord
+	 * @param message The message to display upon this hint being touched.
+	 */
+	public HintTile(Coordinate coord, String message) {
+		super(coord, TileType.HINT);
+		this.message = message;
+	}
 
-  /**
-   * Gets the helpful hint so the player knows what to do.
-   * 
-   * @return The message
-   */
-  public String getMessage() {
-    return message;
-  }
+	/**
+	 * Gets the helpful hint so the player knows what to do.
+	 * 
+	 * @return The message
+	 */
+	public String getMessage() {
+		return message;
+	}
 
-  /**
-   * Produce a Json representation of this HintTile
-   * 
-   * @return Json object representation
-   */
-  @Override
-  public JsonObject toJSON() {
-    JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
-    jsonObjectBuilder.add("TileType", getType().toString());
-    jsonObjectBuilder.add("Coordinate", getCoordinate().toJSON());
-    jsonObjectBuilder.add("Message", message);
+	/**
+	 * Produce a Json representation of this HintTile
+	 * 
+	 * @return Json object representation
+	 */
+	@Override
+	public JsonObject toJSON() {
+		JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder();
+		jsonObjectBuilder.add("TileType", getType().toString());
+		jsonObjectBuilder.add("Coordinate", getCoordinate().toJSON());
+		jsonObjectBuilder.add("Message", message);
 
-    if (getEntity() != null) {
-      jsonObjectBuilder.add("Entity", getEntity().toJSON());
-    }
+		if (getEntity() != null) {
+			jsonObjectBuilder.add("Entity", getEntity().toJSON());
+		}
 
-    return jsonObjectBuilder.build();
-  }
+		return jsonObjectBuilder.build();
+	}
 
 }

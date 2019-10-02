@@ -3,11 +3,11 @@ package nz.ac.vuw.ecs.swen225.a3.persistence;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 
 public class LevelMaker {
-  Tile[][] tiles;
+	Tile[][] tiles;
 
-  public LevelMaker() {
+	public LevelMaker() {
 
-    Player player = new Player(new Coordinate(6, 7));
+		Player player = new Player(new Coordinate(6, 7));
 
     Integer[][] map = { {0,0,1,1,1,1,1,0,1,1,1,1,1,0,0},
         {0,0,1,0,0,0,1,1,1,0,0,0,1,0,0},
@@ -25,12 +25,12 @@ public class LevelMaker {
         {0,0,0,0,1,1,1,1,1,1,1,0,0,0,1}};
 
 
-    tiles = new Tile[map.length][map[0].length];
-    generateMap(map);
-    Maze maze = new Maze(tiles, player);
-    Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
-    SaveUtils.saveGame(level);
-  }
+		tiles = new Tile[map.length][map[0].length];
+		generateMap(map);
+		Maze maze = new Maze(tiles, player);
+		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
+		SaveUtils.saveGame(level);
+	}
 
   /**
    * Generate a map from 2d array
