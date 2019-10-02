@@ -16,8 +16,9 @@ public class GamePanel extends JPanel {
 		this.setLayout(new GridLayout(9, 9, 0, 0));
 		this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 20));
 		game.getMaze().setTiles(game.getMaze().getTiles());
-		game.getMaze().setGame(game);
-		render = new Render(game, game.getMaze());
+		game.getMaze().setGame(game);	
+		render = new Render(game,game.getMaze());
+		game.setRender(render);
 		drawBoard();
 
 		setVisible(true);
@@ -50,8 +51,27 @@ public class GamePanel extends JPanel {
 		}
 	}
 
-	public Render getRender() {
-		return render;
-	}
 
+	public void drawString(Graphics g2, String string) {
+		// TODO Auto-generated method stub
+		g2.drawString("hiiiiiiiiiiiiiiiiidsadsadsadadajsdhahadjhdasdasaiisaddddddddddddddddddddddddddiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"
+				+ "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"
+				+ "iiiiiiiiiiiiiiiiiiiiii",300,100);
+	}
+	
+	public void paintComponent(Graphics g){
+		
+		super.paintComponent(g);
+		
+		Graphics2D g2 = (Graphics2D)g;
+
+		if(game.getMaze().isOnHint()) {
+			drawString(g2, "");
+		}
+		
+		
+		
+	}
+	
+	
 }
