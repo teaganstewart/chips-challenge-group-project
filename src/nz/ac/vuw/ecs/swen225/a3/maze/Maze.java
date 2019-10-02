@@ -27,6 +27,7 @@ public class Maze implements Saveable {
 	private Game game;
 	private boolean goalReached;
 	private String hintMessage = "";
+	private boolean onHint;
 	// Check whether the level needs to be reset. This could be when the player dies, e.g. by
 	// walking on a fire block
 	private boolean resetLevel = false;
@@ -41,6 +42,7 @@ public class Maze implements Saveable {
 		this.tiles = tiles;
 		this.player = player;
 		this.goalReached = false;
+		this.onHint = false;
 	}
 
 	/**
@@ -105,6 +107,7 @@ public class Maze implements Saveable {
 	 * @return validity
 	 */
 	public boolean checkType(Player player, Tile tile) {
+		onHint = false;
 		Tile.TileType type = tile.getType();
 
 		// can't walk on walls
@@ -130,6 +133,7 @@ public class Maze implements Saveable {
 		// if it's a hint tile, then set the hint message. otherwise, ensure it's blank
 		// this can be referenced in the render class
 		if (type == Tile.TileType.HINT) {
+			onHint = true;
 			HintTile hint = (HintTile) tile;
 			hintMessage = hint.getMessage();
 		} else
@@ -148,6 +152,15 @@ public class Maze implements Saveable {
 	}
 
 	/**
+	 * Returns whether or not the goal has been reached
+	 * @return
+	 * 		whether or not the player has touched the goal tile
+	 */
+	public boolean isOnHint() {
+		return onHint;
+	}
+
+	/**
 	 * Returns the hintMessage, regardless if it is blank or not
 	 * 
 	 * @return "", or an actual hint
@@ -158,21 +171,24 @@ public class Maze implements Saveable {
 
 	/**
 	 * Serialise this Java Object to Json
-	 * 
 	 * @return Json representation of this object.
 	 */
 	@Override
 	public JsonObject toJSON() {
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
-		for (int row = 0; row < tiles.length; row++) {
-			for (int col = 0; col < tiles[0].length; col++) {
+		for (int row = 0; row < tiles.length; row++){
+			for (int col = 0; col < tiles[0].length; col++){
 				arrayBuilder.add(tiles[row][col].toJSON());
 			}
 		}
 
-		JsonObject build = Json.createObjectBuilder().add("player", player.toJSON()).add("rows", tiles.length)
-				.add("cols", tiles[0].length).add("tiles", arrayBuilder).add("treasureData", Treasure.toJSONStatic())
+		JsonObject build = Json.createObjectBuilder()
+				.add("player", player.toJSON())
+				.add("rows", tiles.length)
+				.add("cols", tiles[0].length)
+				.add("tiles", arrayBuilder)
+				.add("treasureData", Treasure.toJSONStatic())
 				.build();
 		return build;
 	}
