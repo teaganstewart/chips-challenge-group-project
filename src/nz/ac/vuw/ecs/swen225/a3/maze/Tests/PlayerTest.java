@@ -16,8 +16,8 @@ class PlayerTest {
 	@Test
 	public void testPlayerDirection() {
 		Player player = new Player(new Coordinate(0, 0));
-		// Player starts facing down
-		assertEquals(Direction.DOWN, player.getDirection());
+		// Player starts with no direction
+		assertNull(player.getDirection());
 		assertNull(player.getLastDirection());
 	}
 

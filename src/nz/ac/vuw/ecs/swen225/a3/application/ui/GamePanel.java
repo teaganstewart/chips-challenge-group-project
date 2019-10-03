@@ -16,9 +16,8 @@ public class GamePanel extends JPanel {
 		this.setLayout(new GridLayout(9, 9, 0, 0));
 		this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 20));
 		game.getMaze().setTiles(game.getMaze().getTiles());
-		game.getMaze().setGame(game);	
-		render = new Render(game,game.getMaze());
-		game.setRender(render);
+		game.getMaze().setGame(game);
+		render = new Render(game, game.getMaze());
 		drawBoard();
 
 		setVisible(true);
@@ -50,6 +49,9 @@ public class GamePanel extends JPanel {
 			}
 		}
 	}
-	
-	
+
+	public Render getRender() {
+		return render;
+	}
+
 }
