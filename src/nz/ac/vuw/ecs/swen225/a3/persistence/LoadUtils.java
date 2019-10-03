@@ -40,6 +40,7 @@ public class LoadUtils {
 		return loadLevel(readJsonFromFile(levelFile));
 	}
 
+
 	/**
 	 * Produces a Level object from the JSON input given
 	 * 
@@ -101,7 +102,8 @@ public class LoadUtils {
 
 				return reader.readObject();
 
-			} catch (FileNotFoundException e) {
+			}
+			catch (FileNotFoundException e) {
 				return null;
 			}
 		}
@@ -141,7 +143,8 @@ public class LoadUtils {
 
 		if (tileType == Tile.TileType.HINT) {
 			newTile = new HintTile(tileCoordinate, tile.getString("Message"));
-		} else {
+		}
+		else {
 			newTile = new Tile(tileCoordinate, tileType);
 		}
 
@@ -172,7 +175,8 @@ public class LoadUtils {
 		if (entityClass.equals("Key")) {
 			BasicColor basicColor = BasicColor.valueOf(entity.getString("BasicColor"));
 			return new Key(basicColor);
-		} else if (entityClass.equals("KeyDoor")) {
+		}
+		else if (entityClass.equals("KeyDoor")) {
 			BasicColor basicColor = BasicColor.valueOf(entity.getString("BasicColor"));
 			KeyDoor newKeyDoor = new KeyDoor(basicColor);
 			boolean locked = entity.getBoolean("locked");
@@ -180,15 +184,23 @@ public class LoadUtils {
 				newKeyDoor.unlock();
 			}
 			return newKeyDoor;
-		} else if (entityClass.equals("Treasure")) {
+		}
+		else if (entityClass.equals("Treasure")) {
 			return new Treasure();
-		} else if (entityClass.equals("TreasureDoor")) {
+		}
+		else if (entityClass.equals("TreasureDoor")) {
 			TreasureDoor treasureDoor = new TreasureDoor();
 			boolean locked = entity.getBoolean("locked");
 			if (!locked) {
 				treasureDoor.unlock();
 			}
 			return treasureDoor;
+		}
+		else if (entityClass.equals("FireBoots")){
+			return new FireBoots();
+		}
+		else if (entityClass.equals("IceBoots")){
+			return new IceBoots();
 		}
 		return null;
 	}
