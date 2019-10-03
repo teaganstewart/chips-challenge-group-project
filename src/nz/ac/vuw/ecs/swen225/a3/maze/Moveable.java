@@ -10,7 +10,8 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 public abstract class Moveable {
 
 	private Coordinate coordinate;
-	private Direction direction;
+	// Initialize direction to avoid null pointers and simulate realistic gameplay
+	private Direction direction = Direction.DOWN;
 	private Direction lastDirection;
 
 	/**

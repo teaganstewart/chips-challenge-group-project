@@ -14,11 +14,20 @@ public class GraphicalView {
 		game = g;
 	}
 
-	public ImageIcon getPlayerIcon(String type) {
-		if (type.equals("chip")) {
-			return chip;
+	public ImageIcon getPlayerIcon(Direction dir) {
+		if(dir.equals(Direction.DOWN)) {
+			return chipFront;
 		}
-		return null;
+		if(dir.equals(Direction.UP)) {
+			return chipBack;
+		}
+		if(dir.equals(Direction.LEFT)) {
+			return chipLeft;
+		}
+		if(dir.equals(Direction.RIGHT)) {
+			return chipRight;
+		}
+		return chip;
 	}
 
 	/**
@@ -93,8 +102,15 @@ public class GraphicalView {
 		if (entity instanceof Treasure) {
 			return treasure;
 		}
-
+		if(entity instanceof TreasureDoor) {
+			return treasureDoor;
+		}
 		return null;
+
+	}
+	
+	public ImageIcon getSlotIcon() {
+		return slot;
 	}
 
 	/**
@@ -136,7 +152,7 @@ public class GraphicalView {
 	private JLabel checkForPlayer(int x, int y) {
 		Player p = game.getMaze().getPlayer();
 		if (p.getCoordinate().getCol() == x && p.getCoordinate().getRow() == y) {
-			return new JLabel(getPlayerIcon("chip"));
+			return new JLabel(getPlayerIcon(p.getDirection()));
 		}
 
 		return null;
@@ -144,7 +160,11 @@ public class GraphicalView {
 
 	// Characters
 	private final ImageIcon chip = new ImageIcon(getClass().getResource("icons/chip.png"));
-
+	private final ImageIcon chipFront = new ImageIcon(getClass().getResource("icons/chip-front.png"));
+	private final ImageIcon chipLeft = new ImageIcon(getClass().getResource("icons/chip-left.png"));
+	private final ImageIcon chipBack = new ImageIcon(getClass().getResource("icons/chip-back.png"));
+	private final ImageIcon chipRight = new ImageIcon(getClass().getResource("icons/chip-right.png"));
+	
 	// Tiles
 	private final ImageIcon floor = new ImageIcon(getClass().getResource("icons/wall.png"));
 	private final ImageIcon wall = new ImageIcon(getClass().getResource("icons/floor2.png"));
@@ -162,8 +182,9 @@ public class GraphicalView {
 	private final ImageIcon blueDoor = new ImageIcon(getClass().getResource("icons/blue-keydoor.png"));
 	private final ImageIcon redDoor = new ImageIcon(getClass().getResource("icons/red-keydoor.png"));
 	private final ImageIcon yellowDoor = new ImageIcon(getClass().getResource("icons/yellow-keydoor.png"));
-
+	private final ImageIcon treasureDoor = new ImageIcon(getClass().getResource("icons/treasure-door.png"));
 	// Entities
 	private final ImageIcon treasure = new ImageIcon(getClass().getResource("icons/treasure.png"));
-
+	private final ImageIcon slot = new ImageIcon(getClass().getResource("icons/slot.png"));
+	
 }
