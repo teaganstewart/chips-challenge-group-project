@@ -130,8 +130,8 @@ public class Player extends Moveable implements Saveable {
 			Door door = (Door) entity;
 			return door.onTouch(this);
 		}
-		// Fire boots
-		else if (entity instanceof FireBoots) {
+		// Fire or Ice boots
+		else if (entity instanceof FireBoots || entity instanceof IceBoots) {
 			addToInventory(entity);
 			return true;
 		}

@@ -66,6 +66,18 @@ public class Maze implements Saveable {
 
 		Tile endTile = tiles[rowDest][colDest];
 
+		// Handle exception with sliding
+		if (endTile.getType() == Tile.TileType.ICE) {
+			if (player.isInInventory(new IceBoots())) {
+				player.setCoordinate(endTile.getCoordinate());
+				return true;
+			} else {
+				// Slide the player until there are no ice blocks left
+				slidePlayer();
+				return true;
+			}
+		}
+
 		// Check if entity can be collected/walked on. If so, collect and move player.
 		// "canWalkOn"
 		// automatically collects item if this is possible
@@ -140,6 +152,21 @@ public class Maze implements Saveable {
 			hintMessage = "";
 
 		return true;
+	}
+
+	/**
+	 *
+	 */
+	private void slidePlayer(){
+		Tile destTile = tiles[player.getNextPos().getRow()][player.getNextPos().getCol()];
+		while(destTile.getType() == Tile.TileType.ICE){
+			player.setCoordinate(destTile.getCoordinate());
+			// Update destTile
+			destTile = tiles[player.getNextPos().getRow()][player.getNextPos().getCol()];
+		}
+		if(checkType(player, destTile)){
+			movePlayer(player.getDirection());
+		}
 	}
 
 	/**
