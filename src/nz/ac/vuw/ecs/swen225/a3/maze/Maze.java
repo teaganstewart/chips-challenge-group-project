@@ -6,6 +6,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -27,9 +28,7 @@ public class Maze implements Saveable {
 	private Game game;
 	private boolean goalReached;
 	private String hintMessage = "";
-	private boolean onHint;
-	// Check whether the level needs to be reset. This could be when the player dies, e.g. by
-	// walking on a fire block
+
 	private boolean resetLevel = false;
 
 	/**
@@ -42,7 +41,6 @@ public class Maze implements Saveable {
 		this.tiles = tiles;
 		this.player = player;
 		this.goalReached = false;
-		this.onHint = false;
 	}
 
 	/**
@@ -65,6 +63,18 @@ public class Maze implements Saveable {
 		}
 
 		Tile endTile = tiles[rowDest][colDest];
+
+		// Handle exception with sliding
+		if (endTile.getType() == Tile.TileType.ICE) {
+			if (player.isInInventory(new IceBoots())) {
+				player.setCoordinate(endTile.getCoordinate());
+				return true;
+			} else {
+				// Slide the player until there are no ice blocks left
+				slidePlayer();
+				return true;
+			}
+		}
 
 		// Check if entity can be collected/walked on. If so, collect and move player.
 		// "canWalkOn"
@@ -107,7 +117,6 @@ public class Maze implements Saveable {
 	 * @return validity
 	 */
 	public boolean checkType(Player player, Tile tile) {
-		onHint = false;
 		Tile.TileType type = tile.getType();
 
 		// can't walk on walls
@@ -133,7 +142,6 @@ public class Maze implements Saveable {
 		// if it's a hint tile, then set the hint message. otherwise, ensure it's blank
 		// this can be referenced in the render class
 		if (type == Tile.TileType.HINT) {
-			onHint = true;
 			HintTile hint = (HintTile) tile;
 			hintMessage = hint.getMessage();
 		} else
@@ -143,21 +151,27 @@ public class Maze implements Saveable {
 	}
 
 	/**
+	 *
+	 */
+	private void slidePlayer(){
+		Tile destTile = tiles[player.getNextPos().getRow()][player.getNextPos().getCol()];
+		while(destTile.getType() == Tile.TileType.ICE){
+			player.setCoordinate(destTile.getCoordinate());
+			// Update destTile
+			destTile = tiles[player.getNextPos().getRow()][player.getNextPos().getCol()];
+		}
+		if(checkType(player, destTile)){
+			movePlayer(player.getDirection());
+		}
+	}
+
+	/**
 	 * Returns whether or not the goal has been reached
 	 * 
 	 * @return whether or not the player has touched the goal tile
 	 */
 	public boolean isGoalReached() {
 		return goalReached;
-	}
-
-	/**
-	 * Returns whether or not the goal has been reached
-	 * @return
-	 * 		whether or not the player has touched the goal tile
-	 */
-	public boolean isOnHint() {
-		return onHint;
 	}
 
 	/**
@@ -171,24 +185,21 @@ public class Maze implements Saveable {
 
 	/**
 	 * Serialise this Java Object to Json
+	 * 
 	 * @return Json representation of this object.
 	 */
 	@Override
 	public JsonObject toJSON() {
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
-		for (int row = 0; row < tiles.length; row++){
-			for (int col = 0; col < tiles[0].length; col++){
+		for (int row = 0; row < tiles.length; row++) {
+			for (int col = 0; col < tiles[0].length; col++) {
 				arrayBuilder.add(tiles[row][col].toJSON());
 			}
 		}
 
-		JsonObject build = Json.createObjectBuilder()
-				.add("player", player.toJSON())
-				.add("rows", tiles.length)
-				.add("cols", tiles[0].length)
-				.add("tiles", arrayBuilder)
-				.add("treasureData", Treasure.toJSONStatic())
+		JsonObject build = Json.createObjectBuilder().add("player", player.toJSON()).add("rows", tiles.length)
+				.add("cols", tiles[0].length).add("tiles", arrayBuilder).add("treasureData", Treasure.toJSONStatic())
 				.build();
 		return build;
 	}
@@ -197,6 +208,10 @@ public class Maze implements Saveable {
 
 	public boolean isResetLevel() {
 		return resetLevel;
+	}
+
+	public void setResetLevel(boolean resetLevel) {
+		this.resetLevel = resetLevel;
 	}
 
 	/**

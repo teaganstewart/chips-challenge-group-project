@@ -16,14 +16,12 @@ import java.util.*;
 public class Player extends Moveable implements Saveable {
 
 	private List<Entity> inventory;
-	private Coordinate startCoordinate;
 
 	/**
 	 * @param coordinate
 	 */
 	public Player(Coordinate coordinate) {
 		super(coordinate);
-		startCoordinate = coordinate;
 		inventory = new ArrayList<Entity>();
 	}
 
@@ -130,8 +128,8 @@ public class Player extends Moveable implements Saveable {
 			Door door = (Door) entity;
 			return door.onTouch(this);
 		}
-		// Fire boots
-		else if (entity instanceof FireBoots) {
+		// Fire or Ice boots
+		else if (entity instanceof FireBoots || entity instanceof IceBoots) {
 			addToInventory(entity);
 			return true;
 		}
@@ -140,10 +138,6 @@ public class Player extends Moveable implements Saveable {
 
 		// none of the above
 		return false;
-	}
-
-	public Coordinate getStartCoordinate() {
-		return startCoordinate;
 	}
 
 	/**
