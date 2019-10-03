@@ -7,6 +7,8 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.*;
+import java.util.Date;
+import java.util.HashMap;
 
 /**
  * The LoadUtils class contains methods that are used for loading games and
@@ -26,7 +28,7 @@ public class LoadUtils {
 	 */
 	public static Level resumeGame() {
 		File recentSave = getMostRecentSave();
-		JsonObject jsonObjectRecentSave = readJsonFromFile(recentSave);
+		JsonObject jsonObjectRecentSave = extractLevel(readJsonFromFile(recentSave));
 		return loadLevel(jsonObjectRecentSave);
 	}
 
@@ -37,9 +39,68 @@ public class LoadUtils {
 	 */
 	public static Level loadLevel(int levelNumber) {
 		File levelFile = new File(LEVELS_DIRECTORY + "\\" + levelNumber + ".json");
-		return loadLevel(readJsonFromFile(levelFile));
+		JsonObject jsonObject = extractLevel(readJsonFromFile(levelFile));
+		return loadLevel(jsonObject);
 	}
 
+	public static Level loadById(Long saveID){
+		return null;
+	}
+
+	public static HashMap<Long, String> getSavesByID(){
+		HashMap<Long, String> namesToId = new HashMap<>();
+
+		File directory = new File(SaveUtils.SAVES_DIRECTORY);
+		FileFilter filter = pathname -> pathname.isFile() && pathname.toString().endsWith(".json");
+		File[] files = directory.listFiles(filter);
+
+		if (files != null) {
+			for (File f : files) {
+
+				JsonObject save = readJsonFromFile(f);
+
+				JsonObject level = null;
+
+				//This is for compatibility with older file formats
+				try {
+					level = extractLevel(save);
+				}
+				catch (NullPointerException e){
+					level = save;
+				}
+
+				int levelNumber = level.getInt("levelNumber");
+
+				String id = f.getName().substring(0, f.getName().length()-5);
+
+				StringBuilder sb = new StringBuilder();
+
+//				if (save.getString("LevelName") != null){
+//					sb.append(save.getString("LevelName"));
+//					sb.append(" - ");
+//				}
+
+				sb.append("Level: ");
+				sb.append(levelNumber);
+				sb.append(" - ");
+
+				long saveTime = Long.parseLong(id);
+
+				Date date = new Date(saveTime);
+				sb.append(date.toString());
+
+
+				namesToId.put(saveTime, sb.toString());
+			}
+		}
+
+		return namesToId;
+	}
+
+	public static void main(String[] args) {
+	}
+
+	// Private Methods
 
 	/**
 	 * Produces a Level object from the JSON input given
@@ -233,6 +294,15 @@ public class LoadUtils {
 		Treasure.setTreasureCountersUponLoad(totalInLevel, totalCollected);
 
 		return new Maze(tiles, player);
+	}
+
+	/**
+	 * Extracts the Level Json Object from a Json Object.
+	 * @param objectPlusSaveName the raw object to remove level from
+	 * @return just the level in object form
+	 */
+	private static JsonObject extractLevel(JsonObject objectPlusSaveName){
+		return objectPlusSaveName.getJsonObject("Level");
 	}
 
 }

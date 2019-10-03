@@ -30,7 +30,7 @@ public class LevelMaker {
 		generateMap(map);
 		Maze maze = new Maze(tiles, player);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
-		SaveUtils.saveGame(level);
+		SaveUtils.saveGame(level, null);
 	}
 
   /**
