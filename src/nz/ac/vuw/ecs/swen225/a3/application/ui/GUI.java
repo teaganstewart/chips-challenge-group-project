@@ -19,7 +19,7 @@ public class GUI extends JFrame {
 	private Game game;
 	private JFrame main;
 	private GamePanel gamePanel;
-	private JPanel infoPanel;
+	private InfoPanel infoPanel;
 
 	public GUI() {
 		game = new Game();
@@ -58,6 +58,7 @@ public class GUI extends JFrame {
 				if (maze.isGoalReached()) {
 					game.nextLevel(gamePanel);
 					updateBoard();
+					
 				}
 
 				// Check if level needs to be reset. This could be if the player dies for
@@ -84,7 +85,7 @@ public class GUI extends JFrame {
 		// window layout
 		gamePanel = new GamePanel(game);
 		infoPanel = new InfoPanel(game);
-
+		infoPanel.setBackground(Color.BLUE);
 		main.add(gamePanel, BorderLayout.CENTER);
 		main.add(infoPanel, BorderLayout.LINE_END);
 
@@ -216,9 +217,21 @@ public class GUI extends JFrame {
 	 * Redraws the game panel.
 	 */
 	public void updateBoard() {
+		
 		gamePanel.clearBoard();
 		gamePanel.drawBoard();
+		
+		//infoPanel.hintPanel();
+		if (game.getMaze().isOnHint()) infoPanel.setHint(game.getMaze().getHintMessage());
+		else infoPanel.setDefaultHint();
+		
+		infoPanel.clearInventory();
+		infoPanel.drawInventory();
 		gamePanel.updateUI();
+
+		
+
+		
 	}
 
 }
