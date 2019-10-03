@@ -5,12 +5,16 @@ import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+
 import java.awt.*;
+import java.util.Scanner;
 
 public class InfoPanel extends JPanel {
 
 	private Game game;
 	private JPanel storage;
+	private JPanel hint;
 
 	private int time;
 	private int level;
@@ -50,6 +54,8 @@ public class InfoPanel extends JPanel {
 		c.gridy = 3;
 		c.gridheight = 2;
 		this.add(inventory(),c);
+		c.gridy = 5;
+		this.add(hintPanel(),c);
 
 
 	}
@@ -71,6 +77,51 @@ public class InfoPanel extends JPanel {
 		return storage;
 	}
 
+	public JPanel hintPanel() {
+		hint = new JPanel();
+		hint.setPreferredSize(new Dimension(200,100));
+		hint.setBackground(Color.white);
+		
+		Border type = BorderFactory.createLineBorder(Color.black);
+		Border border = BorderFactory.createTitledBorder(type, "Current Hint:", TitledBorder.CENTER, TitledBorder.TOP);
+		hint.setBorder(border);
+		setDefaultHint();
+		return hint;
+	}
+	
+	public void setDefaultHint() {
+		try {
+			hint.remove(0);
+		} catch (ArrayIndexOutOfBoundsException e) {}
+		// I wish I could justify this being necessary, but it's the only way to fix the refreshing of the GUI
+		hint.add(new JLabel("<html>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
+							"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
+							"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
+							"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</html>"));
+	}
+	
+	public void setHint(String message) {
+		try {
+			hint.remove(0);
+		} catch (ArrayIndexOutOfBoundsException e) {}
+		
+		int length = 0;
+		StringBuilder wrapped = new StringBuilder();
+		Scanner sc = new Scanner(message);
+		wrapped.append("<html>");
+		while (sc.hasNext()) {
+			if (length > 25) {
+				wrapped.append("<br>");
+				length = 0;
+			}
+			String phrase = sc.next();
+			wrapped.append(phrase + " ");
+			length += phrase.length() + 1;
+		}
+		wrapped.append("</html>");
+		hint.add(new JLabel(wrapped.toString()));
+	}
+	
 	/**
 	 * Clears the game panel so it can be redrawn.
 	 */
