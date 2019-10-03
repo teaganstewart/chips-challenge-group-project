@@ -43,12 +43,13 @@ public class MazeTest {
 	@Test
 	public void testMovePlayerValid() {
 
-		assertNull(player.getNextPos());
-		assertNull(player.getPrevPos());
+		// Player starts facing down
+		assertEquals(new Coordinate(4, 3), player.getNextPos());
+		assertEquals(new Coordinate(2, 3), player.getPrevPos());
 
 		assertTrue(maze.movePlayer(Direction.DOWN));
 
-		assertNull(player.getLastDirection());
+		assertEquals(Direction.DOWN, player.getLastDirection());
 		assertEquals(Direction.DOWN, player.getDirection());
 		assertEquals(new Coordinate(4, 3), player.getCoordinate());
 		assertEquals(new Coordinate(3, 3), player.getPrevPos());
