@@ -7,8 +7,10 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.*;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The LoadUtils class contains methods that are used for loading games and
@@ -43,12 +45,27 @@ public class LoadUtils {
 		return loadLevel(jsonObject);
 	}
 
+	/**
+	 * Load a level by it's level ID
+	 * @param saveID the ID that is the main component of the file name
+	 * @return the constructed level object
+	 */
 	public static Level loadById(Long saveID){
-		return null;
+		File file = new File(SaveUtils.SAVES_DIRECTORY+"\\"+saveID+".json");
+		try {
+			return loadLevel(readJsonFromFile(file));
+		}
+		catch (NullPointerException e){
+			return null;
+		}
 	}
 
-	public static HashMap<Long, String> getSavesByID(){
-		HashMap<Long, String> namesToId = new HashMap<>();
+	/**
+	 * Creates a hashmap from ID -> Formatted String for GUI
+	 * @return a HashMap containing ID's to a neatly formatted string for GUI display.
+	 */
+	public static Map<Long, String> getSavesByID(){
+		Map<Long, String> namesToId = new HashMap<>();
 
 		File directory = new File(SaveUtils.SAVES_DIRECTORY);
 		FileFilter filter = pathname -> pathname.isFile() && pathname.toString().endsWith(".json");
@@ -75,10 +92,10 @@ public class LoadUtils {
 
 				StringBuilder sb = new StringBuilder();
 
-//				if (save.getString("LevelName") != null){
-//					sb.append(save.getString("LevelName"));
-//					sb.append(" - ");
-//				}
+				if (save.getString("LevelName") != null){
+					sb.append(save.getString("LevelName"));
+					sb.append(" - ");
+				}
 
 				sb.append("Level: ");
 				sb.append(levelNumber);
@@ -94,10 +111,7 @@ public class LoadUtils {
 			}
 		}
 
-		return namesToId;
-	}
-
-	public static void main(String[] args) {
+		return Collections.unmodifiableMap(namesToId);
 	}
 
 	// Private Methods
@@ -121,7 +135,7 @@ public class LoadUtils {
 		int timeAllowed = level.getInt("timeAllowed");
 
 		boolean completed = level.getBoolean("completed");
-
+	
 		Maze maze = loadMaze(level.getJsonObject("maze"));
 
 		return new Level(levelNumber, maze, levelStartTime, levelRunningTime, timeAllowed);
