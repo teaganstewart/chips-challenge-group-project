@@ -104,4 +104,8 @@ public class Level implements Saveable {
 	public int getLevel() {
 		return level;
 	}
+	
+	public int getTimeAllowed() {
+		return timeAllowed;
+	}
 }

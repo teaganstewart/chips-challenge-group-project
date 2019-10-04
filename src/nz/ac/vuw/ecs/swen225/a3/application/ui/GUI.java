@@ -261,7 +261,7 @@ public class GUI extends JFrame {
 					game.update();
 					if (timeToggle) {
 						updateBoard();
-						game.setTime(game.getTime()+1);
+						game.setTime(game.getTime()-1);
 					}
 					timeToggle = !timeToggle;
 				} catch (NullPointerException e) {}
