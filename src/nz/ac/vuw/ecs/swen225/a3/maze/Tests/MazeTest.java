@@ -20,6 +20,9 @@ public class MazeTest {
 	private Player player;
 	private Maze maze;
 
+	/*
+	* Create a new maze before each test
+	* */
 	@BeforeEach
 	public void setUp() {
 		tiles = new Tile[9][9];
@@ -32,6 +35,10 @@ public class MazeTest {
 		maze = new Maze(tiles, player);
 	}
 
+	/*
+	* Reset the Treasure class after each test as it contains
+	* static methods that will change it's state
+	* */
 	@AfterEach
 	public void tearDown() {
 		Treasure.reset();
@@ -172,6 +179,7 @@ public class MazeTest {
 
 		// If Player dies and level is restarted. This does not count as a move
 		assertFalse(maze.movePlayer(Direction.RIGHT));
+		assertTrue(maze.isResetLevel());
 		// At this point, player has died and level will be restarted. It is too
 		// difficult to test here
 	}
@@ -245,6 +253,7 @@ public class MazeTest {
 		assertEquals(new Coordinate(3, 6), player.getCoordinate());
 		assertFalse(maze.movePlayer(Direction.RIGHT));
 		// Player should be dead from the fire
+		assertTrue(maze.isResetLevel());
 	}
 
 	/**
@@ -258,6 +267,8 @@ public class MazeTest {
 		tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.HINT);
 		assertTrue(maze.movePlayer(Direction.RIGHT));
 		// Player should now be standing on hint tile
+		HintTile hintTile = (HintTile) tiles[3][7];
+		assertEquals(hintTile.getMessage(), maze.getHintMessage());
 		assertEquals(new Coordinate(3, 7), player.getCoordinate());
 	}
 

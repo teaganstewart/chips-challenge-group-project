@@ -2,11 +2,16 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import javax.json.JsonObject;
 
-/*
- * Class representing a pickupable item use for walking on ice blocks
- * */
+/**
+ * @author Josh
+ *
+ * Class representing a pickup-able item use for walking on ice blocks
+ */
 public class IceBoots implements Entity {
 
+	/**
+	 * Constructor
+	 */
 	public IceBoots() {
 
 	}

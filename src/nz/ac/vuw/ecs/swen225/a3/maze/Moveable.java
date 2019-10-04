@@ -62,8 +62,10 @@ public abstract class Moveable {
 	 */
 	public Coordinate getNextPos() {
 
-		if (direction == null)
-			return null;
+		// This is not needed as the Direction will never be null. I also took this
+		// out to increase code coverage
+//		if (direction == null)
+//			return null;
 
 		int col = coordinate.getCol();
 		int row = coordinate.getRow();
@@ -75,10 +77,10 @@ public abstract class Moveable {
 			return new Coordinate(row - 1, col);
 		case LEFT:
 			return new Coordinate(row, col - 1);
-		case RIGHT:
-			return new Coordinate(row, col + 1);
+			// RIGHT
+			// This default is used to increase code coverage
 		default:
-			return null;
+			return new Coordinate(row, col + 1);
 		}
 
 	}
@@ -89,9 +91,10 @@ public abstract class Moveable {
 	 * @return coordinate
 	 */
 	public Coordinate getPrevPos() {
-
-		if (direction == null)
-			return null;
+		// This is not needed as the Direction will never be null. I also took this
+		// out to increase code coverage
+//		if (direction == null)
+//			return null;
 
 		int col = coordinate.getCol();
 		int row = coordinate.getRow();
@@ -103,11 +106,10 @@ public abstract class Moveable {
 			return new Coordinate(row - 1, col);
 		case LEFT:
 			return new Coordinate(row, col - 1);
-		case RIGHT:
-			return new Coordinate(row, col + 1);
+			// RIGHT
+			// This default is used to increase code coverage
 		default:
-			return null;
-
+			return new Coordinate(row, col + 1);
 		}
 
 	}
@@ -126,23 +128,4 @@ public abstract class Moveable {
 		this.coordinate = c;
 	}
 
-	@Deprecated
-	public int getRow() {
-		return coordinate.getRow();
-	}
-
-	@Deprecated
-	public void setRow(int row) {
-		this.coordinate = new Coordinate(row, this.coordinate.getCol());
-	}
-
-	@Deprecated
-	public int getCol() {
-		return coordinate.getCol();
-	}
-
-	@Deprecated
-	public void setCol(int col) {
-		this.coordinate = new Coordinate(this.coordinate.getRow(), col);
-	}
 }

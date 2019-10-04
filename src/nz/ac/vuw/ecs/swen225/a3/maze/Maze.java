@@ -222,6 +222,12 @@ public class Maze implements Saveable {
 
 	/* Getters and Setters */
 
+	/**
+	 * Checks whether the level should be restarted. This is useful 
+	 * when a player steps on a fire block and dies
+	 * 
+	 * @return resetLevel
+	 */
 	public boolean isResetLevel() {
 		return resetLevel;
 	}

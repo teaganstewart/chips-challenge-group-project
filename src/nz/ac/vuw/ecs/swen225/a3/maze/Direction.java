@@ -6,7 +6,22 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  * @author
  */
 public enum Direction {
-	UP, RIGHT, DOWN, LEFT;
+	/**
+	 * Up
+	 */
+	UP, 
+	/**
+	 * Right
+	 */
+	RIGHT, 
+	/**
+	 * Down
+	 */
+	DOWN, 
+	/**
+	 * Left
+	 */
+	LEFT;
 
 	/**
 	 * Inverse direction used for movements.
