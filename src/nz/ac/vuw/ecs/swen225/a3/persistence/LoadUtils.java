@@ -114,6 +114,21 @@ public class LoadUtils {
 		return Collections.unmodifiableMap(namesToId);
 	}
 
+	/**
+	 * Check inside the levels folder and count how many levels have been installed.
+	 * @return amount of installed levels
+	 */
+	public static int getAmountOfInstalledLevels(){
+		File directory = new File(LEVELS_DIRECTORY);
+		FileFilter filter = pathname -> pathname.isFile() && pathname.toString().endsWith(".json");
+		File[] files = directory.listFiles(filter);
+
+		if (files != null) {
+			return files.length;
+		}
+		return 0;
+	}
+
 	// Private Methods
 
 	/**
@@ -135,7 +150,7 @@ public class LoadUtils {
 		int timeAllowed = level.getInt("timeAllowed");
 
 		boolean completed = level.getBoolean("completed");
-	
+
 		Maze maze = loadMaze(level.getJsonObject("maze"));
 
 		return new Level(levelNumber, maze, levelStartTime, levelRunningTime, timeAllowed);
