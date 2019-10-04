@@ -49,6 +49,8 @@ class CrateTest {
      */
     @Test
     public void testPlayerPushesCrateValid() {
+        // Assert that crates can't walk, haha
+        assertFalse(crate1.canWalkOn(new Key(BasicColor.YELLOW)));
         assertEquals(new Coordinate(5, 3), crate1.getCoordinate());
         assertTrue(maze.movePlayer(Direction.RIGHT));
         // Player moves crate1. Check Player and crate1 positions
