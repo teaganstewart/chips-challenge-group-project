@@ -1,7 +1,11 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.Timer;
 
+import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LevelMaker;
@@ -10,7 +14,7 @@ import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 public class Game {
   int level;
-  int time;
+  private int time = 0;
   int treasures;
 
     private Player player;
@@ -44,7 +48,8 @@ public class Game {
   }
 
   public void update() {
-
+	  // put all actor code here
+	  // could do the ice sliding here too?
   }
 
     public void loadGame(){
@@ -62,6 +67,10 @@ public class Game {
 
         maze = level.getMaze();
         player = maze.getPlayer();
+        
+        // set the time appropriately here
+        setTime(0);
+        GUI.startTimer();
 
     }
 
@@ -97,17 +106,18 @@ public class Game {
     }
     
     public void nextLevel(GamePanel gp) {
+    	GUI.stopTimer();
+    	setTime(0);
 		setLevel(getLevel()+1); 
 		Level l = LoadUtils.loadLevel(getLevel());
 		render.setMaze(l.getMaze());
 		setMaze(l.getMaze());
 		setPlayer(l.getMaze().getPlayer());
 		setTiles(l.getMaze().getTiles());
-		
+    	GUI.startTimer();
 		
 //		Player player = game.getPlayer();
 //		player.setInventory(new ArrayList<Entity>());
     }
-    
   
 }

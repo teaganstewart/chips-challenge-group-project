@@ -15,6 +15,7 @@ public class InfoPanel extends JPanel {
 	private Game game;
 	private JPanel storage;
 	private JPanel hint;
+	private JPanel timer;
 
 	private int time;
 	private int level;
@@ -37,7 +38,7 @@ public class InfoPanel extends JPanel {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth =1;
-		c.insets = new Insets(0,0,50,0);  //top padding
+		c.insets = new Insets(0,0,40,0);  //top padding
 		JLabel level = new JLabel("Level:");
 		JLabel displayLevel = new JLabel("Display Level");
 		//displayLevel.setBackground();
@@ -48,7 +49,7 @@ public class InfoPanel extends JPanel {
 
 		this.add(level,c);
 		c.gridy = 1;
-		this.add(time,c);
+		this.add(timePanel(),c);
 		c.gridy = 2;
 		this.add(chips,c);
 		c.gridy = 3;
@@ -80,6 +81,8 @@ public class InfoPanel extends JPanel {
 	public JPanel hintPanel() {
 		hint = new JPanel();
 		hint.setPreferredSize(new Dimension(200,100));
+		hint.setMaximumSize(new Dimension(200,100));
+		hint.setMinimumSize(new Dimension(200,100));
 		hint.setBackground(Color.white);
 		
 		Border type = BorderFactory.createLineBorder(Color.black);
@@ -120,6 +123,42 @@ public class InfoPanel extends JPanel {
 		}
 		wrapped.append("</html>");
 		hint.add(new JLabel(wrapped.toString()));
+	}
+
+	
+	public JPanel timePanel() {
+		timer = new JPanel();
+		timer.setPreferredSize(new Dimension(200,50));
+		timer.setMaximumSize(new Dimension(200,50));
+		timer.setMinimumSize(new Dimension(200,50));
+		timer.setBackground(Color.white);
+		
+		Border type = BorderFactory.createLineBorder(Color.white);
+		Border border = BorderFactory.createTitledBorder(type, "Total Time:", TitledBorder.CENTER, TitledBorder.TOP);
+		timer.setBorder(border);
+		displayTime();
+		return timer;
+	}
+	
+	public void displayTime() {
+		try {
+			timer.remove(0);
+		} catch (ArrayIndexOutOfBoundsException e) {}
+		
+		timer.add(new JLabel(timeToMins(game.getTime())));
+	}
+	
+	private String timeToMins(int time) {
+		int first = 0;
+		int secnd = 0;
+		
+		while (time >= 60) {
+			first++;
+			time-=60;
+		}
+		secnd = time;
+		
+		return (first <= 9 ? "0" : "") + Integer.toString(first) + ":" + (secnd <= 9 ? "0" : "") + Integer.toString(secnd);
 	}
 	
 	/**

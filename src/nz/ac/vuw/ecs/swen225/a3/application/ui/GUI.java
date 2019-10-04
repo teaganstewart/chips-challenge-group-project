@@ -20,8 +20,11 @@ public class GUI extends JFrame {
 	private JFrame main;
 	private GamePanel gamePanel;
 	private InfoPanel infoPanel;
+    private static Timer gameLoop;
+    private static boolean timeToggle = true;
 
 	public GUI() {
+		setupTimer();
 		game = new Game();
 		createWindow();
 		main.addKeyListener(new KeyListener() {
@@ -201,14 +204,23 @@ public class GUI extends JFrame {
 		 */
 	}
 
+	/**
+	 * 
+	 */
 	public void displayTime() {
 		int time = game.getTime();
 	}
 
+	/**
+	 * 
+	 */
 	public void displayLevel() {
 		int level = game.getLevel();
 	}
 
+	/**
+	 * 
+	 */
 	public void displayTreasure() {
 		int treasures = game.getTreasures();
 	}
@@ -221,7 +233,8 @@ public class GUI extends JFrame {
 		gamePanel.clearBoard();
 		gamePanel.drawBoard();
 		
-		//infoPanel.hintPanel();
+		infoPanel.displayTime();
+		
 		if (game.getMaze().isOnHint()) infoPanel.setHint(game.getMaze().getHintMessage());
 		else infoPanel.setDefaultHint();
 		
@@ -233,5 +246,41 @@ public class GUI extends JFrame {
 
 		
 	}
+	
+    /**
+     * Only ever called once to create the timer and override it's action event
+     * Runs once per second
+     */
+    private void setupTimer() {
+    	
+    	gameLoop = new Timer(500, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					game.update();
+					if (timeToggle) {
+						game.setTime(game.getTime()+1);
+						updateBoard();
+					}
+					timeToggle = !timeToggle;
+				} catch (NullPointerException e) {}
+			}
+ 
+    		
+    	});
+		gameLoop.setInitialDelay(0);
+		gameLoop.setRepeats(true);
+    	
+    }
+    
+    public static void startTimer() {
+    	timeToggle = true;
+    	gameLoop.start();
+    }
+    
+    public static void stopTimer() {
+    	gameLoop.stop();
+    }
 
 }
