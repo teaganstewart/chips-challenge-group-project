@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,6 +20,7 @@ public class MazeTest {
 	private Tile[][] tiles;
 	private Player player;
 	private Maze maze;
+	private List<Crate> crateList = new ArrayList<>();
 
 	/*
 	* Create a new maze before each test
@@ -32,7 +34,12 @@ public class MazeTest {
 			}
 		}
 		player = new Player(new Coordinate(3, 3));
-		maze = new Maze(tiles, player);
+		crateList = new ArrayList<Crate>(Arrays.asList(
+				new Crate(new Coordinate(5, 3)),
+				new Crate(new Coordinate(5, 5))
+		));
+
+		maze = new Maze(tiles, player, crateList);
 	}
 
 	/*
@@ -194,163 +201,6 @@ public class MazeTest {
 		assertTrue(maze.movePlayer(Direction.RIGHT));
 		assertTrue(player.isInInventory(new FireBoots()));
 		assertTrue(maze.movePlayer(Direction.RIGHT));
-	}
-
-	/**
-	 * Test to see if player walks on an ice block with ice boots
-	 */
-	@Test
-	public void testIceBlockWalking() {
-		tiles[3][4].setEntity(new IceBoots());
-		tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
-		tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		assertTrue(player.isInInventory(new IceBoots()));
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		assertEquals(new Coordinate(3, 7), player.getCoordinate());
-	}
-
-	/**
-	 * Test to see if player does not have ice boots and slides on ice onto a floor block
-	 */
-	@Test
-	public void testIceBlockSlidingOntoFloor() {
-		tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.ICE);
-		tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
-		tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		// Player slides to the next non-ice block
-		assertEquals(new Coordinate(3, 7), player.getCoordinate());
-	}
-
-	/**
-	 * Test to see if player does not have ice boots and slides on ice and next to a wall
-	 */
-	@Test
-	public void testIceBlockSlidingOntoWall() {
-		tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.ICE);
-		tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
-		tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
-		tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.WALL);
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		// Player slides to the next non-ice block
-		assertEquals(new Coordinate(3, 6), player.getCoordinate());
-	}
-
-	/**
-	 * Test to see if player does not have ice boots and slides on ice into a fire block
-	 */
-	@Test
-	public void testIceBlockSlidingOntoFire() {
-		tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.ICE);
-		tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
-		tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
-		tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.FIRE);
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		// Player should now be standing on last ice block
-		assertEquals(new Coordinate(3, 6), player.getCoordinate());
-		assertFalse(maze.movePlayer(Direction.RIGHT));
-		// Player should be dead from the fire
-		assertTrue(maze.isResetLevel());
-	}
-
-	/**
-	 * Test to see if player does not have ice boots and slides on ice onto a hint tile
-	 */
-	@Test
-	public void testIceBlockSlidingOntoHint() {
-		tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.ICE);
-		tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
-		tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
-		tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.HINT);
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		// Player should now be standing on hint tile
-		HintTile hintTile = (HintTile) tiles[3][7];
-		assertEquals(hintTile.getMessage(), maze.getHintMessage());
-		assertEquals(new Coordinate(3, 7), player.getCoordinate());
-	}
-
-	/**
-	 * Test to see if player does not have ice boots and slides on ice into the goal
-	 */
-	@Test
-	public void testIceBlockSlidingOntoGoal() {
-		tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.ICE);
-		tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
-		tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
-		tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.GOAL);
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		assertEquals(new Coordinate(3, 7), player.getCoordinate());
-		assertTrue(maze.isGoalReached());
-	}
-
-	/**
-	 * Test to see if player does not have ice boots and slides into a floor tile with a key
-	 */
-	@Test
-	public void testIceBlockSlidingOntoKey() {
-		tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.ICE);
-		tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
-		tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
-		tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.FLOOR);
-		Key key = new Key(BasicColor.YELLOW);
-		tiles[3][7].setEntity(key);
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		assertEquals(new Coordinate(3, 7), player.getCoordinate());
-		assertTrue(player.isInInventory(key));
-		assertTrue(player.getInventory().contains(key));
-	}
-
-	/**
-	 * Test to see if player does not have ice boots and slides into a floor tile with treasure
-	 */
-	@Test
-	public void testIceBlockSlidingOntoTreasure() {
-		tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.ICE);
-		tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
-		tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
-		tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.FLOOR);
-		Treasure treasure = new Treasure();
-		tiles[3][7].setEntity(treasure);
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		assertEquals(new Coordinate(3, 7), player.getCoordinate());
-		assertTrue(Treasure.allCollected());
-	}
-
-	/**
-	 * Test to see if player does not have ice boots and slides into a floor tile with treasure
-	 */
-	@Test
-	public void testIceBlockSlidingIntoLockedTreasureDoor() {
-		tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.ICE);
-		tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
-		tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
-		tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.FLOOR);
-		TreasureDoor treasureDoor = new TreasureDoor();
-		tiles[3][7].setEntity(treasureDoor);
-		Treasure treasure = new Treasure();
-		tiles[3][8].setEntity(treasure);
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		assertEquals(new Coordinate(3, 6), player.getCoordinate());
-		assertFalse(maze.movePlayer(Direction.RIGHT));
-	}
-
-	/**
-	 * Test to see if player does not have ice boots and slides into a floor tile with treasure
-	 */
-	@Test
-	public void testIceBlockSlidingIntoLockedKeyDoor() {
-		tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.ICE);
-		tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
-		tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
-		tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.FLOOR);
-		KeyDoor keyDoor = new KeyDoor(BasicColor.YELLOW);
-		tiles[3][7].setEntity(keyDoor);
-		assertTrue(maze.movePlayer(Direction.RIGHT));
-		assertEquals(new Coordinate(3, 6), player.getCoordinate());
-		assertFalse(maze.movePlayer(Direction.RIGHT));
 	}
 
 	// -----------------------------//

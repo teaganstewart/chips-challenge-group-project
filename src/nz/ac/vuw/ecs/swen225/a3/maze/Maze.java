@@ -44,7 +44,12 @@ public class Maze implements Saveable {
 		this.tiles = tiles;
 		this.player = player;
 		this.goalReached = false;
-		this.crateList = crateList;
+		// TODO implement proper crate list so that this safeguard can be removed
+		if(crateList != null){
+            this.crateList = crateList;
+        }else{
+		    this.crateList = new ArrayList<Crate>();
+        }
 		this.onHint = false;
 	}
 
@@ -165,7 +170,8 @@ public class Maze implements Saveable {
 	}
 
 	/**
-	 *
+	 * Method which keeps moving the Player in the same direction until there are no more
+	 * Ice tiles in that direction
 	 */
 	private void slidePlayer(){
 		Tile destTile = tiles[player.getNextPos().getRow()][player.getNextPos().getCol()];
@@ -195,7 +201,14 @@ public class Maze implements Saveable {
 		catch (IndexOutOfBoundsException e){
 			return false;
 		}
-		if((crateDestTile != null) && (crateDestTile.getType() == Tile.TileType.FLOOR) && (crateDestTile.getEntity() == null)){
+		if((crateDestTile != null) && (crateDestTile.getType() == Tile.TileType.FLOOR)
+				&& (crateDestTile.getEntity() == null)){
+			// Check there are no other crates on the destination tile
+			for(Crate crateVar : crateList){
+				// Skip over current crate
+				if(crateVar.equals(crate)) continue;
+				if(crateVar.getCoordinate().equals(crateDestTile.getCoordinate())) return false;
+			}
 			// Move crate
 			crate.setCoordinate(crateDest);
 			// Move Player
