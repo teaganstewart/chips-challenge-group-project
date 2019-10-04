@@ -20,7 +20,30 @@ public class Tile implements Saveable {
 	 */
 	public enum TileType {
 
-		FLOOR, WALL, HINT, GOAL, FIRE, ICE
+		/**
+		 * Floor
+		 */
+		FLOOR, 
+		/**
+		 * Wall
+		 */
+		WALL, 
+		/**
+		 * Hint
+		 */
+		HINT, 
+		/**
+		 * Goal
+		 */
+		GOAL, 
+		/**
+		 * Fire
+		 */
+		FIRE, 
+		/**
+		 * Ice
+		 */
+		ICE
 
 	}
 
@@ -40,13 +63,6 @@ public class Tile implements Saveable {
 	}
 
 	/* Getters and Setters */
-
-	/**
-	 * @param coord
-	 */
-	public void setCoordinate(Coordinate coord) {
-		this.coord = coord;
-	}
 
 	/**
 	 * @return coord
@@ -83,12 +99,15 @@ public class Tile implements Saveable {
 		return type;
 	}
 
+
+	// This method is no longer needed as the check is done in maze with if(tile.tileType() == TileType.Wall)
 	/**
 	 * Returns whether or not this tile is a wall. Prevents the player from moving
 	 * across it, if this is the case
-	 * 
+	 *
 	 * @return validity
 	 */
+	@Deprecated
 	public boolean isWall() {
 		return type == TileType.WALL;
 	}
