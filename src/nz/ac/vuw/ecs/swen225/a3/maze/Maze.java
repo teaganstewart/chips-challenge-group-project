@@ -6,6 +6,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -31,6 +32,7 @@ public class Maze implements Saveable {
 	// Check whether the level needs to be reset. This could be when the player dies, e.g. by
 	// walking on a fire block
 	private boolean resetLevel = false;
+	private List<Crate> crateList;
 
 	/**
 	 * @param tiles
@@ -38,10 +40,11 @@ public class Maze implements Saveable {
 	 *
 	 *               Constructor for a maze.
 	 */
-	public Maze(Tile[][] tiles, Player player) {
+	public Maze(Tile[][] tiles, Player player, List<Crate> crateList) {
 		this.tiles = tiles;
 		this.player = player;
 		this.goalReached = false;
+		this.crateList = crateList;
 		this.onHint = false;
 	}
 
@@ -75,6 +78,13 @@ public class Maze implements Saveable {
 				// Slide the player until there are no ice blocks left
 				slidePlayer();
 				return true;
+			}
+		}
+
+		// Handle exception with pushing a crate
+		for(Crate crate : crateList){
+			if(crate.getCoordinate().equals(endTile.getCoordinate())){
+				return pushCrate(crate);
 			}
 		}
 
@@ -167,6 +177,32 @@ public class Maze implements Saveable {
 		if(checkType(player, destTile)){
 			movePlayer(player.getDirection());
 		}
+	}
+
+	/*
+	 * Attempts to push the crate in the players direction. Returns true for
+	 *  a successful push, false for no push
+	 * */
+	private boolean pushCrate(Crate crate){
+		// Check space in front of crate
+		crate.setDirection(player.getDirection());
+		Coordinate crateDest = crate.getNextPos();
+		// Make sure crate is not being pushed off the edge of the map
+		Tile crateDestTile;
+		try{
+			crateDestTile = tiles[crateDest.getRow()][crateDest.getCol()];
+		}
+		catch (IndexOutOfBoundsException e){
+			return false;
+		}
+		if((crateDestTile != null) && (crateDestTile.getType() == Tile.TileType.FLOOR) && (crateDestTile.getEntity() == null)){
+			// Move crate
+			crate.setCoordinate(crateDest);
+			// Move Player
+			player.setCoordinate(player.getNextPos());
+			return true;
+		}
+		return false;
 	}
 
 	/**
