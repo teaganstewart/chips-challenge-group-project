@@ -29,6 +29,7 @@ public class Player extends Moveable implements Saveable {
 
 	/**
 	 * Sets the players inventory. More useful for tests.
+	 * @param inv 
 	 */
 	public void setInventory(List<Entity> inv) {
 		inventory = inv;
@@ -62,7 +63,7 @@ public class Player extends Moveable implements Saveable {
 	 * @return Returns the entity at the given index.
 	 */
 	public Entity getInventoryAt(int index) {
-		if (index < inventory.size()) {
+		if ((0 <= index) && (index < inventory.size())) {
 			return inventory.get(index);
 		}
 		return null;
@@ -76,7 +77,7 @@ public class Player extends Moveable implements Saveable {
 	 * @return validity
 	 */
 	public boolean removeInventoryAt(int index) {
-		if (index < inventory.size()) {
+		if ((0 <= index) && (index < inventory.size())) {
 			inventory.remove(index);
 			return true;
 		}
@@ -90,6 +91,7 @@ public class Player extends Moveable implements Saveable {
 	 * method is needed when the player is about to walk on a particular tile which
 	 * requires the player to have a particular type of entity in their inventory
 	 * (e.g. Fire tile requires FireBoots)
+	 * @param queryEntity 
 	 *
 	 * @return validity
 	 */
@@ -130,8 +132,8 @@ public class Player extends Moveable implements Saveable {
 			Door door = (Door) entity;
 			return door.onTouch(this);
 		}
-		// Fire boots
-		else if (entity instanceof FireBoots) {
+		// Fire or Ice boots
+		else if (entity instanceof FireBoots || entity instanceof IceBoots) {
 			addToInventory(entity);
 			return true;
 		}
@@ -142,6 +144,11 @@ public class Player extends Moveable implements Saveable {
 		return false;
 	}
 
+	/**
+	 * Getter for the player's start coordinate
+	 * 
+	 * @return startCoordinate
+	 */
 	public Coordinate getStartCoordinate() {
 		return startCoordinate;
 	}

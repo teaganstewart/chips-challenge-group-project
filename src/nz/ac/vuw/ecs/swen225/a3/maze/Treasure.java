@@ -61,7 +61,25 @@ public class Treasure implements Entity {
 	public static boolean allCollected() {
 		return totalCollected == totalInLevel;
 	}
+	
+	/**
+	 * Returns the amount of treasures collected
+	 * 
+	 * @return the total treasures collected
+	 */
+	public static int getTotalCollected() {
+		return totalCollected;
+	}
 
+	/**
+	 * Returns the amount of treasures in the level
+	 * 
+	 * @return the total treasures in the level
+	 */
+	public static int getTotalInLevel() {
+		return totalInLevel;
+	}
+	
 	/**
 	 * Serialize the static fields within Treasure to JSON object format
 	 * 
