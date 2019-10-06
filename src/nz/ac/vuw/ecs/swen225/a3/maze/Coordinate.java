@@ -4,6 +4,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import java.util.Objects;
 
 /**
  * The Coordinate class, purely to store coordinates of objects in a simpler
@@ -81,5 +82,10 @@ public class Coordinate implements Saveable {
 		JsonObject coord = Json.createObjectBuilder().add("row", row).add("col", col).build();
 
 		return coord;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(row, col);
 	}
 }

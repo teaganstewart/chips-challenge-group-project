@@ -20,7 +20,30 @@ public class Tile implements Saveable {
 	 */
 	public enum TileType {
 
-		FLOOR, WALL, HINT, GOAL, FIRE, ICE
+		/**
+		 * Floor
+		 */
+		FLOOR, 
+		/**
+		 * Wall
+		 */
+		WALL, 
+		/**
+		 * Hint
+		 */
+		HINT, 
+		/**
+		 * Goal
+		 */
+		GOAL, 
+		/**
+		 * Fire
+		 */
+		FIRE, 
+		/**
+		 * Ice
+		 */
+		ICE
 
 	}
 
@@ -40,13 +63,6 @@ public class Tile implements Saveable {
 	}
 
 	/* Getters and Setters */
-
-	/**
-	 * @param coord
-	 */
-	public void setCoordinate(Coordinate coord) {
-		this.coord = coord;
-	}
 
 	/**
 	 * @return coord
@@ -83,15 +99,6 @@ public class Tile implements Saveable {
 		return type;
 	}
 
-	/**
-	 * Returns whether or not this tile is a wall. Prevents the player from moving
-	 * across it, if this is the case
-	 * 
-	 * @return validity
-	 */
-	public boolean isWall() {
-		return type == TileType.WALL;
-	}
 
 	/**
 	 * Produce a JSON derived string so that this Tile can be reloaded.

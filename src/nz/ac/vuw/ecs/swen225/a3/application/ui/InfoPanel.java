@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.application.ui;
 
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
+import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 import javax.swing.*;
@@ -15,18 +16,15 @@ public class InfoPanel extends JPanel {
 	private Game game;
 	private JPanel storage;
 	private JPanel hint;
-
-	private int time;
-	private int level;
-	private int treasures;
+	private JPanel timer;
+	private JPanel chip;
+	
 	private ImageIcon infoIcon = makeImageIcon("icons/InfoBackground.png");
 	private ImageIcon slotIcon = makeImageIcon("icons/Slot.png");
 
 	public InfoPanel (Game game){
+		
 		this.game = game;
-		this.time = game.getTime();
-		this.level = game.getLevel();
-		this.treasures = game.getTreasures();
 		this.setLayout(new GridBagLayout());
 		this.setPreferredSize(new Dimension(300,200));
 
@@ -37,20 +35,14 @@ public class InfoPanel extends JPanel {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth =1;
-		c.insets = new Insets(0,0,50,0);  //top padding
+		c.insets = new Insets(0,0,30,0);  //top padding
 		JLabel level = new JLabel("Level:");
-		JLabel displayLevel = new JLabel("Display Level");
-		//displayLevel.setBackground();
-		JLabel time = new JLabel("Time:");
-		JLabel displayTime = new JLabel("Display Time");
-		JLabel chips = new JLabel("Chips:");
-		JLabel displayChip = new JLabel("Display Chip");
 
 		this.add(level,c);
 		c.gridy = 1;
-		this.add(time,c);
+		this.add(timePanel(),c);
 		c.gridy = 2;
-		this.add(chips,c);
+		this.add(chipPanel(),c);
 		c.gridy = 3;
 		c.gridheight = 2;
 		this.add(inventory(),c);
@@ -77,9 +69,25 @@ public class InfoPanel extends JPanel {
 		return storage;
 	}
 
+	public JPanel chipPanel() {
+		chip = new JPanel();
+		chip.setPreferredSize(new Dimension(200,50));
+		chip.setMaximumSize(new Dimension(200,50));
+		chip.setMinimumSize(new Dimension(200,50));
+		chip.setBackground(Color.white);
+
+		Border type = BorderFactory.createLineBorder(Color.white);
+		Border border = BorderFactory.createTitledBorder(type, "Chips Left:", TitledBorder.CENTER, TitledBorder.TOP);
+		chip.setBorder(border);
+		displayChips();
+		return chip;
+	}
+	
 	public JPanel hintPanel() {
 		hint = new JPanel();
 		hint.setPreferredSize(new Dimension(200,100));
+		hint.setMaximumSize(new Dimension(200,100));
+		hint.setMinimumSize(new Dimension(200,100));
 		hint.setBackground(Color.white);
 		
 		Border type = BorderFactory.createLineBorder(Color.black);
@@ -121,6 +129,42 @@ public class InfoPanel extends JPanel {
 		wrapped.append("</html>");
 		hint.add(new JLabel(wrapped.toString()));
 	}
+
+	
+	public JPanel timePanel() {
+		timer = new JPanel();
+		timer.setPreferredSize(new Dimension(200,50));
+		timer.setMaximumSize(new Dimension(200,50));
+		timer.setMinimumSize(new Dimension(200,50));
+		timer.setBackground(Color.white);
+		
+		Border type = BorderFactory.createLineBorder(Color.white);
+		Border border = BorderFactory.createTitledBorder(type, "Total Time:", TitledBorder.CENTER, TitledBorder.TOP);
+		timer.setBorder(border);
+		displayTime();
+		return timer;
+	}
+	
+	public void displayTime() {
+		try {
+			timer.remove(0);
+		} catch (ArrayIndexOutOfBoundsException e) {}
+		
+		timer.add(new JLabel(timeToMins(game.getTime())));
+	}
+	
+	private String timeToMins(int time) {
+		int first = 0;
+		int secnd = 0;
+		
+		while (time >= 60) {
+			first++;
+			time-=60;
+		}
+		secnd = time;
+		
+		return (first <= 9 ? "0" : "") + Integer.toString(first) + ":" + (secnd <= 9 ? "0" : "") + Integer.toString(secnd);
+	}
 	
 	/**
 	 * Clears the game panel so it can be redrawn.
@@ -146,7 +190,16 @@ public class InfoPanel extends JPanel {
 			storage.add(item);
 		}
 	}
-
+	
+	public void displayChips() {
+		try {
+			chip.remove(0);
+		} catch (ArrayIndexOutOfBoundsException e) {}
+		
+		int left = Treasure.getTotalInLevel() - Treasure.getTotalCollected();
+		chip.add(new JLabel(Integer.toString(left)));
+	}
+	
 	public void paintComponent(Graphics g){
 		g.drawImage(infoIcon.getImage(), 0, 30, getWidth()-30, getHeight()-60, null);
 	}

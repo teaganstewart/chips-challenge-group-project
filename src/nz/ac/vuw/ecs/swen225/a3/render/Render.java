@@ -39,6 +39,12 @@ public class Render {
 		return board;
 	}
 
+	/**
+	 * 
+	 * @param i
+	 * @param j
+	 * @param tiles
+	 */
 	public void renderEntities(int i, int j, Tile[][] tiles) {
 		if (tiles[i][j].getEntity() != null) {
 			Entity onTile = tiles[i][j].getEntity();

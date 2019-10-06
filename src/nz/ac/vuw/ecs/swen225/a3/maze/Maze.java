@@ -6,6 +6,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -31,6 +32,7 @@ public class Maze implements Saveable {
 	// Check whether the level needs to be reset. This could be when the player dies, e.g. by
 	// walking on a fire block
 	private boolean resetLevel = false;
+	private List<Crate> crateList;
 
 	/**
 	 * @param tiles
@@ -38,10 +40,16 @@ public class Maze implements Saveable {
 	 *
 	 *               Constructor for a maze.
 	 */
-	public Maze(Tile[][] tiles, Player player) {
+	public Maze(Tile[][] tiles, Player player, List<Crate> crateList) {
 		this.tiles = tiles;
 		this.player = player;
 		this.goalReached = false;
+		// TODO implement proper crate list so that this safeguard can be removed
+		if(crateList != null){
+            this.crateList = crateList;
+        }else{
+		    this.crateList = new ArrayList<Crate>();
+        }
 		this.onHint = false;
 	}
 
@@ -65,6 +73,25 @@ public class Maze implements Saveable {
 		}
 
 		Tile endTile = tiles[rowDest][colDest];
+
+		// Handle exception with sliding
+		if (endTile.getType() == Tile.TileType.ICE) {
+			if (player.isInInventory(new IceBoots())) {
+				player.setCoordinate(endTile.getCoordinate());
+				return true;
+			} else {
+				// Slide the player until there are no ice blocks left
+				slidePlayer();
+				return true;
+			}
+		}
+
+		// Handle exception with pushing a crate
+		for(Crate crate : crateList){
+			if(crate.getCoordinate().equals(endTile.getCoordinate())){
+				return pushCrate(crate);
+			}
+		}
 
 		// Check if entity can be collected/walked on. If so, collect and move player.
 		// "canWalkOn"
@@ -143,6 +170,55 @@ public class Maze implements Saveable {
 	}
 
 	/**
+	 * Method which keeps moving the Player in the same direction until there are no more
+	 * Ice tiles in that direction
+	 */
+	private void slidePlayer(){
+		Tile destTile = tiles[player.getNextPos().getRow()][player.getNextPos().getCol()];
+		while(destTile.getType() == Tile.TileType.ICE){
+			player.setCoordinate(destTile.getCoordinate());
+			// Update destTile
+			destTile = tiles[player.getNextPos().getRow()][player.getNextPos().getCol()];
+		}
+		if(checkType(player, destTile)){
+			movePlayer(player.getDirection());
+		}
+	}
+
+	/*
+	 * Attempts to push the crate in the players direction. Returns true for
+	 *  a successful push, false for no push
+	 * */
+	private boolean pushCrate(Crate crate){
+		// Check space in front of crate
+		crate.setDirection(player.getDirection());
+		Coordinate crateDest = crate.getNextPos();
+		// Make sure crate is not being pushed off the edge of the map
+		Tile crateDestTile;
+		try{
+			crateDestTile = tiles[crateDest.getRow()][crateDest.getCol()];
+		}
+		catch (IndexOutOfBoundsException e){
+			return false;
+		}
+		if((crateDestTile != null) && (crateDestTile.getType() == Tile.TileType.FLOOR)
+				&& (crateDestTile.getEntity() == null)){
+			// Check there are no other crates on the destination tile
+			for(Crate crateVar : crateList){
+				// Skip over current crate
+				if(crateVar.equals(crate)) continue;
+				if(crateVar.getCoordinate().equals(crateDestTile.getCoordinate())) return false;
+			}
+			// Move crate
+			crate.setCoordinate(crateDest);
+			// Move Player
+			player.setCoordinate(player.getNextPos());
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Returns whether or not the goal has been reached
 	 * 
 	 * @return whether or not the player has touched the goal tile
@@ -195,6 +271,12 @@ public class Maze implements Saveable {
 
 	/* Getters and Setters */
 
+	/**
+	 * Checks whether the level should be restarted. This is useful 
+	 * when a player steps on a fire block and dies
+	 * 
+	 * @return resetLevel
+	 */
 	public boolean isResetLevel() {
 		return resetLevel;
 	}

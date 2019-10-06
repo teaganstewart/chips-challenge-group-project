@@ -322,7 +322,8 @@ public class LoadUtils {
 
 		Treasure.setTreasureCountersUponLoad(totalInLevel, totalCollected);
 
-		return new Maze(tiles, player);
+		// TODO make a List of all the crates in the level and pass it into the maze consturctor
+		return new Maze(tiles, player, null);
 	}
 
 	/**

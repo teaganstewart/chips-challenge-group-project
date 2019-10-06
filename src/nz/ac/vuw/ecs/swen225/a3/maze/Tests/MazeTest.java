@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +20,11 @@ public class MazeTest {
 	private Tile[][] tiles;
 	private Player player;
 	private Maze maze;
+	private List<Crate> crateList = new ArrayList<>();
 
+	/*
+	* Create a new maze before each test
+	* */
 	@BeforeEach
 	public void setUp() {
 		tiles = new Tile[9][9];
@@ -29,9 +34,18 @@ public class MazeTest {
 			}
 		}
 		player = new Player(new Coordinate(3, 3));
-		maze = new Maze(tiles, player);
+		crateList = new ArrayList<Crate>(Arrays.asList(
+				new Crate(new Coordinate(5, 3)),
+				new Crate(new Coordinate(5, 5))
+		));
+
+		maze = new Maze(tiles, player, crateList);
 	}
 
+	/*
+	* Reset the Treasure class after each test as it contains
+	* static methods that will change it's state
+	* */
 	@AfterEach
 	public void tearDown() {
 		Treasure.reset();
@@ -43,12 +57,13 @@ public class MazeTest {
 	@Test
 	public void testMovePlayerValid() {
 
-		assertNull(player.getNextPos());
-		assertNull(player.getPrevPos());
+		// Player starts facing down
+		assertEquals(new Coordinate(4, 3), player.getNextPos());
+		assertEquals(new Coordinate(2, 3), player.getPrevPos());
 
 		assertTrue(maze.movePlayer(Direction.DOWN));
 
-		assertNull(player.getLastDirection());
+		assertEquals(Direction.DOWN, player.getLastDirection());
 		assertEquals(Direction.DOWN, player.getDirection());
 		assertEquals(new Coordinate(4, 3), player.getCoordinate());
 		assertEquals(new Coordinate(3, 3), player.getPrevPos());
@@ -171,6 +186,7 @@ public class MazeTest {
 
 		// If Player dies and level is restarted. This does not count as a move
 		assertFalse(maze.movePlayer(Direction.RIGHT));
+		assertTrue(maze.isResetLevel());
 		// At this point, player has died and level will be restarted. It is too
 		// difficult to test here
 	}
@@ -185,19 +201,6 @@ public class MazeTest {
 		assertTrue(maze.movePlayer(Direction.RIGHT));
 		assertTrue(player.isInInventory(new FireBoots()));
 		assertTrue(maze.movePlayer(Direction.RIGHT));
-	}
-
-	// -----------------------------//
-	// -------GENERAL TESTS --------//
-	// -----------------------------//
-
-	@Test
-	void extensionsTest() {
-		Player p = new Player(new Coordinate(1, 2));
-		Player p2 = new Player(new Coordinate(3, 1));
-		// Not sure what was trying to be done in this line, but it doesn't compile.
-		// Please tell me your intentions
-//		assertTrue(p.addToInventory(p2));
 	}
 
 }
