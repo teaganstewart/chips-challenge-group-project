@@ -28,9 +28,8 @@ public class RenderTests {
 			}
 		}
 
-		Player player = new Player(new Coordinate(3, 3));
-
 		GUI gui = new GUI();
+		System.out.println(gui.toString());
 		Game game = new Game();
 		game.setTiles(tiles);
 		Render render = new Render(game, game.getMaze());
@@ -38,7 +37,7 @@ public class RenderTests {
 		JLabel[][] expected = new JLabel[9][9];
 		for (int row = 0; row < tiles.length; row++) {
 			for (int col = 0; col < tiles[0].length; col++) {
-				JLabel floor = new JLabel(new ImageIcon(getClass().getResource("../icons/wall.png")));
+				JLabel floor = new JLabel(new ImageIcon(getClass().getResource("../icons/tiles/wall.png")));
 				expected[row][col] = floor;
 			}
 		}
@@ -66,8 +65,6 @@ public class RenderTests {
 		}
 		
 		tiles[7][5].setEntity(new Treasure());
-
-		Player player = new Player(new Coordinate(3, 3));
 		
 		GUI gui = new GUI();
 		Game game = new Game();
@@ -81,7 +78,7 @@ public class RenderTests {
 		
 		JLabel expected = (JLabel)render.getBoard()[7][5].getComponent(0);
 		assertEquals(expected.getIcon().toString(), 
-				new ImageIcon(getClass().getResource("../icons/treasure.png")).toString());
+				new ImageIcon(getClass().getResource("../icons/entities/treasure.png")).toString());
 
 	}
 	
