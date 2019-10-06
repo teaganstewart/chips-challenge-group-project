@@ -67,13 +67,13 @@ public class RenderTests {
 		tiles[7][5].setEntity(new Treasure());
 		
 		GUI gui = new GUI();
+		gui.disable();
 		Game game = new Game();
 		game.setTiles(tiles);
 
 		Render render = new Render(game, game.getMaze());
 		render.createGrid();
 		GraphicalView gv = new GraphicalView(game, render);
-		GamePanel gp = new GamePanel(game);
 		gv.drawOnGrid();
 		
 		JLabel expected = (JLabel)render.getBoard()[7][5].getComponent(0);
@@ -87,6 +87,7 @@ public class RenderTests {
 		Player player = new Player(new Coordinate(3, 3));
 		
 		GUI gui = new GUI();
+		gui.disable();
 		Game game = new Game();
 		
 		//setting up the inventory
