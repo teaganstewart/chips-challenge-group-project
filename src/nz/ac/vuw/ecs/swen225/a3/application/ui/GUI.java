@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class GUI extends JFrame {
 
 	private Game game;
-	private JFrame main;
+	public static JFrame main;
 	private GamePanel gamePanel;
 	private InfoPanel infoPanel;
     private static Timer gameLoop;
@@ -205,27 +205,6 @@ public class GUI extends JFrame {
 	}
 
 	/**
-	 * 
-	 */
-	public void displayTime() {
-		int time = game.getTime();
-	}
-
-	/**
-	 * 
-	 */
-	public void displayLevel() {
-		int level = game.getLevel();
-	}
-
-	/**
-	 * 
-	 */
-	public void displayTreasure() {
-		int treasures = game.getTreasures();
-	}
-
-	/**
 	 * Redraws the game panel.
 	 */
 	public void updateBoard() {
@@ -238,12 +217,10 @@ public class GUI extends JFrame {
 		if (game.getMaze().isOnHint()) infoPanel.setHint(game.getMaze().getHintMessage());
 		else infoPanel.setDefaultHint();
 		
+		infoPanel.displayChips();
 		infoPanel.clearInventory();
 		infoPanel.drawInventory();
 		gamePanel.updateUI();
-
-		
-
 		
 	}
 	

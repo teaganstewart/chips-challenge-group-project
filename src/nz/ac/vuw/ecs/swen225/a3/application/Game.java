@@ -1,21 +1,14 @@
 package nz.ac.vuw.ecs.swen225.a3.application;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import javax.swing.Timer;
-
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
-import nz.ac.vuw.ecs.swen225.a3.persistence.LevelMaker;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 public class Game {
 	int level;
 	private int time = 0;
-	int treasures;
 
 	private Player player;
 	private Maze maze;
@@ -82,20 +75,12 @@ public class Game {
 		level = l;
 	}
 
-	public void setTreasures(int t) {
-		treasures = t;
-	}
-
 	public int getTime() {
 		return time;
 	}
 
 	public int getLevel() {
 		return level;
-	}
-
-	public int getTreasures() {
-		return treasures;
 	}
 
 	public void setRender(Render r) {

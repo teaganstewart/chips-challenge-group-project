@@ -22,7 +22,7 @@ public class Crate extends Moveable implements Saveable {
     }
     
     public String toString() {
-    	return "Crate: " + super.toString() + "moving to " + super.getNextPos();
+    	return "Crate: " + super.getCoordinate().toString() + " moving to " + super.getNextPos();
     }
 
     @Override

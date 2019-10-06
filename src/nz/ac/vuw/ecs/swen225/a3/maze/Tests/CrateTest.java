@@ -56,6 +56,7 @@ class CrateTest {
         // Player moves crate1. Check Player and crate1 positions
         assertEquals(new Coordinate(5, 3), player.getCoordinate());
         assertEquals(new Coordinate(5, 4), crate1.getCoordinate());
+        assertEquals("Crate: [5, 4] moving to [5, 5]", crate1.toString());
     }
 
     /**

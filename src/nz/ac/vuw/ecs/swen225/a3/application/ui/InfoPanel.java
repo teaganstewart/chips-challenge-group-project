@@ -18,18 +18,13 @@ public class InfoPanel extends JPanel {
 	private JPanel hint;
 	private JPanel timer;
 	private JPanel chip;
-
-	private int time;
-	private int level;
-	private int treasures;
+	
 	private ImageIcon infoIcon = makeImageIcon("icons/InfoBackground.png");
 	private ImageIcon slotIcon = makeImageIcon("icons/Slot.png");
 
 	public InfoPanel (Game game){
+		
 		this.game = game;
-		this.time = game.getTime();
-		this.level = game.getLevel();
-		this.treasures = game.getTreasures();
 		this.setLayout(new GridBagLayout());
 		this.setPreferredSize(new Dimension(300,200));
 
