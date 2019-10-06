@@ -38,7 +38,7 @@ public class PersistanceTests {
 		// assertTrue(new File("saves").delete());
 
 		// Save the game
-		assertTrue(SaveUtils.saveGame(level, null));
+		assertTrue(SaveUtils.saveGame(level, ""));
 
 		// Check that the saves directory exists
 		assertTrue(new File("saves").exists());
@@ -55,7 +55,7 @@ public class PersistanceTests {
 		Maze maze = new Maze(tiles, player, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
-		assertTrue(SaveUtils.saveGame(level, null));
+		assertTrue(SaveUtils.saveGame(level, ""));
 
 		Level levelReloaded = LoadUtils.resumeGame();
 		assertNotNull(levelReloaded);
@@ -74,7 +74,7 @@ public class PersistanceTests {
 		Maze maze = new Maze(tiles, player, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
-		assertTrue(SaveUtils.saveGame(level, null));
+		assertTrue(SaveUtils.saveGame(level, ""));
 
 		Level levelReloaded = LoadUtils.resumeGame();
 		assertNotNull(levelReloaded);
@@ -101,7 +101,7 @@ public class PersistanceTests {
 		Maze maze = new Maze(tiles, player, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
-		assertTrue(SaveUtils.saveGame(level, null));
+		assertTrue(SaveUtils.saveGame(level, ""));
 
 		Level levelReloaded = LoadUtils.resumeGame();
 
@@ -124,7 +124,7 @@ public class PersistanceTests {
 		Maze maze = new Maze(tiles, player, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
-		assertTrue(SaveUtils.saveGame(level, null));
+		assertTrue(SaveUtils.saveGame(level, ""));
 
 		Level levelReloaded = LoadUtils.resumeGame();
 
@@ -145,7 +145,7 @@ public class PersistanceTests {
 		Maze maze = new Maze(tiles, player, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
-		assertTrue(SaveUtils.saveGame(level, null));
+		assertTrue(SaveUtils.saveGame(level, ""));
 
 		Level levelReloaded = LoadUtils.resumeGame();
 
@@ -168,7 +168,7 @@ public class PersistanceTests {
 		Maze maze = new Maze(tiles, player, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
-		assertTrue(SaveUtils.saveGame(level, null));
+		assertTrue(SaveUtils.saveGame(level, ""));
 
 		Level levelReloaded = LoadUtils.resumeGame();
 
