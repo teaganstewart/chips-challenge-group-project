@@ -32,7 +32,7 @@ public class ApplicationTests {
 		for(int i= 0; i <5; i++) {
 			game.getMaze().movePlayer(Direction.UP);
 			if(game.getMaze().isOnHint()) {
-				game.nextLevel(gp);
+				game.loadLevel(gp, game.getLevel()+1);
 			}
 		}
 	}

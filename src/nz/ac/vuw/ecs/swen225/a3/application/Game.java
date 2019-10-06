@@ -89,11 +89,11 @@ public class Game {
 	public Render getRender() {
 		return render;
 	}
-
-	public void nextLevel(GamePanel gp) {
+	
+	public void loadLevel(GamePanel gp, int num) {
 		GUI.stopTimer();
 
-		setLevel(getLevel()+1); 
+		setLevel(num); 
 		Level l = LoadUtils.loadLevel(getLevel());
 		render.setMaze(l.getMaze());
 		setMaze(l.getMaze());

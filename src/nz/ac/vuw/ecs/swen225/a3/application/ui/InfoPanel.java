@@ -14,10 +14,12 @@ import java.util.Scanner;
 public class InfoPanel extends JPanel {
 
 	private Game game;
+	private JPanel inv;
 	private JPanel storage;
 	private JPanel hint;
 	private JPanel timer;
 	private JPanel chip;
+	private JPanel level;
 	
 	private ImageIcon infoIcon = makeImageIcon("icons/InfoBackground.png");
 	private ImageIcon slotIcon = makeImageIcon("icons/Slot.png");
@@ -38,7 +40,7 @@ public class InfoPanel extends JPanel {
 		c.insets = new Insets(0,0,30,0);  //top padding
 		JLabel level = new JLabel("Level:");
 
-		this.add(level,c);
+		this.add(levelPanel(),c);
 		c.gridy = 1;
 		this.add(timePanel(),c);
 		c.gridy = 2;
@@ -53,6 +55,17 @@ public class InfoPanel extends JPanel {
 	}
 
 	public JPanel inventory(){
+		inv = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridwidth = 1;
+		
+		inv.add(new JLabel("Inventory:"),c);
+		inv.setBackground(Color.white);
+		
+		c.gridy = 1;
+		
 		storage = new JPanel(new GridLayout(2,4));
 		JLabel[] inventory = game.getRender().renderInventory();
 
@@ -66,7 +79,9 @@ public class InfoPanel extends JPanel {
 			storage.add(item);
 		}
 		storage.setVisible(true);
-		return storage;
+		
+		inv.add(storage, c);
+		return inv;
 	}
 
 	public JPanel chipPanel() {
@@ -77,7 +92,7 @@ public class InfoPanel extends JPanel {
 		chip.setBackground(Color.white);
 
 		Border type = BorderFactory.createLineBorder(Color.white);
-		Border border = BorderFactory.createTitledBorder(type, "Chips Left:", TitledBorder.CENTER, TitledBorder.TOP);
+		Border border = BorderFactory.createTitledBorder(type, "Treasures Left:", TitledBorder.CENTER, TitledBorder.TOP);
 		chip.setBorder(border);
 		displayChips();
 		return chip;
@@ -95,6 +110,30 @@ public class InfoPanel extends JPanel {
 		hint.setBorder(border);
 		setDefaultHint();
 		return hint;
+	}
+	
+	public JPanel levelPanel() {
+		level = new JPanel();
+		level.setPreferredSize(new Dimension(200,20));
+		level.setMaximumSize(new Dimension(200,20));
+		level.setMinimumSize(new Dimension(200,20));
+		level.setBackground(Color.white);
+		
+		setLevelDisplay();
+		return level;
+	}
+	
+	public void setLevelDisplay() {
+		try {
+			level.remove(0);
+		} catch (ArrayIndexOutOfBoundsException e) {}
+		
+		
+		int num = 0;
+		try {
+			num = game.getLevel();
+		} catch (NullPointerException e) {}
+		level.add(new JLabel("Level: " + Integer.toString(num)));
 	}
 	
 	public void setDefaultHint() {
@@ -194,10 +233,11 @@ public class InfoPanel extends JPanel {
 	public void displayChips() {
 		try {
 			chip.remove(0);
+			chip.remove(0);
 		} catch (ArrayIndexOutOfBoundsException e) {}
 		
 		int left = Treasure.getTotalInLevel() - Treasure.getTotalCollected();
-		chip.add(new JLabel(Integer.toString(left)));
+		chip.add(new JLabel((left <= 9 ? "0" : "") + Integer.toString(left)));
 	}
 	
 	public void paintComponent(Graphics g){

@@ -58,8 +58,8 @@ public class GUI extends JFrame {
 					maze.movePlayer(Direction.RIGHT);
 					updateBoard();
 				}
-				if (maze.isGoalReached()) {
-					game.nextLevel(gamePanel);
+				if (maze.isGoalReached() && game.getLevel() < 2) {
+					game.loadLevel(gamePanel, game.getLevel()+1);
 					updateBoard();
 					
 				}
@@ -212,6 +212,7 @@ public class GUI extends JFrame {
 		gamePanel.clearBoard();
 		gamePanel.drawBoard();
 		
+		infoPanel.setLevelDisplay();
 		infoPanel.displayTime();
 		
 		if (game.getMaze().isOnHint()) infoPanel.setHint(game.getMaze().getHintMessage());
@@ -239,6 +240,10 @@ public class GUI extends JFrame {
 					if (timeToggle) {
 						updateBoard();
 						game.setTime(game.getTime()-1);
+						
+						if (game.getTime() < 0) {
+							game.loadLevel(gamePanel, game.getLevel());
+						}
 					}
 					timeToggle = !timeToggle;
 				} catch (NullPointerException e) {}
