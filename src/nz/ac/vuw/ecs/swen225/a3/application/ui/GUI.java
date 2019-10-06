@@ -260,11 +260,15 @@ public class GUI extends JFrame {
 	public void pauseWindow(){
 
 		JPanel panel = new JPanel();
-		JLabel text = new JLabel("GAME PAUSED");
-		text.setBounds(80,0,200,30);
+		JLabel message = new JLabel("GAME PAUSED");
+		message.setBounds(98,50,200 ,30);
+
+		JLabel instruct = new JLabel("PRESS ESC TO RESUME");
+		instruct.setBounds(74,90,200 ,30);
 
 		//Add items to panel
-		panel.add(text);
+		panel.add(message);
+		panel.add(instruct);
 		panel.setLayout(null);
 
 		pauseWindow = popUpWindow("Pause Window", 300,300);
