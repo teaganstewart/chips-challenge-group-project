@@ -60,11 +60,9 @@ public class Game {
 
 		maze = level.getMaze();
 		player = maze.getPlayer();
-
-		// set the time appropriately here
-		setTime(level.getTimeAllowed());
-		GUI.startTimer();
-
+		
+		startLevel(level);
+		
 	}
 
 	public void setTime(int t) {
@@ -100,9 +98,12 @@ public class Game {
 		setPlayer(l.getMaze().getPlayer());
 		setTiles(l.getMaze().getTiles());
 
+		startLevel(l);
+	}
+	
+	public void startLevel(Level l) {
 		setTime(l.getTimeAllowed());
 		GUI.startTimer();
-
 	}
 
 }
