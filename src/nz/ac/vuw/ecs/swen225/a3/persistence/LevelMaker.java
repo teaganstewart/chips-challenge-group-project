@@ -33,7 +33,7 @@ public class LevelMaker {
 
 		tiles = new Tile[map.length][map[0].length];
 		generateMap(map);
-		Maze maze = new Maze(tiles, player);
+		Maze maze = new Maze(tiles, player,null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 		SaveUtils.saveGame(level, "Level x");
 	}
