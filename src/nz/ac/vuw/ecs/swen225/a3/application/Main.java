@@ -5,7 +5,6 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.LevelMaker;
 
 public class Main {
     public static void main(String args[]) {
-
         GUI gui = new GUI();    
         gui.enable();
     }

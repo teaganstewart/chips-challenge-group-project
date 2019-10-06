@@ -3,6 +3,7 @@ package nz.ac.vuw.ecs.swen225.a3.persistence;
 import nz.ac.vuw.ecs.swen225.a3.maze.Level;
 
 import javax.json.Json;
+import javax.json.JsonObject;
 import javax.json.JsonWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,12 +26,18 @@ public class SaveUtils {
 	 * 
 	 * @param level object to save.
 	 */
-	public static boolean saveGame(Level level) {
+	public static boolean saveGame(Level level, String saveName) {
 		try {
 			constructSaves();
 			JsonWriter writer = Json.createWriter(
 					new PrintStream(new File(SAVES_DIRECTORY + "\\" + System.currentTimeMillis() + ".json")));
-			writer.write(level.toJSON());
+
+			JsonObject save = Json.createObjectBuilder()
+					.add("LevelName", saveName)
+					.add("Level", level.toJSON())
+					.build();
+
+			writer.write(save);
 			writer.close();
 			return true;
 		} catch (FileNotFoundException e) {
