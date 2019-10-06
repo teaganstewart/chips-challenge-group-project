@@ -203,17 +203,4 @@ public class MazeTest {
 		assertTrue(maze.movePlayer(Direction.RIGHT));
 	}
 
-	// -----------------------------//
-	// -------GENERAL TESTS --------//
-	// -----------------------------//
-
-	@Test
-	void extensionsTest() {
-		Player p = new Player(new Coordinate(1, 2));
-		Player p2 = new Player(new Coordinate(3, 1));
-		// Not sure what was trying to be done in this line, but it doesn't compile.
-		// Please tell me your intentions
-//		assertTrue(p.addToInventory(p2));
-	}
-
 }
