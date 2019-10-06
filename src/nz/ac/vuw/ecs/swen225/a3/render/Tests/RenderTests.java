@@ -48,7 +48,7 @@ public class RenderTests {
 	}
 
 	@Test
-	void drawRemovalTest() {
+	void drawEntitiesTest() {
 
 		Tile[][] tiles = new Tile[9][9];
 		for (int row = 0; row < tiles.length; row++) {
@@ -57,14 +57,14 @@ public class RenderTests {
 			}
 		}
 
-		tiles[5][3].setEntity(new Key(BasicColor.YELLOW));
-		tiles[5][4].setEntity(new Key(BasicColor.GREEN));
-		tiles[5][5].setEntity(new Key(BasicColor.BLUE));
-		tiles[5][6].setEntity(new Key(BasicColor.RED));
-		tiles[6][3].setEntity(new KeyDoor(BasicColor.YELLOW));
-		tiles[6][4].setEntity(new KeyDoor(BasicColor.GREEN));
-		tiles[6][5].setEntity(new KeyDoor(BasicColor.BLUE));
-		tiles[6][6].setEntity(new KeyDoor(BasicColor.RED));
+		// setting up the board
+		int i = 3;
+		for(BasicColor color : BasicColor.values()) {
+			tiles[5][i].setEntity(new Key(color));
+			tiles[6][i].setEntity(new KeyDoor(color));
+			i++;
+		}
+		
 		tiles[7][5].setEntity(new Treasure());
 
 		Player player = new Player(new Coordinate(3, 3));
@@ -78,7 +78,29 @@ public class RenderTests {
 		GraphicalView gv = new GraphicalView(game, render);
 		GamePanel gp = new GamePanel(game);
 		gv.drawOnGrid();
+		
+		JLabel expected = (JLabel)render.getBoard()[7][5].getComponent(0);
+		assertEquals(expected.getIcon().toString(), 
+				new ImageIcon(getClass().getResource("../icons/treasure.png")).toString());
 
+	}
+	
+	@Test
+	void renderInventoryTest() {
+		Player player = new Player(new Coordinate(3, 3));
+		
+		GUI gui = new GUI();
+		Game game = new Game();
+		
+		//setting up the inventory
+		for(BasicColor color : BasicColor.values()) {
+			player.addToInventory(new Key(color));
+		}
+		
+		// testing the rendering of the inventory
+		Render render = new Render(game, game.getMaze());
+		render.renderInventory();
+		
 	}
 
 }

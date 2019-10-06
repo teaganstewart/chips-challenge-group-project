@@ -100,18 +100,6 @@ public class Tile implements Saveable {
 	}
 
 
-	// This method is no longer needed as the check is done in maze with if(tile.tileType() == TileType.Wall)
-	/**
-	 * Returns whether or not this tile is a wall. Prevents the player from moving
-	 * across it, if this is the case
-	 *
-	 * @return validity
-	 */
-	@Deprecated
-	public boolean isWall() {
-		return type == TileType.WALL;
-	}
-
 	/**
 	 * Produce a JSON derived string so that this Tile can be reloaded.
 	 * 
