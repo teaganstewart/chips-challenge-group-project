@@ -20,6 +20,10 @@ public class Crate extends Moveable implements Saveable {
     public boolean canWalkOn(Entity entity) {
         return false;
     }
+    
+    public String toString() {
+    	return "Crate: " + super.toString() + "moving to " + super.getNextPos();
+    }
 
     @Override
     public JsonObject toJSON() {

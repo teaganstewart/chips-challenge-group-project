@@ -153,6 +153,10 @@ public class Player extends Moveable implements Saveable {
 		return startCoordinate;
 	}
 
+   public String toString() {
+    	return "Player: " + super.toString() + "facing " + super.getNextPos();
+    }
+	       
 	/**
 	 * Generate a Json representation of this Player
 	 * 
