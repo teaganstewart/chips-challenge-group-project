@@ -31,14 +31,12 @@ public class LevelMaker {
             {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1}};
 
 
-
-    tiles = new Tile[map.length][map[0].length];
-    generateMap(map);
-    // TODO make a List of all the crates in the level and pass it into the maze consturctor
-    Maze maze = new Maze(tiles, player, null);
-    Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
-    SaveUtils.saveGame(level);
-  }
+		tiles = new Tile[map.length][map[0].length];
+		generateMap(map);
+		Maze maze = new Maze(tiles, player);
+		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
+		SaveUtils.saveGame(level, "Level x");
+	}
 
   /**
    * Generate a map from 2d array
