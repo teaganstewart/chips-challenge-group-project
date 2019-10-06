@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import javax.swing.*;
 import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
+import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.render.*;
@@ -29,6 +30,7 @@ public class RenderTests {
 
 		Player player = new Player(new Coordinate(3, 3));
 
+		GUI gui = new GUI();
 		Game game = new Game();
 		game.setTiles(tiles);
 		Render render = new Render(game, game.getMaze());
@@ -66,6 +68,8 @@ public class RenderTests {
 		tiles[7][5].setEntity(new Treasure());
 
 		Player player = new Player(new Coordinate(3, 3));
+		
+		GUI gui = new GUI();
 		Game game = new Game();
 		game.setTiles(tiles);
 
