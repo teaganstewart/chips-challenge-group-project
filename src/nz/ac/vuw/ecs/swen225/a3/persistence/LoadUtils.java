@@ -7,6 +7,10 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The LoadUtils class contains methods that are used for loading games and
@@ -26,7 +30,7 @@ public class LoadUtils {
 	 */
 	public static Level resumeGame() {
 		File recentSave = getMostRecentSave();
-		JsonObject jsonObjectRecentSave = readJsonFromFile(recentSave);
+		JsonObject jsonObjectRecentSave = extractLevel(readJsonFromFile(recentSave));
 		return loadLevel(jsonObjectRecentSave);
 	}
 
@@ -37,8 +41,95 @@ public class LoadUtils {
 	 */
 	public static Level loadLevel(int levelNumber) {
 		File levelFile = new File(LEVELS_DIRECTORY + "\\" + levelNumber + ".json");
-		return loadLevel(readJsonFromFile(levelFile));
+		JsonObject jsonObject = extractLevel(readJsonFromFile(levelFile));
+		return loadLevel(jsonObject);
 	}
+
+	/**
+	 * Load a level by it's level ID
+	 * @param saveID the ID that is the main component of the file name
+	 * @return the constructed level object
+	 */
+	public static Level loadById(Long saveID){
+		File file = new File(SaveUtils.SAVES_DIRECTORY+"\\"+saveID+".json");
+		try {
+			return loadLevel(readJsonFromFile(file));
+		}
+		catch (NullPointerException e){
+			return null;
+		}
+	}
+
+	/**
+	 * Creates a hashmap from ID -> Formatted String for GUI
+	 * @return a HashMap containing ID's to a neatly formatted string for GUI display.
+	 */
+	public static Map<Long, String> getSavesByID(){
+		Map<Long, String> namesToId = new HashMap<>();
+
+		File directory = new File(SaveUtils.SAVES_DIRECTORY);
+		FileFilter filter = pathname -> pathname.isFile() && pathname.toString().endsWith(".json");
+		File[] files = directory.listFiles(filter);
+
+		if (files != null) {
+			for (File f : files) {
+
+				JsonObject save = readJsonFromFile(f);
+
+				JsonObject level = null;
+
+				//This is for compatibility with older file formats
+				try {
+					level = extractLevel(save);
+				}
+				catch (NullPointerException e){
+					level = save;
+				}
+
+				int levelNumber = level.getInt("levelNumber");
+
+				String id = f.getName().substring(0, f.getName().length()-5);
+
+				StringBuilder sb = new StringBuilder();
+
+				if (save.getString("LevelName") != null){
+					sb.append(save.getString("LevelName"));
+					sb.append(" - ");
+				}
+
+				sb.append("Level: ");
+				sb.append(levelNumber);
+				sb.append(" - ");
+
+				long saveTime = Long.parseLong(id);
+
+				Date date = new Date(saveTime);
+				sb.append(date.toString());
+
+
+				namesToId.put(saveTime, sb.toString());
+			}
+		}
+
+		return Collections.unmodifiableMap(namesToId);
+	}
+
+	/**
+	 * Check inside the levels folder and count how many levels have been installed.
+	 * @return amount of installed levels
+	 */
+	public static int getAmountOfInstalledLevels(){
+		File directory = new File(LEVELS_DIRECTORY);
+		FileFilter filter = pathname -> pathname.isFile() && pathname.toString().endsWith(".json");
+		File[] files = directory.listFiles(filter);
+
+		if (files != null) {
+			return files.length;
+		}
+		return 0;
+	}
+
+	// Private Methods
 
 	/**
 	 * Produces a Level object from the JSON input given
@@ -101,7 +192,8 @@ public class LoadUtils {
 
 				return reader.readObject();
 
-			} catch (FileNotFoundException e) {
+			}
+			catch (FileNotFoundException e) {
 				return null;
 			}
 		}
@@ -141,7 +233,8 @@ public class LoadUtils {
 
 		if (tileType == Tile.TileType.HINT) {
 			newTile = new HintTile(tileCoordinate, tile.getString("Message"));
-		} else {
+		}
+		else {
 			newTile = new Tile(tileCoordinate, tileType);
 		}
 
@@ -172,7 +265,8 @@ public class LoadUtils {
 		if (entityClass.equals("Key")) {
 			BasicColor basicColor = BasicColor.valueOf(entity.getString("BasicColor"));
 			return new Key(basicColor);
-		} else if (entityClass.equals("KeyDoor")) {
+		}
+		else if (entityClass.equals("KeyDoor")) {
 			BasicColor basicColor = BasicColor.valueOf(entity.getString("BasicColor"));
 			KeyDoor newKeyDoor = new KeyDoor(basicColor);
 			boolean locked = entity.getBoolean("locked");
@@ -180,15 +274,23 @@ public class LoadUtils {
 				newKeyDoor.unlock();
 			}
 			return newKeyDoor;
-		} else if (entityClass.equals("Treasure")) {
+		}
+		else if (entityClass.equals("Treasure")) {
 			return new Treasure();
-		} else if (entityClass.equals("TreasureDoor")) {
+		}
+		else if (entityClass.equals("TreasureDoor")) {
 			TreasureDoor treasureDoor = new TreasureDoor();
 			boolean locked = entity.getBoolean("locked");
 			if (!locked) {
 				treasureDoor.unlock();
 			}
 			return treasureDoor;
+		}
+		else if (entityClass.equals("FireBoots")){
+			return new FireBoots();
+		}
+		else if (entityClass.equals("IceBoots")){
+			return new IceBoots();
 		}
 		return null;
 	}
@@ -220,7 +322,17 @@ public class LoadUtils {
 
 		Treasure.setTreasureCountersUponLoad(totalInLevel, totalCollected);
 
-		return new Maze(tiles, player);
+		// TODO make a List of all the crates in the level and pass it into the maze consturctor
+		return new Maze(tiles, player, null);
+	}
+
+	/**
+	 * Extracts the Level Json Object from a Json Object.
+	 * @param objectPlusSaveName the raw object to remove level from
+	 * @return just the level in object form
+	 */
+	private static JsonObject extractLevel(JsonObject objectPlusSaveName){
+		return objectPlusSaveName.getJsonObject("Level");
 	}
 
 }

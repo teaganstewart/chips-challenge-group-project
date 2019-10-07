@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import javax.swing.*;
 import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
+import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.render.*;
@@ -27,8 +28,8 @@ public class RenderTests {
 			}
 		}
 
-		Player player = new Player(new Coordinate(3, 3));
-
+		GUI gui = new GUI();
+		System.out.println(gui.toString());
 		Game game = new Game();
 		game.setTiles(tiles);
 		Render render = new Render(game, game.getMaze());
@@ -36,7 +37,7 @@ public class RenderTests {
 		JLabel[][] expected = new JLabel[9][9];
 		for (int row = 0; row < tiles.length; row++) {
 			for (int col = 0; col < tiles[0].length; col++) {
-				JLabel floor = new JLabel(new ImageIcon(getClass().getResource("../icons/wall.png")));
+				JLabel floor = new JLabel(new ImageIcon(getClass().getResource("../icons/tiles/wall.png")));
 				expected[row][col] = floor;
 			}
 		}
@@ -46,7 +47,7 @@ public class RenderTests {
 	}
 
 	@Test
-	void drawRemovalTest() {
+	void drawEntitiesTest() {
 
 		Tile[][] tiles = new Tile[9][9];
 		for (int row = 0; row < tiles.length; row++) {
@@ -55,26 +56,49 @@ public class RenderTests {
 			}
 		}
 
-		tiles[5][3].setEntity(new Key(BasicColor.YELLOW));
-		tiles[5][4].setEntity(new Key(BasicColor.GREEN));
-		tiles[5][5].setEntity(new Key(BasicColor.BLUE));
-		tiles[5][6].setEntity(new Key(BasicColor.RED));
-		tiles[6][3].setEntity(new KeyDoor(BasicColor.YELLOW));
-		tiles[6][4].setEntity(new KeyDoor(BasicColor.GREEN));
-		tiles[6][5].setEntity(new KeyDoor(BasicColor.BLUE));
-		tiles[6][6].setEntity(new KeyDoor(BasicColor.RED));
+		// setting up the board
+		int i = 3;
+		for(BasicColor color : BasicColor.values()) {
+			tiles[5][i].setEntity(new Key(color));
+			tiles[6][i].setEntity(new KeyDoor(color));
+			i++;
+		}
+		
 		tiles[7][5].setEntity(new Treasure());
-
-		Player player = new Player(new Coordinate(3, 3));
+		
+		GUI gui = new GUI();
+		gui.disable();
 		Game game = new Game();
 		game.setTiles(tiles);
 
 		Render render = new Render(game, game.getMaze());
 		render.createGrid();
 		GraphicalView gv = new GraphicalView(game, render);
-		GamePanel gp = new GamePanel(game);
 		gv.drawOnGrid();
+		
+		JLabel expected = (JLabel)render.getBoard()[7][5].getComponent(0);
+		assertEquals(expected.getIcon().toString(), 
+				new ImageIcon(getClass().getResource("../icons/entities/treasure.png")).toString());
 
+	}
+	
+	@Test
+	void renderInventoryTest() {
+		Player player = new Player(new Coordinate(3, 3));
+		
+		GUI gui = new GUI();
+		gui.disable();
+		Game game = new Game();
+		
+		//setting up the inventory
+		for(BasicColor color : BasicColor.values()) {
+			player.addToInventory(new Key(color));
+		}
+		
+		// testing the rendering of the inventory
+		Render render = new Render(game, game.getMaze());
+		render.renderInventory();
+		
 	}
 
 }

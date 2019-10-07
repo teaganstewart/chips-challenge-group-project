@@ -40,37 +40,37 @@ public class Level implements Saveable {
 		this.timeAllowed = timeAllowed;
 	}
 
-	/**
-	 * Starts the timer by setting the start time to the current time.
-	 */
-	public void startTimer() {
-		levelStartTime = System.currentTimeMillis();
-	}
-
-	/**
-	 * Report how long the player has to complete this level in seconds.
-	 * 
-	 * @return time
-	 */
-	public int reportTimeRemaining() {
-		return timeAllowed - (int) (((System.currentTimeMillis() - levelStartTime) + levelRunningTime) / 1000);
-	}
-
-	/**
-	 * Stop the timer, and add the time taken to the running time.
-	 */
-	public void stopTimer() {
-		levelRunningTime += (System.currentTimeMillis() - levelStartTime);
-	}
-
-	/**
-	 * Tells whether or not there is still time remaining on this level.
-	 * 
-	 * @return whether or not there is time left on the clock.
-	 */
-	public boolean isTimeRemaining() {
-		return timeAllowed > (int) (((System.currentTimeMillis() - levelStartTime) + levelRunningTime) / 1000);
-	}
+//	/**
+//	 * Starts the timer by setting the start time to the current time.
+//	 */
+//	public void startTimer() {
+//		levelStartTime = System.currentTimeMillis();
+//	}
+//
+//	/**
+//	 * Report how long the player has to complete this level in seconds.
+//	 * 
+//	 * @return time
+//	 */
+//	public int reportTimeRemaining() {
+//		return timeAllowed - (int) (((System.currentTimeMillis() - levelStartTime) + levelRunningTime) / 1000);
+//	}
+//
+//	/**
+//	 * Stop the timer, and add the time taken to the running time.
+//	 */
+//	public void stopTimer() {
+//		levelRunningTime += (System.currentTimeMillis() - levelStartTime);
+//	}
+//
+//	/**
+//	 * Tells whether or not there is still time remaining on this level.
+//	 * 
+//	 * @return whether or not there is time left on the clock.
+//	 */
+//	public boolean isTimeRemaining() {
+//		return timeAllowed > (int) (((System.currentTimeMillis() - levelStartTime) + levelRunningTime) / 1000);
+//	}
 
 	/**
 	 * Save this level object to a Json object so that it can be saved and reloaded
@@ -103,5 +103,9 @@ public class Level implements Saveable {
 	 */
 	public int getLevel() {
 		return level;
+	}
+	
+	public int getTimeAllowed() {
+		return timeAllowed;
 	}
 }

@@ -5,6 +5,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Direction;
 import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
+import nz.ac.vuw.ecs.swen225.a3.persistence.SaveUtils;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -14,9 +15,9 @@ import java.awt.event.*;
 public class GUI extends JFrame {
 
 	private Game game;
-	private JFrame main;
+	public static JFrame main;
 	private GamePanel gamePanel;
-	private JPanel infoPanel;
+	//private JPanel infoPanel;
 	private JDialog fileLoaderWindow;
 	private JDialog pauseWindow;
 	//Declare variable menu item variable
@@ -25,7 +26,13 @@ public class GUI extends JFrame {
 	private JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, resume_Item, pause_Item, help_Item;
 
 	private JRadioButton lvl[] = new JRadioButton[2];
+	private InfoPanel infoPanel;
+	private static Timer gameLoop;
+	private static boolean timeToggle = true;
+
 	public GUI(){
+
+		setupTimer();
 		game = new Game();
 		createWindow();
 		main.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -58,6 +65,11 @@ public class GUI extends JFrame {
 				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 					maze.movePlayer(Direction.RIGHT);
 					updateBoard();
+				}
+				if (maze.isGoalReached() && game.getLevelNum() < 2) {
+					game.loadLevel(gamePanel, game.getLevelNum()+1);
+					updateBoard();
+
 				}
 
 
@@ -124,8 +136,9 @@ public class GUI extends JFrame {
 	}
 
 	public void saveAndExitPopup(){
-		//TODO: implement save
-		//game.saveGame();
+		String fileName = JOptionPane.showInputDialog("Enter a name for the save file.");
+		SaveUtils.saveGame(game.getLevel(),fileName);
+
 		JOptionPane.showMessageDialog(null, "Game has been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
 		System.exit(0);
 	}
@@ -135,9 +148,10 @@ public class GUI extends JFrame {
 	 * Create menu bar with all the menu items
 	 */
 	public void createMenuBar(){
-		initializeFileItems();
-		initializeGameItems();
 		//Initialize variables
+		initializeGameItems();
+		initializeFileItems();
+
 		menuBar = new JMenuBar();
 		fileMenu = new JMenu("File");
 		gameMenu = new JMenu("Game");
@@ -341,18 +355,6 @@ public class GUI extends JFrame {
 			}
 		});
 	}
-	public void displayTime(){
-		int time = game.getTime();
-	}
-
-	public void displayLevel(){
-		int level = game.getLevel();
-	}
-
-	public void displayTreasure() {
-		int treasures = game.getTreasures();
-	}
-
 
 	/**
 	 * Redraws the game panel.
@@ -360,9 +362,58 @@ public class GUI extends JFrame {
 	public void updateBoard() {
 		gamePanel.clearBoard();
 		gamePanel.drawBoard();
+
+		infoPanel.setLevelDisplay();
+		infoPanel.displayTime();
+
+		if (game.getMaze().isOnHint()) infoPanel.setHint(game.getMaze().getHintMessage());
+		else infoPanel.setDefaultHint();
+
+		infoPanel.displayChips();
+		infoPanel.clearInventory();
+		infoPanel.drawInventory();
 		gamePanel.updateUI();
+
 	}
 
+    /**
+     * Only ever called once to create the timer and override it's action event
+     * Runs once per second
+     */
+    private void setupTimer() {
 
+    	gameLoop = new Timer(500, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					game.update();
+					if (timeToggle) {
+						updateBoard();
+						game.setTime(game.getTime()-1);
+
+						if (game.getTime() < 0) {
+							game.loadLevel(gamePanel, game.getLevelNum());
+						}
+					}
+					timeToggle = !timeToggle;
+				} catch (NullPointerException e) {}
+			}
+
+
+    	});
+		gameLoop.setInitialDelay(0);
+		gameLoop.setRepeats(true);
+
+    }
+
+    public static void startTimer() {
+    	timeToggle = true;
+    	gameLoop.start();
+    }
+
+    public static void stopTimer() {
+    	gameLoop.stop();
+    }
 
 }
