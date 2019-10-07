@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.ActionRecord;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -181,7 +182,7 @@ public class LoadUtils {
 	 * @param file the file to read json from
 	 * @return Json object version of that file, null if not found.
 	 */
-	private static JsonObject readJsonFromFile(File file) {
+	public static JsonObject readJsonFromFile(File file) {
 		if (file != null) {
 			try {
 				InputStream inputStream = new FileInputStream(file);
@@ -294,11 +295,22 @@ public class LoadUtils {
 
 	/**
 	 * Load a crate Object from a Json object
-	 * @param crateJson
-	 * @return
+	 * @param crateJson the raw json of a crate object
+	 * @return the object form of crate
 	 */
 	private static Crate loadCrate(JsonObject crateJson){
 		return new Crate(loadCoordinate(crateJson.getJsonObject("Coordinate")));
+	}
+
+	/**
+	 * Load an actionRecord from Json
+	 * @param actionRecord A ActionRecord in Json form
+	 * @return actionRecord in Java object form
+	 */
+	public static ActionRecord loadActionRecord(JsonObject actionRecord){
+		Long id = Long.valueOf(actionRecord.getString("timestamp"));
+		Maze maze = loadMaze(actionRecord.getJsonObject("maze"));
+		return new ActionRecord(id, maze);
 	}
 
 	/**

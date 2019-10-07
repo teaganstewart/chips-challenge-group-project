@@ -1,6 +1,10 @@
 package nz.ac.vuw.ecs.swen225.a3.recnplay;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
+import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
+
+import javax.json.Json;
+import javax.json.JsonObject;
 
 /**
  * Used for the recnplay feature
@@ -8,32 +12,27 @@ import nz.ac.vuw.ecs.swen225.a3.maze.*;
  * @author Ethan Munn
  *
  */
-public class ActionRecord {
+public class ActionRecord implements Saveable {
 
-	private final int time;
-	private final Direction move;
-	
-	public ActionRecord(long time, Direction move) {
-		this.time = convertToMilli(time);
-		this.move = move;
-	}
+	private Long timeSinceLevelStart;
+	private Maze maze;
 
-	private int convertToMilli(long time) {
-		double n = (double)(time - Replay.getStartTime());
-		return (int)((n+5)/10)*10;
-	}
-	
-	public int getTime() {
-		return time;
+	public ActionRecord(long timeSinceLevelStart, Maze maze) {
+		this.timeSinceLevelStart = timeSinceLevelStart;
+		this.maze = maze;
 	}
 
-	public Direction getMove() {
-		return move;
-	}
-	
-	public String toString() {
-		return Integer.toString(time) + ": " + move;
+
+	public long getTimeSinceLevelStart() {
+		return timeSinceLevelStart;
 	}
 
-	
+	@Override
+	public JsonObject toJSON() {
+		JsonObject arJson = Json.createObjectBuilder()
+				.add("timestamp", timeSinceLevelStart.toString())
+				.add("maze", maze.toJSON())
+				.build();
+		return arJson;
+	}
 }
