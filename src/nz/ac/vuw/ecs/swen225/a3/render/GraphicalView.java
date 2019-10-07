@@ -260,8 +260,8 @@ public class GraphicalView {
 
 	// Tiles
 	private final String tilesDirectory = "icons/tiles/";
-	private final ImageIcon floor = new ImageIcon(getClass().getResource(tilesDirectory + "wall.png"));
-	private final ImageIcon wall = new ImageIcon(getClass().getResource(tilesDirectory + "floor2.png"));
+	private final ImageIcon floor = new ImageIcon(getClass().getResource(tilesDirectory + "floor.png"));
+	private final ImageIcon wall = new ImageIcon(getClass().getResource(tilesDirectory + "wall.png"));
 	private final ImageIcon hint = new ImageIcon(getClass().getResource(tilesDirectory + "hint.png"));
 	private final ImageIcon goal = new ImageIcon(getClass().getResource(tilesDirectory + "goal.png"));
 	private final ImageIcon fire = new ImageIcon(getClass().getResource(tilesDirectory + "fire.png"));

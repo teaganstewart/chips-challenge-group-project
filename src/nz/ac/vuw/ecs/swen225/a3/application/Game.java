@@ -3,16 +3,18 @@ package nz.ac.vuw.ecs.swen225.a3.application;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
+import nz.ac.vuw.ecs.swen225.a3.persistence.LevelMaker;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 public class Game {
-	int level;
+	int levelNum;
 	private int time = 0;
 
 	private Player player;
 	private Maze maze;
 	private Render render;
+	Level level;
 	boolean endGame;
 
 	public Game() {
@@ -46,7 +48,8 @@ public class Game {
 	}
 
 	public void loadGame(){
-		Level level;
+
+
 		try{
 			level = LoadUtils.resumeGame();
 			if(level.getMaze().getTiles().length<9 || level.getMaze().getTiles()[0].length<9) {
@@ -72,14 +75,18 @@ public class Game {
 	}
 
 	public void setLevel(int l) {
-		level = l;
+		levelNum = l;
 	}
 
 	public int getTime() {
 		return time;
 	}
 
-	public int getLevel() {
+	public int getLevelNum() {
+		return levelNum;
+	}
+
+	public Level getLevel(){
 		return level;
 	}
 
@@ -94,7 +101,7 @@ public class Game {
 		GUI.stopTimer();
 
 		setLevel(num); 
-		Level l = LoadUtils.loadLevel(getLevel());
+		Level l = LoadUtils.loadLevel(getLevelNum());
 		render.setMaze(l.getMaze());
 		setMaze(l.getMaze());
 		setPlayer(l.getMaze().getPlayer());

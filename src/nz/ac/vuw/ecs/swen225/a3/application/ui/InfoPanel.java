@@ -131,7 +131,7 @@ public class InfoPanel extends JPanel {
 		
 		int num = 0;
 		try {
-			num = game.getLevel();
+			num = game.getLevelNum();
 		} catch (NullPointerException e) {}
 		level.add(new JLabel("Level: " + Integer.toString(num)));
 	}

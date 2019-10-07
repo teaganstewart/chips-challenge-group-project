@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.application.Tests;
 
-import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.event.KeyEvent;
 
@@ -32,7 +33,7 @@ public class ApplicationTests {
 		for(int i= 0; i <5; i++) {
 			game.getMaze().movePlayer(Direction.UP);
 			if(game.getMaze().isOnHint()) {
-				game.loadLevel(gp, game.getLevel()+1);
+				game.loadLevel(gp, game.getLevelNum()+1);
 			}
 		}
 	}

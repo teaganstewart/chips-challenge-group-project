@@ -128,8 +128,9 @@ public class GUI extends JFrame {
 				saveAndExitPopup();
 			}else{
 				JOptionPane.showMessageDialog(null, "Game has not been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
+				System.exit(0);
 			}
-			System.exit(0);
+
 		}
 
 
@@ -137,10 +138,13 @@ public class GUI extends JFrame {
 
 	public void saveAndExitPopup(){
 		String fileName = JOptionPane.showInputDialog("Enter a name for the save file.");
-		SaveUtils.saveGame(game.getLevel(),fileName);
-
-		JOptionPane.showMessageDialog(null, "Game has been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
-		System.exit(0);
+		if(fileName != null) {
+			SaveUtils.saveGame(game.getLevel(), fileName);
+			JOptionPane.showMessageDialog(null, "Game has been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
+			System.exit(0);
+		}else{
+			JOptionPane.showMessageDialog(null, "No input for files name or process had been cancelled.");
+		}
 	}
 
 
