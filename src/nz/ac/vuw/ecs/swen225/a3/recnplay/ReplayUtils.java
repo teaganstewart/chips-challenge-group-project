@@ -40,8 +40,8 @@ public class ReplayUtils {
 		return recordHashMap;
 	}
 
-	public static boolean pushActionRecord(ActionRecord actionRecord){
-		File actionRecordSave = new File(RECORD_DIRECTORY+"\\"+actionRecord.getTimeSinceLevelStart()+".json");
+	public static boolean pushActionRecord(ActionRecord actionRecord, String id){
+		File actionRecordSave = new File(RECORD_DIRECTORY+"\\"+id+"\\"+actionRecord.getTimeSinceLevelStart()+".json");
 		try {
 			JsonWriter jsonWriter = Json.createWriter(new PrintStream(actionRecordSave));
 			jsonWriter.write(actionRecord.toJSON());
@@ -64,6 +64,11 @@ public class ReplayUtils {
 			return directory.mkdir();
 		}
 		return true;
+	}
+
+	public static boolean setupDirectory(){
+		makeRecordingDir();
+		
 	}
 
 
