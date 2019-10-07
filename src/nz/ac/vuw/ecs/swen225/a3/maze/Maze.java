@@ -74,7 +74,7 @@ public class Maze implements Saveable {
 
 		Tile endTile = tiles[rowDest][colDest];
 
-		// Handle exception with sliding
+		// Handle special case with sliding
 		if (endTile.getType() == Tile.TileType.ICE) {
 			if (player.isInInventory(new IceBoots())) {
 				player.setCoordinate(endTile.getCoordinate());
@@ -86,7 +86,7 @@ public class Maze implements Saveable {
 			}
 		}
 
-		// Handle exception with pushing a crate
+		// Handle special case with pushing a crate
 		for(Crate crate : crateList){
 			if(crate.getCoordinate().equals(endTile.getCoordinate())){
 				return pushCrate(crate);

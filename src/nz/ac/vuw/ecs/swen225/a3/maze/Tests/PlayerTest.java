@@ -33,10 +33,10 @@ class PlayerTest {
 	}
 
 	/**
-	 * Testing addInventoryAt() method
+	 * Testing addToInventory() method
 	 */
 	@Test
-	public void testAddInventoryAt() {
+	public void testAddToInventory() {
 		Key key = new Key(BasicColor.YELLOW);
 		Key blueKey = new Key(BasicColor.BLUE);
 		assertTrue(player.addToInventory(key));
@@ -56,10 +56,6 @@ class PlayerTest {
 		// Test getting
 		assertEquals(key, player.getInventoryAt(0));
 		assertEquals(blueKey, player.getInventoryAt(1));
-
-		// Test out of bounds
-		assertNull(player.getInventoryAt(-1));
-		assertNull(player.getInventoryAt(8));
 	}
 
 	/**
@@ -76,10 +72,6 @@ class PlayerTest {
 		assertEquals(blueKey, player.getInventoryAt(1));
 		assertTrue(player.removeInventoryAt(0));
 		assertEquals(blueKey, player.getInventoryAt(0));
-
-		// Test out of bounds
-		assertFalse(player.removeInventoryAt(-1));
-		assertFalse(player.removeInventoryAt(8));
 	}
 
 	/**
