@@ -7,10 +7,7 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.*;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The LoadUtils class contains methods that are used for loading games and
@@ -76,7 +73,7 @@ public class LoadUtils {
 
 				JsonObject save = readJsonFromFile(f);
 
-				JsonObject level = null;
+				JsonObject level;
 
 				//This is for compatibility with older file formats
 				try {
@@ -296,6 +293,15 @@ public class LoadUtils {
 	}
 
 	/**
+	 * Load a crate Object from a Json object
+	 * @param crateJson
+	 * @return
+	 */
+	private static Crate loadCrate(JsonObject crateJson){
+		return new Crate(loadCoordinate(crateJson.getJsonObject("Coordinate")));
+	}
+
+	/**
 	 * Load a maze object from a JsonObject
 	 * 
 	 * @param maze the maze object in JSON object form
@@ -322,8 +328,15 @@ public class LoadUtils {
 
 		Treasure.setTreasureCountersUponLoad(totalInLevel, totalCollected);
 
-		// TODO make a List of all the crates in the level and pass it into the maze consturctor
-		return new Maze(tiles, player, null);
+		JsonArray crateArray = maze.getJsonArray("crates");
+		ArrayList<Crate> crateArrayList = new ArrayList<>();
+
+		int size = crateArray.size();
+		for (int i = 0; i < size; i++){
+			crateArrayList.add(loadCrate(crateArray.getJsonObject(i)));
+		}
+
+		return new Maze(tiles, player, crateArrayList);
 	}
 
 	/**

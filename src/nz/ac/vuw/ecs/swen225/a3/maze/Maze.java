@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 
@@ -265,6 +266,7 @@ public class Maze implements Saveable {
 				.add("cols", tiles[0].length)
 				.add("tiles", arrayBuilder)
 				.add("treasureData", Treasure.toJSONStatic())
+				.add("crates", createCratesObject())
 				.build();
 		return build;
 	}
@@ -310,6 +312,19 @@ public class Maze implements Saveable {
 	 */
 	public void setGame(Game g) {
 		game = g;
+	}
+
+	/**
+	 * Form a JsonArray of all the crates inside this Maze
+	 * @return serialised Json Array of crates
+	 * @author Matt
+	 */
+	private JsonArray createCratesObject(){
+		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+		for (Crate c : crateList){
+			arrayBuilder.add(c.toJSON());
+		}
+		return arrayBuilder.build();
 	}
 
 }

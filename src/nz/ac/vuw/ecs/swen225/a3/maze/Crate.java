@@ -2,6 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 
 import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 
+import javax.json.Json;
 import javax.json.JsonObject;
 
 /*
@@ -27,7 +28,8 @@ public class Crate extends Moveable implements Saveable {
 
     @Override
     public JsonObject toJSON() {
-        // TODO write this JSON code
-        return null;
+        JsonObject value = Json.createObjectBuilder()
+                .add("Coordinate", getCoordinate().toJSON()).build();
+        return value;
     }
 }
