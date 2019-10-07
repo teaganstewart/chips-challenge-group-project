@@ -41,6 +41,7 @@ public class ReplayUtils {
 	}
 
 	public static boolean pushActionRecord(ActionRecord actionRecord, String id){
+		setupDirectory(id);
 		File actionRecordSave = new File(RECORD_DIRECTORY+"\\"+id+"\\"+actionRecord.getTimeSinceLevelStart()+".json");
 		try {
 			JsonWriter jsonWriter = Json.createWriter(new PrintStream(actionRecordSave));
@@ -66,9 +67,12 @@ public class ReplayUtils {
 		return true;
 	}
 
-	public static boolean setupDirectory(){
-		makeRecordingDir();
-		
+	public static boolean setupDirectory(String id){
+		File directory = new File(RECORD_DIRECTORY+"\\"+id);
+		if (!directory.exists()){
+			return directory.mkdir();
+		}
+		return true;
 	}
 
 
