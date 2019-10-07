@@ -10,4 +10,13 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
  *
  */
 public interface Entity extends Saveable {
+	
+	/**
+	 * Implements a toString for testing purposes
+	 * 
+	 * @return
+	 * 		String form of the entity
+	 */
+	public String toString();
+	
 }

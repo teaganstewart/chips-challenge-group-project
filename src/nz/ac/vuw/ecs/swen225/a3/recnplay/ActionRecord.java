@@ -14,23 +14,26 @@ import javax.json.JsonObject;
  */
 public class ActionRecord implements Saveable {
 
-	private Long timeSinceLevelStart;
+	private int timeSinceLevelStart;
 	private Maze maze;
 
-	public ActionRecord(long timeSinceLevelStart, Maze maze) {
+	public ActionRecord(int timeSinceLevelStart, Maze maze) {
 		this.timeSinceLevelStart = timeSinceLevelStart;
 		this.maze = maze;
 	}
-
-
-	public long getTimeSinceLevelStart() {
+	
+	public int getTimeSinceLevelStart() {
 		return timeSinceLevelStart;
 	}
 
+	public Maze getMaze() {
+		return maze;
+	}
+	
 	@Override
 	public JsonObject toJSON() {
 		JsonObject arJson = Json.createObjectBuilder()
-				.add("timestamp", timeSinceLevelStart.toString())
+				.add("timestamp", timeSinceLevelStart)
 				.add("maze", maze.toJSON())
 				.build();
 		return arJson;

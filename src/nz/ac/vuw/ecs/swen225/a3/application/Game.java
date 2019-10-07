@@ -60,6 +60,7 @@ public class Game {
 
 		maze = level.getMaze();
 		player = maze.getPlayer();
+		setLevel(level.getLevel());
 		
 		startLevel(level);
 		
@@ -90,7 +91,7 @@ public class Game {
 	
 	public void loadLevel(GamePanel gp, int num) {
 		GUI.stopTimer();
-
+		
 		setLevel(num); 
 		Level l = LoadUtils.loadLevel(getLevel());
 		render.setMaze(l.getMaze());

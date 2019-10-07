@@ -23,4 +23,5 @@ public class IceBoots implements Entity {
 				.build();
 		return value;
 	}
+
 }

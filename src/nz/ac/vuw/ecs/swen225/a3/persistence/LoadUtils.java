@@ -308,7 +308,7 @@ public class LoadUtils {
 	 * @return actionRecord in Java object form
 	 */
 	public static ActionRecord loadActionRecord(JsonObject actionRecord){
-		Long id = Long.valueOf(actionRecord.getString("timestamp"));
+		int id = actionRecord.getInt("timestamp");
 		Maze maze = loadMaze(actionRecord.getJsonObject("maze"));
 		return new ActionRecord(id, maze);
 	}
@@ -343,9 +343,11 @@ public class LoadUtils {
 		JsonArray crateArray = maze.getJsonArray("crates");
 		ArrayList<Crate> crateArrayList = new ArrayList<>();
 
-		int size = crateArray.size();
-		for (int i = 0; i < size; i++){
-			crateArrayList.add(loadCrate(crateArray.getJsonObject(i)));
+		if (crateArray != null) {
+			int size = crateArray.size();
+			for (int i = 0; i < size; i++){
+				crateArrayList.add(loadCrate(crateArray.getJsonObject(i)));
+			}
 		}
 
 		return new Maze(tiles, player, crateArrayList);
