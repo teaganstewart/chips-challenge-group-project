@@ -45,7 +45,7 @@ public class GUI extends JFrame {
 		setReplayMode(false);
 		setupTimer();
 		game = new Game();
-
+		
 		createWindow();
 		main.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		main.addKeyListener(new KeyListener() {
@@ -168,6 +168,7 @@ public class GUI extends JFrame {
 
 
 	public void exitPopup(){
+		stopTimer();
 		int prompt = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the game?", "Close Window?",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (prompt == JOptionPane.YES_OPTION){
@@ -181,8 +182,7 @@ public class GUI extends JFrame {
 			}
 
 		}
-
-
+		startTimer();
 	}
 
 	public void saveAndExitPopup(){
@@ -343,15 +343,16 @@ public class GUI extends JFrame {
         pauseWindow.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
+                stopTimer();
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     pauseWindow.dispose();
+    				startTimer();
                 }
             }
         });
 
         pauseWindow.setVisible(true);
-
-
+        
 	}
 	public void initializeGameItems(){
 		//Game Menu item initialize and key bind
@@ -441,6 +442,7 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
+					
 					if (started) {
 						started = false;
 						ReplayUtils.pushActionRecord(new ActionRecord(0, game.getMaze()));
@@ -448,6 +450,7 @@ public class GUI extends JFrame {
 
 					game.update();
 					if (timeToggle) {
+
 						updateBoard();
 						game.setTime(game.getTime()-1);
 
