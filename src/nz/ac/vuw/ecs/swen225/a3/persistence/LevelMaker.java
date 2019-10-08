@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class LevelMaker {
   Tile[][] tiles;
   ArrayList<Crate> crateList = new ArrayList<>();
-  ArrayList<Moveable> enemyList = new ArrayList<>();
+  ArrayList<Skeleton> enemyList = new ArrayList<>();
   public LevelMaker() {
 
     Player player = new Player(new Coordinate(5, 7));

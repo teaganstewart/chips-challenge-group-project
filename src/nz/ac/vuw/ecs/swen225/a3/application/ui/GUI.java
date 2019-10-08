@@ -32,11 +32,13 @@ public class GUI extends JFrame {
 	private JRadioButton lvl[] = new JRadioButton[2];
 	private InfoPanel infoPanel;
 
+    private static boolean started;
+	
     private static Timer gameLoop;
-    private static boolean started = false;
-    private static boolean timeToggle = true;
+    private static boolean timeToggle;
 
     private static Timer replayLoop;
+    private static int keyFrame;
 	private static int recIndex;
 
     private static boolean replayMode;
@@ -468,30 +470,34 @@ public class GUI extends JFrame {
 		gameLoop.setRepeats(true);
 
 		// sets up the replay timer, which runs on a different mechanism
-    	replayLoop = new Timer(100, new ActionListener() {
+    	replayLoop = new Timer(10, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					Maze m = ReplayUtils.getActionRecord(recIndex).getMaze();
-
-					if (recIndex > 0) {
-						Coordinate from = ReplayUtils.getActionRecord(recIndex-1).getMaze().getPlayer().getCoordinate();
-						Coordinate to = m.getPlayer().getCoordinate();
-						Direction dir = Direction.getFacing(from, to);
-						if (dir != null) m.getPlayer().setDirection(dir);
+					int t = ReplayUtils.getActionRecord(recIndex).getTimeSinceLevelStart();
+					
+					if (ReplayUtils.roundTimeToTen(t) == keyFrame) {
+						if (recIndex > 0) {
+							Coordinate from = ReplayUtils.getActionRecord(recIndex-1).getMaze().getPlayer().getCoordinate();
+							Coordinate to = m.getPlayer().getCoordinate();
+							Direction dir = Direction.getFacing(from, to);
+							if (dir != null) m.getPlayer().setDirection(dir);
+						}
+	
+						game.getRender().setMaze(m);
+						game.setMaze(m);
+						updateBoard();
+	
+						if (recIndex < ReplayUtils.replaySize()-1) {
+							recIndex++;
+						} else {
+							stopTimer();
+						}
 					}
 
-					game.getRender().setMaze(m);
-					game.setMaze(m);
-					updateBoard();
-
-					if (recIndex < ReplayUtils.replaySize()-1) {
-						recIndex++;
-					} else {
-						stopTimer();
-					}
-
+					keyFrame += 10;
 				} catch (NullPointerException e) {}
 			}
 
@@ -511,7 +517,10 @@ public class GUI extends JFrame {
     		}
 	    	gameLoop.start();
     	} else {
-    		recIndex = 0;
+    		if (!started) {
+        		keyFrame = 0;
+        		recIndex = 0;
+    		}
     		replayLoop.start();
     	}
     }
@@ -523,14 +532,7 @@ public class GUI extends JFrame {
 
     public static void setReplayMode(boolean bool) {
     	replayMode = bool;
-    }
-
-    private void doReplay(int t) {
-//    	Direction dir = replay.getMove(t);
-//		if (dir != null) {
-//			game.getMaze().movePlayer(dir);
-//			updateBoard();
-//		}
+    	started = false;
     }
 
 }
