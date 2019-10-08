@@ -5,6 +5,8 @@ import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LevelMaker;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.ActionRecord;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.ReplayUtils;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 public class Game {
@@ -42,20 +44,34 @@ public class Game {
 		maze = m;
 	}
 
-	public void update() {
+	public void update(boolean shiftIfOnIce) {
+		boolean saveReplay = false;
+		
+		// moving chip if he's on ice
+		if (shiftIfOnIce) {
+			if (maze.isOnIce() && !player.isInInventory(new IceBoots())) {
+				maze.movePlayer(player.getDirection());
+				saveReplay = true;
+			}
+		}
+		
 		// moving of all the enemy's
 		Tile[][] board = maze.getTiles();
 		for(Moveable enemy : maze.getEnemyList()) {
 			Coordinate nextPosition = enemy.getNextPos();
 			if(enemy.canWalkOn(board[nextPosition.getRow()][nextPosition.getCol()].getEntity())) {
 				enemy.setCoordinate(nextPosition);
+				saveReplay = true;
 			}
 			else {
 				// changes direction if returns false and moves back
 				enemy.setDirection(enemy.getDirection().inverse());
 				enemy.setCoordinate(enemy.getNextPos());
+				saveReplay = true;
 			}
 		}
+		
+		if (saveReplay) ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime()), getMaze()));
 	}
 
 	public void loadGame(){

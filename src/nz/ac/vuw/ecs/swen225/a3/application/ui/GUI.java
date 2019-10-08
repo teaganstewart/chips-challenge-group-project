@@ -3,6 +3,7 @@ package nz.ac.vuw.ecs.swen225.a3.application.ui;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.maze.Coordinate;
 import nz.ac.vuw.ecs.swen225.a3.maze.Direction;
+import nz.ac.vuw.ecs.swen225.a3.maze.IceBoots;
 import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
@@ -35,6 +36,7 @@ public class GUI extends JFrame {
     private static boolean started;
 	
     private static Timer gameLoop;
+    private static int gameFrame;
     private static boolean timeToggle;
 
     private static Timer replayLoop;
@@ -42,6 +44,7 @@ public class GUI extends JFrame {
 	private static int recIndex;
 
     private static boolean replayMode;
+    private static boolean moveNextTurn;
 
 	public GUI() {
 		setReplayMode(false);
@@ -64,7 +67,7 @@ public class GUI extends JFrame {
 			@Override
 			public void keyReleased(KeyEvent e) {
 
-				if (!replayMode) inGameEvent(e);
+				if (!replayMode && (!game.getMaze().isOnIce() || game.getPlayer().isInInventory(new IceBoots()))) inGameEvent(e);
 				else inReplayEvent(e);
 
 
@@ -98,21 +101,6 @@ public class GUI extends JFrame {
 		if (moved) {
 			ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime()), maze));
 			updateBoard();
-		}
-
-		// if the goal has been reached
-		if (maze.isGoalReached()) {
-			stopTimer();
-			setReplayMode(true);
-			ReplayUtils.playBack(Long.toString(ReplayUtils.getStartTime()));
-			startTimer();
-			updateBoard();
-		}
-
-		// Check if level needs to be reset. This could be if the player dies for
-		// example
-		if (maze.isResetLevel()) {
-			game.loadLevel(gamePanel, game.getLevelNum());
 		}
 	}
 
@@ -438,29 +426,47 @@ public class GUI extends JFrame {
      */
     private void setupTimer() {
 
-    	// sets up the game timer, which runs every half second
-    	gameLoop = new Timer(500, new ActionListener() {
+    	// sets up the game timer, which runs ten times a second
+    	gameLoop = new Timer(100, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					
+					// if it's just started, add in a record of the starting pos to the replay
 					if (started) {
 						started = false;
 						ReplayUtils.pushActionRecord(new ActionRecord(0, game.getMaze()));
 					}
 
-					game.update();
+					// this stops the player from going on ice if they aren't already on ice and moving on it would refresh
+					// the screen too jarringly quick
+					boolean dontAllowOnIce = !(gameFrame%2==0 && game.getMaze().isOnIce());
+					game.update(dontAllowOnIce || moveNextTurn);
+					
+					// checks the level reset/ending conditions
+					checkConditions(game.getMaze());
+					
+					// if the timer on screen needs to be updated
 					if (timeToggle) {
 
-						updateBoard();
 						game.setTime(game.getTime()-1);
 
 						if (game.getTime() < 0) {
 							game.loadLevel(gamePanel, game.getLevelNum());
 						}
+						
 					}
-					timeToggle = !timeToggle;
+					
+					// updates the board regardless
+					updateBoard();
+					
+					// checks to see whether it should toggle the timer
+					timeToggle = gameFrame == 9;
+					gameFrame = gameFrame == 9 ? 0 : gameFrame + 1;
+					
+					// if the player pushes to go on ice but this is a turn that it would hang, this forces a move on their next turn
+					moveNextTurn = !dontAllowOnIce;
 				} catch (NullPointerException e) {}
 			}
 
@@ -512,7 +518,9 @@ public class GUI extends JFrame {
     	if (!replayMode) {
     		if (!started) {
     			ReplayUtils.setStartTime(System.currentTimeMillis());
+    			gameFrame = 0;
     	    	timeToggle = true;
+    	    	moveNextTurn = false;
     	    	started = true;
     		}
 	    	gameLoop.start();
@@ -520,6 +528,7 @@ public class GUI extends JFrame {
     		if (!started) {
         		keyFrame = 0;
         		recIndex = 0;
+        		started = true;
     		}
     		replayLoop.start();
     	}
@@ -533,6 +542,23 @@ public class GUI extends JFrame {
     public static void setReplayMode(boolean bool) {
     	replayMode = bool;
     	started = false;
+    }
+    
+    private void checkConditions(Maze maze) {
+		// if the goal has been reached
+		if (maze.isGoalReached()) {
+			stopTimer();
+			setReplayMode(true);
+			ReplayUtils.playBack(Long.toString(ReplayUtils.getStartTime()));
+			startTimer();
+			updateBoard();
+		}
+
+		// Check if level needs to be reset. This could be if the player dies for
+		// example
+		if (maze.isResetLevel()) {
+			game.loadLevel(gamePanel, game.getLevelNum());
+		}
     }
 
 }

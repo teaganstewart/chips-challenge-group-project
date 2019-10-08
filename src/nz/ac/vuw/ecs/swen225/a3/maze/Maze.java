@@ -30,6 +30,7 @@ public class Maze implements Saveable {
 	private boolean goalReached;
 	private String hintMessage = "";
 	private boolean onHint;
+	private boolean onIce;
 	// Check whether the level needs to be reset. This could be when the player dies, e.g. by
 	// walking on a fire block
 	private boolean resetLevel = false;
@@ -59,6 +60,7 @@ public class Maze implements Saveable {
 		    this.enemyList = new ArrayList<Skeleton>();
         }
 		this.onHint = false;
+		this.onIce = false;
 	}
 
 	/**
@@ -72,6 +74,7 @@ public class Maze implements Saveable {
 		// Set the players direction, regardless of whether they will actually move
 		player.setDirection(dir);
 		onHint = false;
+		onIce = false;
 		// Check for player moving out of bounds
 		Coordinate dest = player.getNextPos();
 		int rowDest = dest.getRow();
@@ -81,18 +84,6 @@ public class Maze implements Saveable {
 		}
 
 		Tile endTile = tiles[rowDest][colDest];
-
-		// Handle special case with sliding
-		if (endTile.getType() == Tile.TileType.ICE) {
-			if (player.isInInventory(new IceBoots())) {
-				player.setCoordinate(endTile.getCoordinate());
-				return true;
-			} else {
-				// Slide the player until there are no ice blocks left
-				slidePlayer();
-				return true;
-			}
-		}
 
 		// Handle special case with pushing a crate
 		for(Crate crate : crateList){
@@ -160,11 +151,13 @@ public class Maze implements Saveable {
 		}
 
 		// -- ALL TRUE CASES, regardless --//
-
+		
+		// if it's on ice, set on ice to true
+		if (type == Tile.TileType.ICE) onIce = true;
+		
 		// if it's a goal, set goalReached to true
-		if (type == Tile.TileType.GOAL) {
-			goalReached = true;
-		}
+		if (type == Tile.TileType.GOAL) goalReached = true;
+		
 		// if it's a hint tile, then set the hint message. otherwise, ensure it's blank
 		// this can be referenced in the render class
 		if (type == Tile.TileType.HINT) {
@@ -244,6 +237,16 @@ public class Maze implements Saveable {
 		return onHint;
 	}
 
+	/**
+	 * Returns whether or not the player is on ice
+	 * 
+	 * @return
+	 * 		whether or not the place is atop an ice tile
+	 */
+	public boolean isOnIce() {
+		return onIce;
+	}
+	
 	/**
 	 * Returns the hintMessage, regardless if it is blank or not
 	 * 
