@@ -51,7 +51,7 @@ public class LoadUtils {
 	public static Level loadById(Long saveID){
 		File file = new File(SaveUtils.SAVES_DIRECTORY+"\\"+saveID+".json");
 		try {
-			return loadLevel(readJsonFromFile(file));
+			return loadLevel(extractLevel(readJsonFromFile(file)));
 		}
 		catch (NullPointerException e){
 			return null;

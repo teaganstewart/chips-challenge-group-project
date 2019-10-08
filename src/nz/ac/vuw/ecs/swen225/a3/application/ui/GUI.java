@@ -3,21 +3,16 @@ package nz.ac.vuw.ecs.swen225.a3.application.ui;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.maze.Coordinate;
 import nz.ac.vuw.ecs.swen225.a3.maze.Direction;
+import nz.ac.vuw.ecs.swen225.a3.maze.Level;
 import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
-import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 import nz.ac.vuw.ecs.swen225.a3.persistence.SaveUtils;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.file.LinkOption;
 
 public class GUI extends JFrame {
 
@@ -321,10 +316,9 @@ public class GUI extends JFrame {
 	}
 
 
-
 	public void fileLoader(){
 
-		Map<Long, String> loadUtil = LoadUtils.getSavesByID();
+
 
 		fileLoaderWindow = new JDialog();
 		fileLoaderWindow.setTitle("File Loader");
@@ -338,30 +332,27 @@ public class GUI extends JFrame {
 
 
 		//Create a combo box
-		JComboBox cb = new JComboBox();
+		JComboBox<String> cb = new JComboBox<String>();
 
-		File directory = new File(SaveUtils.SAVES_DIRECTORY);
-		FileFilter filter = pathname -> pathname.isFile() && pathname.toString().endsWith(".json");
-		File[] files = directory.listFiles(filter);
-		if(files!= null) {
-			for (File f : files) {
 
-				Long key = Long.parseLong(f.getName().substring(0, f.getName().length()-5));
-
-				cb.addItem(loadUtil.get(key));
-			}
+		for(String s: LoadUtils.getSavesByID().keySet()){
+			cb.addItem(s);
 		}
 
 		cb.setBounds(50,60,400,20);
-		cb.setSelectedIndex(1);
 
 
 		JButton select = new JButton("Select");
 		select.setBounds(200,100,100,30);
 		select.addActionListener(event -> {
-			fileLoaderWindow.dispose();
-			//LoadUtils.loadLevel(loadUtil.get(cb.getSelectedItem()));
-			//System.out.println(cb.getSelectedItem())
+			if(cb.getSelectedIndex() !=-1) {
+				fileLoaderWindow.dispose();
+				Object selectItem = cb.getSelectedItem();
+				Long saveId = LoadUtils.getSavesByID().get(selectItem);
+				Level lvl = LoadUtils.loadById(saveId);
+				game.loadSave(lvl);
+			}
+
 		});
 
 		//Add items to panel

@@ -117,16 +117,24 @@ public class Game {
 	public void loadLevel(GamePanel gp, int num) {
 		GUI.stopTimer();
 		
-		setLevel(num); 
+		setLevel(num);
 		Level l = LoadUtils.loadLevel(getLevelNum());
-		render.setMaze(l.getMaze());
-		setMaze(l.getMaze());
-		setPlayer(l.getMaze().getPlayer());
-		setTiles(l.getMaze().getTiles());
+		loadSave(l);
 
-		startLevel(l);
 	}
-	
+
+	public void loadSave(Level lvl){
+		render.setMaze(lvl.getMaze());
+		setMaze(lvl.getMaze());
+		setPlayer(lvl.getMaze().getPlayer());
+		setTiles(lvl.getMaze().getTiles());
+		setLevel(lvl.getLevel());
+		startLevel(lvl);
+	}
+
+
+
+
 	public void startLevel(Level l) {
 		setTime(l.getTimeAllowed());
 		GUI.startTimer();
