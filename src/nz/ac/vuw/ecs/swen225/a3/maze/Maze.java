@@ -1,17 +1,12 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
-import nz.ac.vuw.ecs.swen225.a3.application.Game;
-import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
-import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
-import nz.ac.vuw.ecs.swen225.a3.render.Render;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 
 /**
  * @author Josh
@@ -26,7 +21,6 @@ public class Maze implements Saveable {
 
 	private Tile[][] tiles;
 	private Player player;
-	private Game game;
 	private boolean goalReached;
 	private String hintMessage = "";
 	private boolean onHint;
@@ -299,7 +293,7 @@ public class Maze implements Saveable {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param tiles
 	 *
 	 */
@@ -317,20 +311,41 @@ public class Maze implements Saveable {
 	public void setPlayer(Player p) {
 		player = p;
 	}
-
-	/**
-	 * @param g
-	 */
-	public void setGame(Game g) {
-		game = g;
-	}
 	
+	/**
+	 * Gets the list of crates on the board.
+	 * 
+	 * @return Returns the list of crates.
+	 */
 	public List<Crate> getCrateList() {
 		return crateList;
 	}
 	
+	/**
+	 * Sets the list of crates on the board.
+	 * 
+	 * @param crates What we want the list to be set to.
+	 */
+	public void setCrateList(List<Crate> crates) {
+		crateList = crates;
+	}
+	
+	/**
+	 * Gets the list of enemies on the board.
+	 * 
+	 * @return Returns the list of enemies.
+	 */
 	public List<Moveable> getEnemyList() {
 		return enemyList;
+	}
+	
+	/**
+	 *  Sets the list of enemies on the board.
+	 *  
+	 * @param enemies What we want the list to be set to.
+	 */
+	public void setEnemyList(List<Moveable> enemies) {
+		enemyList = enemies;
 	}
 
 	/**

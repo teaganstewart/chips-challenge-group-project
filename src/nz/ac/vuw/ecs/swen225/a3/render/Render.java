@@ -4,8 +4,14 @@ import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import java.awt.BorderLayout;
 import javax.swing.*;
 import nz.ac.vuw.ecs.swen225.a3.application.*;
-import nz.ac.vuw.ecs.swen225.a3.application.ui.*;
 
+/**
+ * A class full of methods used to render the board for the game, works closely
+ * with the GraphicalView class to supply the required images.
+ * 
+ * @author Teagan Stewart
+ *
+ */
 public class Render {
 	private Game game;
 	private Maze maze;
@@ -13,9 +19,15 @@ public class Render {
 	private JLabel[][] board;
 	private JLabel[] inventory;
 
+	/**
+	 * Creates the render to display the maze and creates all the images.
+	 * 
+	 * @param g Game holds the player and everything for rendering.
+	 * @param m The maze used for getting the tiles for rendering.
+	 */
 	public Render(Game g, Maze m) {
-		images = new GraphicalView(g, this);
 		game = g;
+		images = new GraphicalView(game, this);
 		maze = m;
 	}
 
@@ -23,8 +35,7 @@ public class Render {
 	 * Method that creates the board of JLabels with the tiles and the entities
 	 * on them.
 	 * 
-	 * @return
-	 * 		Returns a 2d array of the JLabel's containing the ImageIcon's.
+	 * @return Returns a 2d array of the JLabel's containing the ImageIcon's.
 	 */
 	public JLabel[][] createGrid() {
 
@@ -47,10 +58,8 @@ public class Render {
 	/**
 	 * Method to render everything that moves on the board.
 	 * 
-	 * @param i
-	 * 		The row of the Moveable object.
-	 * @param j
-	 * 		The column of the Moveable object.
+	 * @param i The row of the Moveable object.
+	 * @param j The column of the Moveable object.
 	 */
 	public void renderMoveables(int i, int j) {
 		
@@ -60,12 +69,12 @@ public class Render {
 			return;
 		}
 		
-//		for(Moveable enemy : maze.getEnemyList()) {
-//			Coordinate enemyCoordinate = enemy.getCoordinate();
-//			if(enemyCoordinate.getRow()==i && enemyCoordinate.getCol()==j) {
-//				board[i][j].add(new JLabel(images.getEnemyIcon(enemy.getDirection())));
-//			}
-//		}
+		for(Moveable enemy : maze.getEnemyList()) {
+			Coordinate enemyCoordinate = enemy.getCoordinate();
+			if(enemyCoordinate.getRow()==i && enemyCoordinate.getCol()==j) {
+				board[i][j].add(new JLabel(images.getEnemyIcon(enemy.getDirection())));
+			}
+		}
 		
 		for(Crate crate : maze.getCrateList()) {
 			Coordinate crateCoordinate = crate.getCoordinate();
@@ -75,11 +84,13 @@ public class Render {
 		}
 		
 	}
+	
 	/**
+	 * Renders the entities on the board e.g. keys, doors.
 	 * 
-	 * @param i
-	 * @param j
-	 * @param tiles
+	 * @param i The row that the entity is in.
+	 * @param j The col that the entity is in.
+	 * @param tiles Returns the new board with the new JLabel.
 	 */
 	public void renderEntities(int i, int j, Tile[][] tiles) {
 		if (tiles[i][j].getEntity() != null) {
@@ -97,6 +108,11 @@ public class Render {
 
 	}
 
+	/**
+	 * Renders the entities in the inventory.
+	 * 
+	 * @return Returns an array of the ImageIcons for displaying the inventory.
+	 */
 	public JLabel[] renderInventory() {
 		Player player = maze.getPlayer();
 		inventory = new JLabel[8];
@@ -112,7 +128,14 @@ public class Render {
 
 				inventory[i].add(new JLabel((images.getKeyIcon(keyColor))));
 			}
+			else if(entity instanceof FireBoots) {
+				inventory[i].add(new JLabel(images.getEntityIcon(new FireBoots())));
+			}
+			else if(entity instanceof IceBoots) {
+				inventory[i].add(new JLabel(images.getEntityIcon(new IceBoots())));
+			}
 		}
+		
 		for(int i= player.getInventory().size(); i<8; i++) {
 			inventory[i] = new JLabel(images.getSlotIcon());
 		}
@@ -120,6 +143,13 @@ public class Render {
 		return inventory;
 	}
 
+	/**
+	 * Returns the 9 x 9 board around the player, the player
+	 *  being in the center.
+	 * 
+	 * @return Returns a 2d array of JLabels representing what 
+	 * the user can see. 
+	 */
 	public JLabel[][] getVisibleBoard() {
 		JLabel[][] visibleBoard = new JLabel[9][9];
 		Coordinate playerCoord = maze.getPlayer().getCoordinate();
@@ -156,6 +186,12 @@ public class Render {
 		return visibleBoard;
 	}
 
+	/**
+	 * Gets the GraphicalView object used to access/ select the required image.
+	 * 
+	 * @return
+	 * 		Returns the GraphicalView object.
+	 */
 	public GraphicalView getImages() {
 		return images;
 	}
@@ -206,13 +242,19 @@ public class Render {
 	}
 
 	/**
+	 *	The board, used in the GUI and tests.
 	 *
-	 * @return Returns the board as an array of image icons
+	 * @return Returns the board as an array of image icons.
 	 */
 	public JLabel[][] getBoard() {
 		return board;
 	}
 
+	/**
+	 * Sets the maze after switching levels.
+	 * 
+	 * @param m The new maze.
+	 */
 	public void setMaze(Maze m) {
 		this.maze = m;
 	}

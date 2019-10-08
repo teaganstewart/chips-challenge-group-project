@@ -1,32 +1,27 @@
 package nz.ac.vuw.ecs.swen225.a3.render.Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
-import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.render.*;
 
 /**
- * @author Teagan
+ * Class which contains all tests that test classes in the render
+ * directory.
  * 
- *         Class which contains all tests that test classes in the render
- *         directory.
- *
+ * @author Teagan Stewart
  */
 public class RenderTests {
 
 	@Test
 	void createGridTest() {
 
-		Tile[][] tiles = new Tile[9][9];
-		for (int row = 0; row < tiles.length; row++) {
-			for (int col = 0; col < tiles[0].length; col++) {
-				tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-			}
-		}
+		Tile[][] tiles = emptyBoard();
 
 		GUI gui = new GUI();
 		System.out.println(gui.toString());
@@ -34,8 +29,11 @@ public class RenderTests {
 		game.getMaze().setPlayer(new Player(new Coordinate(4,4)));
 		game.setTiles(tiles);
 		Render render = new Render(game, game.getMaze());
+		
 		JLabel[][] outcome = render.createGrid();
 		JLabel[][] expected = new JLabel[9][9];
+		
+		//sets up the expected board, a bunch of floor tiles.
 		for (int row = 0; row < tiles.length; row++) {
 			for (int col = 0; col < tiles[0].length; col++) {
 				JLabel floor = new JLabel(new ImageIcon(getClass().getResource("../icons/tiles/floor.png")));
@@ -50,12 +48,7 @@ public class RenderTests {
 	@Test
 	void drawEntitiesTest() {
 
-		Tile[][] tiles = new Tile[9][9];
-		for (int row = 0; row < tiles.length; row++) {
-			for (int col = 0; col < tiles[0].length; col++) {
-				tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-			}
-		}
+		Tile[][] tiles = emptyBoard();
 
 		// setting up the board
 		int i = 3;
@@ -83,6 +76,7 @@ public class RenderTests {
 
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	void renderInventoryTest() {
 		Player player = new Player(new Coordinate(3, 3));
@@ -94,13 +88,47 @@ public class RenderTests {
 		//setting up the inventory
 		for(BasicColor color : BasicColor.values()) {
 			player.addToInventory(new Key(color));
+			player.addToInventory(new FireBoots());
+			player.addToInventory(new IceBoots());
 		}
 		
-		System.out.println(game.getMaze().getPlayer().getInventory());
 		// testing the rendering of the inventory
 		Render render = new Render(game, game.getMaze());
 		render.renderInventory();
 		
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	void renderMoveablesTest() {
+		
+		GUI gui = new GUI();
+		gui.disable();
+		Game game = new Game();
+		//adding enemies
+		List<Moveable> enemies = new ArrayList<Moveable>();
+		enemies.add(new Skeleton(new Coordinate(0,1), Direction.UP));
+		game.getMaze().setEnemyList(enemies);
+		
+		List<Crate> crates = new ArrayList<Crate>();
+		crates.add(new Crate(new Coordinate(0,0)));
+		game.getMaze().setCrateList(crates);
+		
+		// testing the rendering of the inventory
+		Render render = new Render(game, game.getMaze());
+		render.createGrid();
+		
+	}
+	
+	private Tile[][] emptyBoard() {
+		
+		Tile[][] tiles = new Tile[9][9];
+		for (int row = 0; row < tiles.length; row++) {
+			for (int col = 0; col < tiles[0].length; col++) {
+				tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
+			}
+		}
+		return tiles;
 	}
 
 }

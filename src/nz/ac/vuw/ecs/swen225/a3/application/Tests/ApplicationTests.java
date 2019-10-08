@@ -2,13 +2,9 @@ package nz.ac.vuw.ecs.swen225.a3.application.Tests;
 
 //import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.awt.event.KeyEvent;
-
 import org.junit.jupiter.api.Test;
-
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
-import nz.ac.vuw.ecs.swen225.a3.application.Main;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.Coordinate;
@@ -16,13 +12,17 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Direction;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
+/**
+ * Class which contains all tests that test classes in the application
+ * directory.
+ * 
+ * @author Teagan Stewart
+ */
 public class ApplicationTests {
 
 	@Test
 	public void nextLevelTest() {
 		// setup
-		Main m = new Main();
-		m.main(null);
 		GUI gui = new GUI();
 		gui.disable();
 		Game game = new Game();
@@ -44,7 +44,6 @@ public class ApplicationTests {
 		GUI gui = new GUI();
 		gui.disable();
 		Game game = new Game();
-		GamePanel gp = new GamePanel(game);
 		Render render = new Render(game, game.getMaze());
 		render.createGrid();
 

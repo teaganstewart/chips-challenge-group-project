@@ -19,7 +19,7 @@ import java.util.Date;
 public class GUI extends JFrame {
 
 	private Game game;
-	public static JFrame main;
+	public static JFrame main = new JFrame("Chap's Challenge");
 	private GamePanel gamePanel;
 	//private JPanel infoPanel;
 	private JDialog fileLoaderWindow;
@@ -137,7 +137,6 @@ public class GUI extends JFrame {
 	 * Create Game window
 	 */
 	public void createWindow(){
-		main = new JFrame("Chap's Challenge");
 		main.setLayout(new BorderLayout());
 
 		//Generate menu

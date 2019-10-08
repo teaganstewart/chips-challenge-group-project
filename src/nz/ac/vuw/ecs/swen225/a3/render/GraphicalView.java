@@ -5,10 +5,22 @@ import nz.ac.vuw.ecs.swen225.a3.maze.*;
 
 import javax.swing.*;
 
+/**
+ * A class that supplies the required images for the Render class.
+ * 
+ * @author Teagan Stewart
+ */
 public class GraphicalView {
 	private Render renderer;
 	private Game game;
 
+	/**
+	 * Creates the GraphicalView to create all the images/ send them
+	 * to render.
+	 * 
+	 * @param g The game used to check for players/ the maze.
+	 * @param r The render which needs the images this class provides.
+	 */
 	public GraphicalView(Game g, Render r) {
 		renderer = r;
 		game = g;
@@ -17,10 +29,8 @@ public class GraphicalView {
 	/**
 	 * Gets the desired image of the player.
 	 * 
-	 * @param dir
-	 * 		The direction the player is facing.
-	 * @return
-	 * 		Returns an ImageIcon of the player.
+	 * @param dir The direction the player is facing.
+	 * @return Returns an ImageIcon of the player.
 	 */	
 	public ImageIcon getPlayerIcon(Direction dir) {
 		if(dir.equals(Direction.DOWN)) {
