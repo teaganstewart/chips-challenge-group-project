@@ -66,7 +66,7 @@ public class Player extends Moveable implements Saveable {
 		if ((0 <= index) && (index < inventory.size())) {
 			return inventory.get(index);
 		}
-		return null;
+		throw new RuntimeException("Out of bounds inventory index for getInventoryAt() method");
 	}
 
 	/**
@@ -81,8 +81,7 @@ public class Player extends Moveable implements Saveable {
 			inventory.remove(index);
 			return true;
 		}
-
-		return false;
+		throw new RuntimeException("Out of bounds inventory index for removeInventoryAt() method");
 	}
 
 	/**
