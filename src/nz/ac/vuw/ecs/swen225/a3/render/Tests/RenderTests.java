@@ -1,24 +1,20 @@
 package nz.ac.vuw.ecs.swen225.a3.render.Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.*;
 import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
-import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.render.*;
 
 /**
- * @author Teagan
+ * Class which contains all tests that test classes in the render
+ * directory.
  * 
- *         Class which contains all tests that test classes in the render
- *         directory.
- *
+ * @author Teagan Stewart
  */
 public class RenderTests {
 
@@ -33,8 +29,11 @@ public class RenderTests {
 		game.getMaze().setPlayer(new Player(new Coordinate(4,4)));
 		game.setTiles(tiles);
 		Render render = new Render(game, game.getMaze());
+		
 		JLabel[][] outcome = render.createGrid();
 		JLabel[][] expected = new JLabel[9][9];
+		
+		//sets up the expected board, a bunch of floor tiles.
 		for (int row = 0; row < tiles.length; row++) {
 			for (int col = 0; col < tiles[0].length; col++) {
 				JLabel floor = new JLabel(new ImageIcon(getClass().getResource("../icons/tiles/floor.png")));
@@ -77,6 +76,7 @@ public class RenderTests {
 
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	void renderInventoryTest() {
 		Player player = new Player(new Coordinate(3, 3));
@@ -98,11 +98,9 @@ public class RenderTests {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	void renderMoveablesTest() {
-		
-		//set up empty board
-		Tile[][] tiles = emptyBoard();
 		
 		GUI gui = new GUI();
 		gui.disable();

@@ -26,8 +26,8 @@ public class Render {
 	 * @param m The maze used for getting the tiles for rendering.
 	 */
 	public Render(Game g, Maze m) {
-		images = new GraphicalView(g, this);
 		game = g;
+		images = new GraphicalView(game, this);
 		maze = m;
 	}
 

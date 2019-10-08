@@ -8,15 +8,14 @@ import java.awt.*;
 
 public class GamePanel extends JPanel {
 
-	private Game game;
+	private static final long serialVersionUID = 1L;
+	
 	private Render render;
 
 	public GamePanel(Game game) {
-		this.game = game;
 		this.setLayout(new GridLayout(9, 9, 0, 0));
 		this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 20));
-		game.getMaze().setTiles(game.getMaze().getTiles());
-		game.getMaze().setGame(game);	
+		game.getMaze().setTiles(game.getMaze().getTiles());	
 		render = new Render(game,game.getMaze());
 		game.setRender(render);
 		drawBoard();
