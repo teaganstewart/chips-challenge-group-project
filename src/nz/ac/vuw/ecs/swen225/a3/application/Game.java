@@ -69,6 +69,7 @@ public class Game {
 
 		try{
 			level = LoadUtils.resumeGame();
+			setLevel(level.getLevel());
 			if(level.getMaze().getTiles().length<9 || level.getMaze().getTiles()[0].length<9) {
 				throw new NullPointerException();
 			}
@@ -130,5 +131,7 @@ public class Game {
 		setTime(l.getTimeAllowed());
 		GUI.startTimer();
 	}
+
+
 
 }

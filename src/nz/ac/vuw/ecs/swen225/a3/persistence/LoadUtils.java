@@ -22,7 +22,7 @@ public class LoadUtils {
 
 	/**
 	 * Resumes the game from the last save made.
-	 * 
+	 *
 	 * @return the most recent level played by the player, null if there is not a
 	 *         save
 	 */
@@ -34,7 +34,7 @@ public class LoadUtils {
 
 	/**
 	 * Loads the specified level in JSON format from default source
-	 * 
+	 *
 	 * @param levelNumber - the level to load
 	 */
 	public static Level loadLevel(int levelNumber) {
@@ -131,7 +131,7 @@ public class LoadUtils {
 
 	/**
 	 * Produces a Level object from the JSON input given
-	 * 
+	 *
 	 * @param level Json representation of a game
 	 * @return the Json deserialised back into Object form
 	 */
@@ -156,7 +156,7 @@ public class LoadUtils {
 
 	/**
 	 * Searches through the directory of saves, finding the most recent saved game.
-	 * 
+	 *
 	 * @return the most recent saved game's json file.
 	 */
 	private static File getMostRecentSave() {
@@ -178,7 +178,7 @@ public class LoadUtils {
 
 	/**
 	 * Reads a file and reads it into a new JsonObject
-	 * 
+	 *
 	 * @param file the file to read json from
 	 * @return Json object version of that file, null if not found.
 	 */
@@ -202,7 +202,7 @@ public class LoadUtils {
 	/**
 	 * Create a player object from JSON object notation, filling in their inventory
 	 * and coordinates
-	 * 
+	 *
 	 * @param player Player representation in JSON object notation
 	 * @return a player object identical tho that represented in JSON
 	 */
@@ -220,7 +220,7 @@ public class LoadUtils {
 
 	/**
 	 * Create a new Tile object from JSON object notation
-	 * 
+	 *
 	 * @param tile the JSON object that contains all the information about this tile
 	 * @return the Java tile Object
 	 */
@@ -244,7 +244,7 @@ public class LoadUtils {
 
 	/**
 	 * Load a Coordinate object in from JSON format
-	 * 
+	 *
 	 * @param coordinate as a json object
 	 * @return coordinate in Java Object form
 	 */
@@ -254,7 +254,7 @@ public class LoadUtils {
 
 	/**
 	 * Load an Entity from JSON
-	 * 
+	 *
 	 * @param entity the Json object representing an entity
 	 * @return Java object identical to that represented in file form
 	 */
@@ -315,7 +315,7 @@ public class LoadUtils {
 
 	/**
 	 * Load a maze object from a JsonObject
-	 * 
+	 *
 	 * @param maze the maze object in JSON object form
 	 * @return a Maze object with the properties from the file.
 	 */
