@@ -16,7 +16,7 @@ public class Game {
 	private Player player;
 	private Maze maze;
 	private Render render;
-	Level level;
+	private Level level;
 	boolean endGame;
 
 	public Game() {
@@ -75,7 +75,6 @@ public class Game {
 				enemy.setCoordinate(enemy.getNextPos());
 				saveReplay = true;
 			}
-		}
 
 		if (saveReplay) ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime()), getMaze()));
 	}
@@ -85,19 +84,19 @@ public class Game {
 
 		try{
 			level = LoadUtils.resumeGame();
-			setLevel(level.getLevel());
+			setLevelNum(level.getLevel());
 			if(level.getMaze().getTiles().length<9 || level.getMaze().getTiles()[0].length<9) {
 				throw new NullPointerException();
 			}
 		}
 		catch (NullPointerException e){
 			level = LoadUtils.loadLevel(1);
-			setLevel(1);
+			setLevelNum(1);
 		}
 
 		maze = level.getMaze();
 		player = maze.getPlayer();
-		setLevel(level.getLevel());
+		setLevelNum(level.getLevel());
 
 		startLevel(level);
 
@@ -107,7 +106,7 @@ public class Game {
 		time = t;
 	}
 
-	public void setLevel(int l) {
+	public void setLevelNum(int l) {
 		levelNum = l;
 	}
 
@@ -119,6 +118,10 @@ public class Game {
 		return levelNum;
 	}
 
+	public void setLevel(Level l) {
+		level = l;
+	}
+	
 	public Level getLevel(){
 		return level;
 	}
@@ -133,10 +136,10 @@ public class Game {
 	public void loadLevel(GamePanel gp, int num) {
 		GUI.stopTimer();
 
-		setLevel(num);
+		setLevelNum(num);
 		Level l = LoadUtils.loadLevel(getLevelNum());
 		loadSave(l);
-
+		
 	}
 
 	public void loadSave(Level lvl){
@@ -144,7 +147,7 @@ public class Game {
 		setMaze(lvl.getMaze());
 		setPlayer(lvl.getMaze().getPlayer());
 		setTiles(lvl.getMaze().getTiles());
-		setLevel(lvl.getLevel());
+		setLevelNum(lvl.getLevel());
 		startLevel(lvl);
 	}
 
@@ -153,6 +156,7 @@ public class Game {
 
 	public void startLevel(Level l) {
 		setTime(l.getTimeAllowed());
+		setLevel(l);
 		GUI.startTimer();
 	}
 

@@ -6,6 +6,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Direction;
 import nz.ac.vuw.ecs.swen225.a3.maze.Level;
 import nz.ac.vuw.ecs.swen225.a3.maze.IceBoots;
 import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
+import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 import nz.ac.vuw.ecs.swen225.a3.persistence.SaveUtils;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.*;
@@ -31,18 +32,22 @@ public class GUI extends JFrame {
 	private JRadioButton lvl[] = new JRadioButton[2];
 	private InfoPanel infoPanel;
 
-    private static boolean started;
-
+    // game variables
     private static Timer gameLoop;
     private static int gameFrame;
     private static boolean timeToggle;
-
+    private static boolean moveNextTurn;
+    private static boolean started;
+    
+    // recnplay variables
     private static Timer replayLoop;
+    private static int globalFrame;
     private static int keyFrame;
 	private static int recIndex;
+	private static boolean flashIcon;
 
+	// switching between recnplay / game
     private static boolean replayMode;
-    private static boolean moveNextTurn;
 
 	public GUI() {
 		setReplayMode(false);
@@ -86,16 +91,20 @@ public class GUI extends JFrame {
 
 		if (!game.getMaze().isOnIce() || game.getPlayer().isInInventory(new IceBoots())) {
 			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				moved = (maze.movePlayer(Direction.UP));
+				maze.movePlayer(Direction.UP);
+				moved = true;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				moved = (maze.movePlayer(Direction.DOWN));
+				maze.movePlayer(Direction.DOWN);
+				moved = true;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-				moved = (maze.movePlayer(Direction.LEFT));
+				maze.movePlayer(Direction.LEFT);
+				moved = true;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				moved = (maze.movePlayer(Direction.RIGHT));
+				maze.movePlayer(Direction.RIGHT);
+				moved = true;
 			}
 		}
 
@@ -429,13 +438,15 @@ public class GUI extends JFrame {
 		gamePanel.clearBoard();
 		gamePanel.drawBoard();
 
-		infoPanel.setLevelDisplay();
-		infoPanel.displayTime();
+		infoPanel.setLevelDisplay(replayMode, flashIcon);
+		infoPanel.displayTime(replayMode);
 
 		if (game.getMaze().isOnHint()) infoPanel.setHint(game.getMaze().getHintMessage());
 		else infoPanel.setDefaultHint();
 
-		infoPanel.displayChips();
+		int first = replayMode ? recIndex : Treasure.getTotalCollected();
+		int secnd = replayMode ? ReplayUtils.replaySize()-1 : Treasure.getTotalInLevel();
+		infoPanel.displayChips(replayMode, first, secnd);
 		infoPanel.clearInventory();
 		infoPanel.drawInventory();
 		gamePanel.updateUI();
@@ -501,7 +512,7 @@ public class GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				try {
+				try {					
 					Maze m = ReplayUtils.getActionRecord(recIndex).getMaze();
 					int t = ReplayUtils.getActionRecord(recIndex).getTimeSinceLevelStart();
 
@@ -519,12 +530,12 @@ public class GUI extends JFrame {
 
 						if (recIndex < ReplayUtils.replaySize()-1) {
 							recIndex++;
-						} else {
-							stopTimer();
 						}
 					}
 
 					keyFrame += 10;
+					globalFrame += 10;
+					if (globalFrameCheck(globalFrame)) updateBoard();
 				} catch (NullPointerException e) {}
 			}
 
@@ -535,22 +546,34 @@ public class GUI extends JFrame {
 
     }
 
+    private boolean globalFrameCheck(int frame) {
+    	if (frame == 0) return false;
+		if (frame % 400 == 0) {
+			flashIcon = !flashIcon;
+			return true;
+		}
+		return false;
+    }
+    
     public static void startTimer() {
     	if (!replayMode) {
     		if (!started) {
     			ReplayUtils.setStartTime(System.currentTimeMillis());
     			gameFrame = 0;
-    	    	timeToggle = true;
+    	    	timeToggle = false;
     	    	moveNextTurn = false;
     	    	started = true;
     		}
+    		
 	    	gameLoop.start();
     	} else {
     		if (!started) {
+    			globalFrame = 0;
         		keyFrame = 0;
         		recIndex = 0;
-        		started = true;
+        		flashIcon = true;
     		}
+    		
     		replayLoop.start();
     	}
     }
@@ -562,7 +585,6 @@ public class GUI extends JFrame {
 
     public static void setReplayMode(boolean bool) {
     	replayMode = bool;
-    	started = false;
     }
 
     private void checkConditions(Maze maze) {

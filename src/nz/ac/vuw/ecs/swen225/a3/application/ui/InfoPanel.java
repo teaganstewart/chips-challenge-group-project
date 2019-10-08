@@ -2,6 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.application.ui;
 
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.ReplayUtils;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 import javax.swing.*;
@@ -9,6 +10,7 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import java.awt.*;
+import java.util.Date;
 import java.util.Scanner;
 
 public class InfoPanel extends JPanel {
@@ -50,9 +52,8 @@ public class InfoPanel extends JPanel {
 		c.gridy = 5;
 		this.add(hintPanel(),c);
 
-
 	}
-
+	
 	public JPanel inventory(){
 		inv = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -90,10 +91,7 @@ public class InfoPanel extends JPanel {
 		chip.setMinimumSize(new Dimension(200,50));
 		chip.setBackground(Color.white);
 
-		Border type = BorderFactory.createLineBorder(Color.white);
-		Border border = BorderFactory.createTitledBorder(type, "Treasures Left:", TitledBorder.CENTER, TitledBorder.TOP);
-		chip.setBorder(border);
-		displayChips();
+		displayChips(false, 0,0);
 		return chip;
 	}
 	
@@ -113,26 +111,30 @@ public class InfoPanel extends JPanel {
 	
 	public JPanel levelPanel() {
 		level = new JPanel();
-		level.setPreferredSize(new Dimension(200,20));
-		level.setMaximumSize(new Dimension(200,20));
-		level.setMinimumSize(new Dimension(200,20));
+		level.setPreferredSize(new Dimension(200,40));
+		level.setMaximumSize(new Dimension(200,40));
+		level.setMinimumSize(new Dimension(200,40));
 		level.setBackground(Color.white);
 		
-		setLevelDisplay();
+		setLevelDisplay(false, false);
 		return level;
 	}
 	
-	public void setLevelDisplay() {
+	public void setLevelDisplay(boolean replayMode, boolean flash) {
 		try {
 			level.remove(0);
 		} catch (ArrayIndexOutOfBoundsException e) {}
-		
 		
 		int num = 0;
 		try {
 			num = game.getLevelNum();
 		} catch (NullPointerException e) {}
-		level.add(new JLabel("Level: " + Integer.toString(num)));
+		level.add(new JLabel(!replayMode ?
+							"<html>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Level: " + Integer.toString(num) + "&emsp;&emsp;"+
+							"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</html>":
+									
+							"<html>&emsp;&emsp;&emsp;&emsp;&emsp;PLAYBACK  " + (flash ? "\u25CF  " : "     " )+
+							"<br>" + new Date(ReplayUtils.getStartTime()).toString() + "</html>"));
 	}
 	
 	public void setDefaultHint() {
@@ -167,7 +169,6 @@ public class InfoPanel extends JPanel {
 		wrapped.append("</html>");
 		hint.add(new JLabel(wrapped.toString()));
 	}
-
 	
 	public JPanel timePanel() {
 		timer = new JPanel();
@@ -175,20 +176,21 @@ public class InfoPanel extends JPanel {
 		timer.setMaximumSize(new Dimension(200,50));
 		timer.setMinimumSize(new Dimension(200,50));
 		timer.setBackground(Color.white);
-		
-		Border type = BorderFactory.createLineBorder(Color.white);
-		Border border = BorderFactory.createTitledBorder(type, "Total Time:", TitledBorder.CENTER, TitledBorder.TOP);
-		timer.setBorder(border);
-		displayTime();
+	
+		displayTime(false);
 		return timer;
 	}
 	
-	public void displayTime() {
+	public void displayTime(boolean replayMode) {
 		try {
 			timer.remove(0);
 		} catch (ArrayIndexOutOfBoundsException e) {}
 		
-		timer.add(new JLabel(timeToMins(game.getTime())));
+		Border type = BorderFactory.createLineBorder(Color.white);
+		Border border = BorderFactory.createTitledBorder(type, !replayMode ? "Total Time:" : "Clear Time:", TitledBorder.CENTER, TitledBorder.TOP);
+		timer.setBorder(border);
+		
+		timer.add(new JLabel(!replayMode ? timeToMins(game.getTime()) : timeToMins(game.getLevel().getTimeAllowed() - game.getTime())));
 	}
 	
 	private String timeToMins(int time) {
@@ -229,14 +231,18 @@ public class InfoPanel extends JPanel {
 		}
 	}
 	
-	public void displayChips() {
+	public void displayChips(boolean replayMode, int first, int secnd) {
 		try {
-			chip.remove(0);
 			chip.remove(0);
 		} catch (ArrayIndexOutOfBoundsException e) {}
 		
-		int left = Treasure.getTotalInLevel() - Treasure.getTotalCollected();
-		chip.add(new JLabel((left <= 9 ? "0" : "") + Integer.toString(left)));
+		Border type = BorderFactory.createLineBorder(Color.white);
+		Border border = BorderFactory.createTitledBorder(type, !replayMode ? "Treasures Remaining:" : "Total Board Events:",
+														TitledBorder.CENTER, TitledBorder.TOP);
+		chip.setBorder(border);
+		
+		String form = String.format("%d / %d", first, secnd);
+		chip.add(new JLabel(form));
 	}
 	
 	public void paintComponent(Graphics g){
@@ -253,6 +259,5 @@ public class InfoPanel extends JPanel {
 			return null;
 		}
 	}
-
 
 }
