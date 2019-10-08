@@ -17,7 +17,7 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 public class ApplicationTests {
-	
+
 	@Test
 	public void nextLevelTest() {
 		// setup
@@ -27,7 +27,7 @@ public class ApplicationTests {
 		gui.disable();
 		Game game = new Game();
 		GamePanel gp = new GamePanel(game);
-		
+
 		// moving the player to reach the next level.
 		game.loadGame();
 		for(int i= 0; i <5; i++) {
@@ -37,8 +37,8 @@ public class ApplicationTests {
 			}
 		}
 	}
-	
-	@Test 
+
+	@Test
 	void keysTest() {
 		GUI gui = new GUI();
 		gui.disable();
@@ -46,16 +46,16 @@ public class ApplicationTests {
 		GamePanel gp = new GamePanel(game);
 		Render render = new Render(game, game.getMaze());
 		render.createGrid();
-		
+
 		Player p = new Player(new Coordinate(3,3));
 		Integer[] events = {KeyEvent.VK_LEFT, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_DOWN };
-		
+
 		for(Integer k : events) {
 			KeyEvent key = new KeyEvent(GUI.main, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, k,'Z');
 		    GUI.main.getKeyListeners()[0].keyReleased(key);
 		    GUI.main.setFocusable(true);
 		}
-		
+
 		assertEquals(new Coordinate(3,3).toString(), p.getCoordinate().toString());
 	}
 }

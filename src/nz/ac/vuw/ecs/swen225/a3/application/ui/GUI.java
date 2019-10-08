@@ -1,16 +1,20 @@
 package nz.ac.vuw.ecs.swen225.a3.application.ui;
 
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
+import nz.ac.vuw.ecs.swen225.a3.maze.Coordinate;
 import nz.ac.vuw.ecs.swen225.a3.maze.Direction;
 import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 import nz.ac.vuw.ecs.swen225.a3.persistence.SaveUtils;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class GUI extends JFrame {
 
@@ -27,13 +31,21 @@ public class GUI extends JFrame {
 
 	private JRadioButton lvl[] = new JRadioButton[2];
 	private InfoPanel infoPanel;
-	private static Timer gameLoop;
-	private static boolean timeToggle = true;
 
-	public GUI(){
+    private static Timer gameLoop;
+    private static boolean started = false;
+    private static boolean timeToggle = true;
 
+    private static Timer replayLoop;
+	private static int recIndex;
+
+    private static boolean replayMode;
+
+	public GUI() {
+		setReplayMode(false);
 		setupTimer();
 		game = new Game();
+
 		createWindow();
 		main.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		main.addKeyListener(new KeyListener() {
@@ -49,28 +61,9 @@ public class GUI extends JFrame {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				Maze maze = game.getMaze();
-				if (e.getKeyCode() == KeyEvent.VK_UP) {
-					maze.movePlayer(Direction.UP);
-					updateBoard();
-				}
-				if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-					maze.movePlayer(Direction.DOWN);
-					updateBoard();
-				}
-				if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-					maze.movePlayer(Direction.LEFT);
-					updateBoard();
-				}
-				if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-					maze.movePlayer(Direction.RIGHT);
-					updateBoard();
-				}
-				if (maze.isGoalReached() && game.getLevelNum() < 2) {
-					game.loadLevel(gamePanel, game.getLevelNum()+1);
-					updateBoard();
 
-				}
+				if (!replayMode) inGameEvent(e);
+				else inReplayEvent(e);
 
 
 			}
@@ -83,6 +76,62 @@ public class GUI extends JFrame {
 		});
 
 	}
+
+	public void inGameEvent(KeyEvent e) {
+		boolean moved = false;
+		Maze maze = game.getMaze();
+		if (e.getKeyCode() == KeyEvent.VK_UP) {
+			moved = (maze.movePlayer(Direction.UP));
+		}
+		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			moved = (maze.movePlayer(Direction.DOWN));
+		}
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			moved = (maze.movePlayer(Direction.LEFT));
+		}
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			moved = (maze.movePlayer(Direction.RIGHT));
+		}
+
+		if (moved) {
+			ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime()), maze));
+			updateBoard();
+		}
+
+		// if the goal has been reached
+		if (maze.isGoalReached()) {
+			stopTimer();
+			setReplayMode(true);
+			ReplayUtils.playBack(Long.toString(ReplayUtils.getStartTime()));
+			startTimer();
+			updateBoard();
+		}
+
+		// Check if level needs to be reset. This could be if the player dies for
+		// example
+		if (maze.isResetLevel()) {
+			game.loadLevel(gamePanel, game.getLevel());
+		}
+	}
+
+	public void inReplayEvent(KeyEvent e) {
+		// "S" for Skip
+		if (e.getKeyCode() == KeyEvent.VK_S) {
+			if (game.getLevel() < 2) {
+				stopTimer();
+				setReplayMode(false);
+				game.loadLevel(gamePanel, game.getLevel()+1);
+			}
+		}
+
+		// "D" for Do-over/Redo
+		if (e.getKeyCode() == KeyEvent.VK_D) {
+			stopTimer();
+			recIndex = 0;
+			startTimer();
+		}
+	}
+
 
 	/**
 	 * Create Game window
@@ -333,6 +382,7 @@ public class GUI extends JFrame {
 		KeyStroke ctrlHKeyStroke = KeyStroke.getKeyStroke("control H");
 		help_Item.setAccelerator(ctrlHKeyStroke);
 		help_Item.addActionListener(e -> {
+			stopTimer();
 			if(JOptionPane.showConfirmDialog(
 					main,
 					"Welcome to the help page  :D\n" +
@@ -352,11 +402,11 @@ public class GUI extends JFrame {
 							"Esc - Resume\n\n\n" +
 							"Lastly do not forget to have fun   ; )",
 
-
 					"Help Page",
 
 					JOptionPane.CLOSED_OPTION) == JOptionPane.YES_OPTION){
 			}
+			startTimer();
 		});
 	}
 
@@ -382,15 +432,20 @@ public class GUI extends JFrame {
 
     /**
      * Only ever called once to create the timer and override it's action event
-     * Runs once per second
      */
     private void setupTimer() {
 
+    	// sets up the game timer, which runs every half second
     	gameLoop = new Timer(500, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
+					if (started) {
+						started = false;
+						ReplayUtils.pushActionRecord(new ActionRecord(0, game.getMaze()));
+					}
+
 					game.update();
 					if (timeToggle) {
 						updateBoard();
@@ -409,15 +464,70 @@ public class GUI extends JFrame {
 		gameLoop.setInitialDelay(0);
 		gameLoop.setRepeats(true);
 
+		// sets up the replay timer, which runs on a different mechanism
+    	replayLoop = new Timer(100, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					Maze m = ReplayUtils.getActionRecord(recIndex).getMaze();
+
+					if (recIndex > 0) {
+						Coordinate from = ReplayUtils.getActionRecord(recIndex-1).getMaze().getPlayer().getCoordinate();
+						Coordinate to = m.getPlayer().getCoordinate();
+						Direction dir = Direction.getFacing(from, to);
+						if (dir != null) m.getPlayer().setDirection(dir);
+					}
+
+					game.getRender().setMaze(m);
+					game.setMaze(m);
+					updateBoard();
+
+					if (recIndex < ReplayUtils.replaySize()-1) {
+						recIndex++;
+					} else {
+						stopTimer();
+					}
+
+				} catch (NullPointerException e) {}
+			}
+
+
+    	});
+    	replayLoop.setInitialDelay(0);
+    	replayLoop.setRepeats(true);
+
     }
 
     public static void startTimer() {
-    	timeToggle = true;
-    	gameLoop.start();
+    	if (!replayMode) {
+    		if (!started) {
+    			ReplayUtils.setStartTime(System.currentTimeMillis());
+    	    	timeToggle = true;
+    	    	started = true;
+    		}
+	    	gameLoop.start();
+    	} else {
+    		recIndex = 0;
+    		replayLoop.start();
+    	}
     }
 
     public static void stopTimer() {
-    	gameLoop.stop();
+    	if (!replayMode) gameLoop.stop();
+    	else replayLoop.stop();
+    }
+
+    public static void setReplayMode(boolean bool) {
+    	replayMode = bool;
+    }
+
+    private void doReplay(int t) {
+//    	Direction dir = replay.getMove(t);
+//		if (dir != null) {
+//			game.getMaze().movePlayer(dir);
+//			updateBoard();
+//		}
     }
 
 }

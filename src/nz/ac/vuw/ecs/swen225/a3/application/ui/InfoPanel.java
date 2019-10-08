@@ -38,7 +38,6 @@ public class InfoPanel extends JPanel {
 		c.gridy = 0;
 		c.gridwidth =1;
 		c.insets = new Insets(0,0,30,0);  //top padding
-		JLabel level = new JLabel("Level:");
 
 		this.add(levelPanel(),c);
 		c.gridy = 1;

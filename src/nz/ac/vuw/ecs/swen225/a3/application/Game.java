@@ -74,11 +74,10 @@ public class Game {
 
 		maze = level.getMaze();
 		player = maze.getPlayer();
-
-		// set the time appropriately here
-		setTime(level.getTimeAllowed());
-		GUI.startTimer();
-
+		setLevel(level.getLevel());
+		
+		startLevel(level);
+		
 	}
 
 	public void setTime(int t) {
@@ -110,7 +109,7 @@ public class Game {
 	
 	public void loadLevel(GamePanel gp, int num) {
 		GUI.stopTimer();
-
+		
 		setLevel(num); 
 		Level l = LoadUtils.loadLevel(getLevelNum());
 		render.setMaze(l.getMaze());
@@ -118,9 +117,12 @@ public class Game {
 		setPlayer(l.getMaze().getPlayer());
 		setTiles(l.getMaze().getTiles());
 
+		startLevel(l);
+	}
+	
+	public void startLevel(Level l) {
 		setTime(l.getTimeAllowed());
 		GUI.startTimer();
-
 	}
 
 }

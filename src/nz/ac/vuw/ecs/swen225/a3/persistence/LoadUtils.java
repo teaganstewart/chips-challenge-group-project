@@ -1,16 +1,14 @@
 package nz.ac.vuw.ecs.swen225.a3.persistence;
 
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.ActionRecord;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.*;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The LoadUtils class contains methods that are used for loading games and
@@ -76,7 +74,7 @@ public class LoadUtils {
 
 				JsonObject save = readJsonFromFile(f);
 
-				JsonObject level = null;
+				JsonObject level;
 
 				//This is for compatibility with older file formats
 				try {
@@ -184,7 +182,7 @@ public class LoadUtils {
 	 * @param file the file to read json from
 	 * @return Json object version of that file, null if not found.
 	 */
-	private static JsonObject readJsonFromFile(File file) {
+	public static JsonObject readJsonFromFile(File file) {
 		if (file != null) {
 			try {
 				InputStream inputStream = new FileInputStream(file);
@@ -296,6 +294,26 @@ public class LoadUtils {
 	}
 
 	/**
+	 * Load a crate Object from a Json object
+	 * @param crateJson the raw json of a crate object
+	 * @return the object form of crate
+	 */
+	private static Crate loadCrate(JsonObject crateJson){
+		return new Crate(loadCoordinate(crateJson.getJsonObject("Coordinate")));
+	}
+
+	/**
+	 * Load an actionRecord from Json
+	 * @param actionRecord A ActionRecord in Json form
+	 * @return actionRecord in Java object form
+	 */
+	public static ActionRecord loadActionRecord(JsonObject actionRecord){
+		int id = actionRecord.getInt("timestamp");
+		Maze maze = loadMaze(actionRecord.getJsonObject("maze"));
+		return new ActionRecord(id, maze);
+	}
+
+	/**
 	 * Load a maze object from a JsonObject
 	 * 
 	 * @param maze the maze object in JSON object form
@@ -322,8 +340,17 @@ public class LoadUtils {
 
 		Treasure.setTreasureCountersUponLoad(totalInLevel, totalCollected);
 
-		// TODO make a List of all the crates in the level and pass it into the maze consturctor
-		return new Maze(tiles, player, null);
+		JsonArray crateArray = maze.getJsonArray("crates");
+		ArrayList<Crate> crateArrayList = new ArrayList<>();
+
+		if (crateArray != null) {
+			int size = crateArray.size();
+			for (int i = 0; i < size; i++){
+				crateArrayList.add(loadCrate(crateArray.getJsonObject(i)));
+			}
+		}
+
+		return new Maze(tiles, player, crateArrayList);
 	}
 
 	/**
