@@ -169,7 +169,8 @@ public class Player extends Moveable implements Saveable {
 		}
 
 		JsonObject value = Json.createObjectBuilder().add("Coordinate", getCoordinate().toJSON())
-				.add("Inventory", inventoryJson).build();
+				.add("Inventory", inventoryJson)
+				.add("direction", getDirection().toString()).build();
 		return value;
 	}
 }
