@@ -466,8 +466,7 @@ public class GUI extends JFrame {
 				try {
 
 					// if it's just started, add in a record of the starting pos to the replay
-					if (started) {
-						started = false;
+					if (gameFrame == 0) {
 						ReplayUtils.pushActionRecord(new ActionRecord(0, game.getMaze()));
 					}
 
@@ -494,8 +493,8 @@ public class GUI extends JFrame {
 					updateBoard();
 
 					// checks to see whether it should toggle the timer
-					timeToggle = gameFrame == 9;
-					gameFrame = gameFrame == 9 ? 0 : gameFrame + 1;
+					timeToggle = gameFrame % 10 == 0 && gameFrame != 0;
+					gameFrame++;
 
 					// if the player pushes to go on ice but this is a turn that it would hang, this forces a move on their next turn
 					moveNextTurn = !dontAllowOnIce;
