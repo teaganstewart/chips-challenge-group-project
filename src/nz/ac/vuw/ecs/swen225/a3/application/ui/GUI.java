@@ -11,6 +11,11 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GUI extends JFrame {
 
@@ -199,12 +204,12 @@ public class GUI extends JFrame {
 		exitItem = new JMenuItem("Exit");
 		KeyStroke ctrlXKeyStroke = KeyStroke.getKeyStroke("control X");
 		exitItem.setAccelerator(ctrlXKeyStroke);
-		exitItem.addActionListener((event) -> main.dispatchEvent(new WindowEvent(main, WindowEvent.WINDOW_CLOSING)));
+		exitItem.addActionListener((event) -> System.exit(0));
 
 		saveAndExitItem = new JMenuItem("Save & Exit");
 		KeyStroke ctrlSKeyStroke = KeyStroke.getKeyStroke("control S");
 		saveAndExitItem.setAccelerator(ctrlSKeyStroke);
-		saveAndExitItem.addActionListener((event) -> System.out.println("Save & Exit"));
+		saveAndExitItem.addActionListener((event) -> saveAndExitPopup());
 
 		loadGameItem = new JMenuItem("Load game");
 		KeyStroke ctrlRKeyStroke = KeyStroke.getKeyStroke("control R");
@@ -212,109 +217,17 @@ public class GUI extends JFrame {
 		loadGameItem.addActionListener((event) -> fileLoader());
 	}
 
-
-	public void fileLoader(){
-		fileLoaderWindow = new JDialog();
-		fileLoaderWindow.setTitle("File Loader");
-		fileLoaderWindow.setModal(true);
-		//Create panel
-		JPanel panel = new JPanel();
-		JLabel text = new JLabel("Select a file to load:");
-		text.setBounds(80,0,200,30);
-
-		String[] petStrings = { "Bird", "Cat", "Dog", "Rabbit", "Pig","asdad", "Sdasd" };
-
-		//Create a combo box
-		JComboBox cb = new JComboBox(petStrings);
-		cb.setBounds(80,50,90,20);
-		cb.setSelectedIndex(4);
-		cb.addActionListener(e -> {
-			String data = "Programming language Selected: "
-					+ cb.getItemAt(cb.getSelectedIndex());
-			System.out.println(data);
-		});
-
-		JButton select = new JButton("Select");
-		select.setBounds(80,100,100,30);
-		select.addActionListener(event -> {
-			fileLoaderWindow.dispose();
-			System.out.println("Load "+ cb.getSelectedItem());
-		});
-
-		//Add items to panel
-		panel.add(text);
-		panel.add(cb);
-		panel.add(select);
-		panel.setLayout(null);
-
-		//Add panel to the dialog
-		fileLoaderWindow.add(panel);
-		fileLoaderWindow.setSize(300,200);
-
-		//Set to display at center of screen
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		fileLoaderWindow.setLocation(dim.width/2-fileLoaderWindow.getSize().width/2, dim.height/2-fileLoaderWindow.getSize().height/2);
-		fileLoaderWindow.setVisible(true);
-
-	}
-
-	public JDialog popUpWindow(String name, int width, int height){
-		JDialog window = new JDialog();
-		window.setTitle(name);
-		window.setModal(true);
-		//add(panel);
-		window.setSize(width,height);
-
-		//Set to display at center of screen
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
-
-
-
-		return window;
-	}
-
-
-	public void pauseWindow(){
-
-		JPanel panel = new JPanel();
-		JLabel message = new JLabel("GAME PAUSED");
-		message.setBounds(98,50,200 ,30);
-
-		JLabel instruct = new JLabel("PRESS ESC TO RESUME");
-		instruct.setBounds(74,90,200 ,30);
-
-		//Add items to panel
-		panel.add(message);
-		panel.add(instruct);
-		panel.setLayout(null);
-
-		pauseWindow = popUpWindow("Pause Window", 300,300);
-		pauseWindow.add(panel);
-        pauseWindow.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    pauseWindow.dispose();
-                }
-            }
-        });
-
-        pauseWindow.setVisible(true);
-
-
-	}
 	public void initializeGameItems(){
 		//Game Menu item initialize and key bind
 		restart_level_Item = new JMenuItem("Restart Level");
 		KeyStroke ctrlPKeyStroke = KeyStroke.getKeyStroke("control P");
 		restart_level_Item.setAccelerator(ctrlPKeyStroke);
-		restart_level_Item.addActionListener((event) -> System.out.println("Restart level"));
+		restart_level_Item.addActionListener((event) -> restartLevel(game.getLevelNum()));
 
 		restart_game_Item = new JMenuItem("Restart game");
 		KeyStroke ctrl1KeyStroke = KeyStroke.getKeyStroke("control 1");
 		restart_game_Item.setAccelerator(ctrl1KeyStroke);
-		restart_game_Item.addActionListener((event) -> System.out.println("Restart game"));
+		restart_game_Item.addActionListener((event) -> restartGame());
 
 		pause_Item = new JMenuItem("Pause game");
 		pause_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0));
@@ -358,6 +271,122 @@ public class GUI extends JFrame {
 					JOptionPane.CLOSED_OPTION) == JOptionPane.YES_OPTION){
 			}
 		});
+	}
+
+
+
+	public void fileLoader(){
+
+		Map<Long, String> loadUtil = LoadUtils.getSavesByID();
+
+		fileLoaderWindow = new JDialog();
+		fileLoaderWindow.setTitle("File Loader");
+		fileLoaderWindow.setModal(true);
+
+		//Create panel
+		JPanel panel = new JPanel();
+		JLabel text = new JLabel("Select a file to load:");
+		text.setBounds(200,20,200,30);
+
+
+
+		//Create a combo box
+		JComboBox cb = new JComboBox();
+
+		File directory = new File(SaveUtils.SAVES_DIRECTORY);
+		FileFilter filter = pathname -> pathname.isFile() && pathname.toString().endsWith(".json");
+		File[] files = directory.listFiles(filter);
+		if(files!= null) {
+			for (File f : files) {
+
+				Long key = Long.parseLong(f.getName().substring(0, f.getName().length()-5));
+
+				cb.addItem(loadUtil.get(key));
+			}
+		}
+
+		cb.setBounds(50,60,400,20);
+		cb.setSelectedIndex(1);
+
+
+		JButton select = new JButton("Select");
+		select.setBounds(200,100,100,30);
+		select.addActionListener(event -> {
+			fileLoaderWindow.dispose();
+			//LoadUtils.loadLevel(loadUtil.get(cb.getSelectedItem()));
+			//System.out.println(cb.getSelectedItem())
+		});
+
+		//Add items to panel
+		panel.add(text);
+		panel.add(cb);
+		panel.add(select);
+		panel.setLayout(null);
+
+		//Add panel to the dialog
+		fileLoaderWindow.add(panel);
+		fileLoaderWindow.setSize(500,200);
+
+		//Set to display at center of screen
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		fileLoaderWindow.setLocation(dim.width/2-fileLoaderWindow.getSize().width/2, dim.height/2-fileLoaderWindow.getSize().height/2);
+		fileLoaderWindow.setVisible(true);
+
+	}
+
+	public JDialog popUpWindow(String name, int width, int height){
+		JDialog window = new JDialog();
+		window.setTitle(name);
+		window.setModal(true);
+		window.setSize(width,height);
+
+		//Set to display at center of screen
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
+
+
+
+		return window;
+	}
+
+
+	public void pauseWindow(){
+
+		JPanel panel = new JPanel();
+		JLabel message = new JLabel("GAME PAUSED");
+		message.setBounds(98,50,200 ,30);
+
+		JLabel instruct = new JLabel("PRESS ESC TO RESUME");
+		instruct.setBounds(74,90,200 ,30);
+
+		//Add items to panel
+		panel.add(message);
+		panel.add(instruct);
+		panel.setLayout(null);
+
+		pauseWindow = popUpWindow("Pause Window", 300,300);
+		pauseWindow.add(panel);
+        pauseWindow.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    pauseWindow.dispose();
+                }
+            }
+        });
+
+        pauseWindow.setVisible(true);
+
+
+	}
+
+	public void restartLevel(int lvl){
+		game.loadLevel(gamePanel,lvl);
+
+	}
+	public void restartGame(){
+		game.loadLevel(gamePanel,1);
+
 	}
 
 	/**

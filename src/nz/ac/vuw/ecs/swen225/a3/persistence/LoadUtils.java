@@ -92,7 +92,7 @@ public class LoadUtils {
 
 				StringBuilder sb = new StringBuilder();
 
-				if (save.getString("LevelName") != null){
+				if (!save.getString("LevelName").equals("")){
 					sb.append(save.getString("LevelName"));
 					sb.append(" - ");
 				}
