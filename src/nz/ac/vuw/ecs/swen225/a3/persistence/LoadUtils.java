@@ -62,8 +62,8 @@ public class LoadUtils {
 	 * Creates a hashmap from ID -> Formatted String for GUI
 	 * @return a HashMap containing ID's to a neatly formatted string for GUI display.
 	 */
-	public static Map<Long, String> getSavesByID(){
-		Map<Long, String> namesToId = new HashMap<>();
+	public static Map<String, Long> getSavesByID(){
+		Map<String, Long> namesToId = new HashMap<>();
 
 		File directory = new File(SaveUtils.SAVES_DIRECTORY);
 		FileFilter filter = pathname -> pathname.isFile() && pathname.toString().endsWith(".json");
@@ -90,7 +90,7 @@ public class LoadUtils {
 
 				StringBuilder sb = new StringBuilder();
 
-				if (save.getString("LevelName") != null){
+				if (!save.getString("LevelName").trim().isEmpty()){
 					sb.append(save.getString("LevelName"));
 					sb.append(" - ");
 				}
@@ -105,7 +105,7 @@ public class LoadUtils {
 				sb.append(date.toString());
 
 
-				namesToId.put(saveTime, sb.toString());
+				namesToId.put(sb.toString(), saveTime);
 			}
 		}
 
@@ -325,6 +325,7 @@ public class LoadUtils {
 		int cols = maze.getInt("cols");
 		Tile[][] tiles = new Tile[rows][cols];
 
+		//Load in the tiles for the map
 		JsonArray jsonArray = maze.getJsonArray("tiles");
 
 		int index = 0;
@@ -334,12 +335,14 @@ public class LoadUtils {
 			}
 		}
 
+
+        //Update the amount of treasure in the map.
 		JsonObject treasureData = maze.getJsonObject("treasureData");
 		int totalInLevel = treasureData.getInt("totalInLevel");
 		int totalCollected = treasureData.getInt("totalCollected");
-
 		Treasure.setTreasureCountersUponLoad(totalInLevel, totalCollected);
 
+		//Load in the Crates
 		JsonArray crateArray = maze.getJsonArray("crates");
 		ArrayList<Crate> crateArrayList = new ArrayList<>();
 
@@ -350,10 +353,33 @@ public class LoadUtils {
 			}
 		}
 
-		return new Maze(tiles, player, crateArrayList, new ArrayList<Moveable>());
+
+		//Load in the skeletons
+		JsonArray skeletonArray = maze.getJsonArray("enemies");
+		ArrayList<Skeleton> skeletonArrayList = new ArrayList<>();
+
+		if (skeletonArray != null){
+		    int size = skeletonArray.size();
+		    for (int i = 0; i < size; i++){
+		        skeletonArrayList.add(loadSkeleton(skeletonArray.getJsonObject(i)));
+            }
+        }
+
+		return new Maze(tiles, player, crateArrayList, skeletonArrayList);
 	}
 
-	/**
+    /**
+     * Load a saved skeleton object from json.
+     * @param jsonObject the raw json object from file.
+     * @return a Java form skeleton.
+     */
+    private static Skeleton loadSkeleton(JsonObject jsonObject) {
+	    Coordinate skeletonCoordinate = loadCoordinate(jsonObject.getJsonObject("coordinate"));
+	    Direction dir = Direction.valueOf(jsonObject.getString("direction"));
+	    return new Skeleton(skeletonCoordinate, dir);
+    }
+
+    /**
 	 * Extracts the Level Json Object from a Json Object.
 	 * @param objectPlusSaveName the raw object to remove level from
 	 * @return just the level in object form
