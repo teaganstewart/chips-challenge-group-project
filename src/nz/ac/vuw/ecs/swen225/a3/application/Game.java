@@ -47,15 +47,21 @@ public class Game {
 		Tile[][] board = maze.getTiles();
 		for(Moveable enemy : maze.getEnemyList()) {
 			Coordinate nextPosition = enemy.getNextPos();
-			if(enemy.canWalkOn(board[nextPosition.getRow()][nextPosition.getCol()].getEntity())) {
-				enemy.setCoordinate(nextPosition);
+			if(nextPosition.equals(maze.getPlayer().getCoordinate())) {
+				maze.setResetLevel(true);
+				return;
 			}
-			else {
+			Tile curr = board[nextPosition.getRow()][nextPosition.getCol()];
+			if (curr.getType() == Tile.TileType.WALL) {  }
+			else if(enemy.canWalkOn(curr.getEntity())) {
+				enemy.setCoordinate(nextPosition);
+				return;
+			}
+		
 				// changes direction if returns false and moves back
 				enemy.setDirection(enemy.getDirection().inverse());
 				enemy.setCoordinate(enemy.getNextPos());
 			}
-		}
 	}
 
 	public void loadGame(){

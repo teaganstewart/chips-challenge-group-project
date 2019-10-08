@@ -122,9 +122,29 @@ public class Maze implements Saveable {
 		// here
 		if (!checkType(player, tile))
 			return false;
+		// then checks for enemies in the way
+		if(!checkEnemy(tile)) 
+			return false;
 		// then checks for the entity type
 		else
 			return player.canWalkOn(tile.getEntity());
+	}
+
+	/**
+	 * 
+	 * @param tile The tile the player is moving to.
+	 * @return Returns false if there is an enemy.
+	 */
+	private boolean checkEnemy(Tile tile) {
+		Coordinate tileCoordinate = tile.getCoordinate();
+
+		for(Skeleton s : enemyList) {
+			if(s.getCoordinate().equals(tileCoordinate)) {
+				resetLevel = true;
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -283,6 +303,15 @@ public class Maze implements Saveable {
 	 */
 	public boolean isResetLevel() {
 		return resetLevel;
+	}
+	
+	/**
+	 * Boolean to say whether the level needs to be reset.
+	 * 
+	 * @param reset
+	 */
+	public void setResetLevel(boolean reset) {
+		resetLevel = reset;
 	}
 
 	/**

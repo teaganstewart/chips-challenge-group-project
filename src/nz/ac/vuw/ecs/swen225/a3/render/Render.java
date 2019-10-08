@@ -48,8 +48,8 @@ public class Render {
 
 				tile.setLayout(new BorderLayout());
 				board[i][j] = tile;
-				renderMoveables(i,j);
 				renderEntities(i, j, tiles);
+				renderMoveables(i,j);
 			}
 		}
 		return board;

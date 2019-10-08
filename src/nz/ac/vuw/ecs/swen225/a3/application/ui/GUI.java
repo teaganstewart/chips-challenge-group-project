@@ -448,9 +448,15 @@ public class GUI extends JFrame {
 					}
 
 					game.update();
+					updateBoard();
+					
+					if (game.getMaze().isResetLevel()) {
+						game.loadLevel(gamePanel, game.getLevelNum());
+					}
+					
 					if (timeToggle) {
 
-						updateBoard();
+						
 						game.setTime(game.getTime()-1);
 
 						if (game.getTime() < 0) {

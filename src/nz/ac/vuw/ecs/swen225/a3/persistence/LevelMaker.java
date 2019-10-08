@@ -17,7 +17,7 @@ public class LevelMaker {
             {1,1,2,1,7,1,2,3,2,1,7,1,2,1,1},
             {2,2,2,2,2,11,2,8,2,11,2,2,2,2,2},
             {2,1,14,1,12,1,1,1,1,1,9,1,14,1,2},
-            {2,1,7,1,2,16,1,1,1,13,2,1,7,1,2},
+            {2,1,7,1,2,16,1,1,20,13,2,1,7,1,2},
             {2,2,2,2,2,7,1,4,1,7,2,2,2,2,2},
             {2,1,7,1,2,16,1,1,1,13,2,1,7,1,2},
             {2,1,1,1,9,1,1,7,1,1,12,1,1,1,2},
@@ -46,6 +46,9 @@ public class LevelMaker {
         if(map[i][j] == 19){
           crateList.add(new Crate(new Coordinate(i,j)));
         }
+        if(map[i][j] == 20) {
+        	enemyList.add(new Skeleton(new Coordinate(i,j), Direction.LEFT));
+        }
       }
     }
 
@@ -72,7 +75,7 @@ public class LevelMaker {
         return new Tile(new Coordinate(row, col), Tile.TileType.FIRE);
     }else if(type == 6){
         return new Tile(new Coordinate(row, col), Tile.TileType.ICE);
-    }else if (type ==19) {
+    }else if (type ==19 || type ==20) {
       return new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
     }else {
       Tile t = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
