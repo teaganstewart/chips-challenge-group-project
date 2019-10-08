@@ -19,6 +19,13 @@ public class Render {
 		maze = m;
 	}
 
+	/**
+	 * Method that creates the board of JLabels with the tiles and the entities
+	 * on them.
+	 * 
+	 * @return
+	 * 		Returns a 2d array of the JLabel's containing the ImageIcon's.
+	 */
 	public JLabel[][] createGrid() {
 
 		Tile[][] tiles = maze.getTiles();
@@ -37,6 +44,14 @@ public class Render {
 		return board;
 	}
 
+	/**
+	 * Method to render everything that moves on the board.
+	 * 
+	 * @param i
+	 * 		The row of the Moveable object.
+	 * @param j
+	 * 		The column of the Moveable object.
+	 */
 	public void renderMoveables(int i, int j) {
 		
 		Coordinate playerCoordinate = maze.getPlayer().getCoordinate();
@@ -45,6 +60,12 @@ public class Render {
 			return;
 		}
 		
+//		for(Moveable enemy : maze.getEnemyList()) {
+//			Coordinate enemyCoordinate = enemy.getCoordinate();
+//			if(enemyCoordinate.getRow()==i && enemyCoordinate.getCol()==j) {
+//				board[i][j].add(new JLabel(images.getEnemyIcon(enemy.getDirection())));
+//			}
+//		}
 		
 		for(Crate crate : maze.getCrateList()) {
 			Coordinate crateCoordinate = crate.getCoordinate();

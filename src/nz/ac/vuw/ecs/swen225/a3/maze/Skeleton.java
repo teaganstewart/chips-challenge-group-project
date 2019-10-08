@@ -4,9 +4,9 @@ import javax.json.JsonObject;
 
 import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 
-public class Actor extends Moveable implements Saveable {
+public class Skeleton extends Moveable implements Saveable {
 
-	public Actor(Coordinate coordinate, Direction start) {
+	public Skeleton(Coordinate coordinate, Direction start) {
 		super(coordinate);
 		super.setDirection(start);
 	}
