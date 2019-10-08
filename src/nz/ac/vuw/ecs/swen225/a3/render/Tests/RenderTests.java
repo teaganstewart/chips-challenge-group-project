@@ -106,7 +106,7 @@ public class RenderTests {
 		gui.disable();
 		Game game = new Game();
 		//adding enemies
-		List<Moveable> enemies = new ArrayList<Moveable>();
+		List<Skeleton> enemies = new ArrayList<Skeleton>();
 		enemies.add(new Skeleton(new Coordinate(0,1), Direction.UP));
 		game.getMaze().setEnemyList(enemies);
 		
