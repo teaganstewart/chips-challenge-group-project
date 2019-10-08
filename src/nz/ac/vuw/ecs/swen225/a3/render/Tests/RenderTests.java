@@ -1,6 +1,10 @@
 package nz.ac.vuw.ecs.swen225.a3.render.Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.*;
 import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
@@ -21,12 +25,7 @@ public class RenderTests {
 	@Test
 	void createGridTest() {
 
-		Tile[][] tiles = new Tile[9][9];
-		for (int row = 0; row < tiles.length; row++) {
-			for (int col = 0; col < tiles[0].length; col++) {
-				tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-			}
-		}
+		Tile[][] tiles = emptyBoard();
 
 		GUI gui = new GUI();
 		System.out.println(gui.toString());
@@ -50,12 +49,7 @@ public class RenderTests {
 	@Test
 	void drawEntitiesTest() {
 
-		Tile[][] tiles = new Tile[9][9];
-		for (int row = 0; row < tiles.length; row++) {
-			for (int col = 0; col < tiles[0].length; col++) {
-				tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-			}
-		}
+		Tile[][] tiles = emptyBoard();
 
 		// setting up the board
 		int i = 3;
@@ -94,13 +88,49 @@ public class RenderTests {
 		//setting up the inventory
 		for(BasicColor color : BasicColor.values()) {
 			player.addToInventory(new Key(color));
+			player.addToInventory(new FireBoots());
+			player.addToInventory(new IceBoots());
 		}
 		
-		System.out.println(game.getMaze().getPlayer().getInventory());
 		// testing the rendering of the inventory
 		Render render = new Render(game, game.getMaze());
 		render.renderInventory();
 		
+	}
+	
+	@Test
+	void renderMoveablesTest() {
+		
+		//set up empty board
+		Tile[][] tiles = emptyBoard();
+		
+		GUI gui = new GUI();
+		gui.disable();
+		Game game = new Game();
+		//adding enemies
+		List<Moveable> enemies = new ArrayList<Moveable>();
+		enemies.add(new Skeleton(new Coordinate(0,1), Direction.UP));
+		game.getMaze().setEnemyList(enemies);
+		
+		List<Crate> crates = new ArrayList<Crate>();
+		crates.add(new Crate(new Coordinate(0,0)));
+		game.getMaze().setCrateList(crates);
+		
+		// testing the rendering of the inventory
+		Render render = new Render(game, game.getMaze());
+		render.createGrid();
+		
+	}
+	
+	private Tile[][] emptyBoard() {
+		
+		Tile[][] tiles = new Tile[9][9];
+		for (int row = 0; row < tiles.length; row++) {
+			for (int col = 0; col < tiles[0].length; col++) {
+				tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
+			}
+		}
+		return tiles;
 	}
 
 }

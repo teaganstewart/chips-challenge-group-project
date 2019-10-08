@@ -21,8 +21,6 @@ public class ApplicationTests {
 	@Test
 	public void nextLevelTest() {
 		// setup
-		Main m = new Main();
-		m.main(null);
 		GUI gui = new GUI();
 		gui.disable();
 		Game game = new Game();
@@ -44,7 +42,6 @@ public class ApplicationTests {
 		GUI gui = new GUI();
 		gui.disable();
 		Game game = new Game();
-		GamePanel gp = new GamePanel(game);
 		Render render = new Render(game, game.getMaze());
 		render.createGrid();
 
