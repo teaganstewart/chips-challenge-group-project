@@ -44,5 +44,18 @@ public enum Direction {
 			return RIGHT;
 		}
 	}
+	
+	public static Direction getFacing(Coordinate from, Coordinate to) {
+		int fromRow = from.getRow();
+		int fromCol = from.getCol();
+		
+		if (to.getRow() == fromRow && to.getCol() != fromCol) {
+			return to.getCol() < fromCol ? LEFT : RIGHT;
+		} else if (to.getRow() != fromRow && to.getCol() == fromCol) {
+			return to.getRow() < fromRow ? UP : DOWN;
+		}
+		
+		return null;
+	}
 
 }

@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.a3.application.ui;
 
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
+import nz.ac.vuw.ecs.swen225.a3.maze.Coordinate;
 import nz.ac.vuw.ecs.swen225.a3.maze.Direction;
 import nz.ac.vuw.ecs.swen225.a3.maze.Entity;
 import nz.ac.vuw.ecs.swen225.a3.maze.Level;
@@ -24,6 +25,7 @@ public class GUI extends JFrame {
 	private InfoPanel infoPanel;
 	
     private static Timer gameLoop;
+    private static boolean started = false;
     private static boolean timeToggle = true;
 
     private static Timer replayLoop;
@@ -108,7 +110,9 @@ public class GUI extends JFrame {
 		
 		// "D" for Do-over/Redo 
 		if (e.getKeyCode() == KeyEvent.VK_D) {
+			stopTimer();
 			recIndex = 0;
+			startTimer();
 		}
 	}
 	
@@ -201,6 +205,7 @@ public class GUI extends JFrame {
 		KeyStroke ctrlHKeyStroke = KeyStroke.getKeyStroke("control H");
 		help_Item.setAccelerator(ctrlHKeyStroke);
 		help_Item.addActionListener(e -> {
+			stopTimer();
 			if (JOptionPane.showConfirmDialog(main,
 					"Welcome to the help page  :D\n" + "Below are some instructions to helps get you started:\n\n"
 							+ "1. Player can move by using the arrow keys.\n"
@@ -216,6 +221,7 @@ public class GUI extends JFrame {
 
 					JOptionPane.CLOSED_OPTION) == JOptionPane.YES_OPTION) {
 			}
+			startTimer();
 		});
 
 		// Add file items to file menu
@@ -273,7 +279,12 @@ public class GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				try {				
+				try {	
+					if (started) {
+						started = false;
+						ReplayUtils.pushActionRecord(new ActionRecord(0, game.getMaze()));
+					}
+					
 					game.update();
 					if (timeToggle) {
 						updateBoard();
@@ -299,14 +310,22 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					Maze m = ReplayUtils.getActionRecord(recIndex).getMaze();
+					
+					if (recIndex > 0) {
+						Coordinate from = ReplayUtils.getActionRecord(recIndex-1).getMaze().getPlayer().getCoordinate();
+						Coordinate to = m.getPlayer().getCoordinate();
+						Direction dir = Direction.getFacing(from, to);
+						if (dir != null) m.getPlayer().setDirection(dir);
+					}
+
 					game.getRender().setMaze(m);
 					game.setMaze(m);
 					updateBoard();
 					
-					System.out.println(recIndex + ":\t" + ReplayUtils.getActionRecord(recIndex).getTimeSinceLevelStart());
-					
 					if (recIndex < ReplayUtils.replaySize()-1) {
 						recIndex++;
+					} else {
+						stopTimer();
 					}
 
 				} catch (NullPointerException e) {}
@@ -321,8 +340,11 @@ public class GUI extends JFrame {
     
     public static void startTimer() {
     	if (!replayMode) {
-    		ReplayUtils.setStartTime(System.currentTimeMillis());
-	    	timeToggle = true;
+    		if (!started) {
+    			ReplayUtils.setStartTime(System.currentTimeMillis());
+    	    	timeToggle = true;
+    	    	started = true;
+    		}
 	    	gameLoop.start();
     	} else {
     		recIndex = 0;
