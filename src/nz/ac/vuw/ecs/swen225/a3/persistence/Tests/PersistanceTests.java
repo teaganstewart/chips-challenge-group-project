@@ -23,7 +23,7 @@ public class PersistanceTests {
 		Player player = new Player(new Coordinate(0, 0));
 		Tile[][] tiles = new Tile[1][1];
 		tiles[0][0] = new Tile(new Coordinate(0, 0), Tile.TileType.FLOOR);
-		Maze maze = new Maze(tiles, player, null);
+		Maze maze = new Maze(tiles, player, null, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
 		// Empty the folder
@@ -52,7 +52,7 @@ public class PersistanceTests {
 		Player player = new Player(new Coordinate(0, 0));
 		Tile[][] tiles = new Tile[1][1];
 		tiles[0][0] = new Tile(new Coordinate(0, 0), Tile.TileType.FLOOR);
-		Maze maze = new Maze(tiles, player, null);
+		Maze maze = new Maze(tiles, player, null, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
 		assertTrue(SaveUtils.saveGame(level, ""));
@@ -71,7 +71,7 @@ public class PersistanceTests {
 		Tile[][] tiles = new Tile[1][1];
 		tiles[0][0] = new Tile(new Coordinate(0, 0), Tile.TileType.FLOOR);
 		tiles[0][0].setEntity(new Key(GREEN));
-		Maze maze = new Maze(tiles, player, null);
+		Maze maze = new Maze(tiles, player, null, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
 		assertTrue(SaveUtils.saveGame(level, ""));
@@ -98,7 +98,7 @@ public class PersistanceTests {
 		Tile[][] tiles = new Tile[1][1];
 		tiles[0][0] = new Tile(new Coordinate(0, 0), Tile.TileType.FLOOR);
 
-		Maze maze = new Maze(tiles, player, null);
+		Maze maze = new Maze(tiles, player, null, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
 		assertTrue(SaveUtils.saveGame(level, ""));
@@ -121,7 +121,7 @@ public class PersistanceTests {
 		Tile[][] tiles = new Tile[1][1];
 		tiles[0][0] = new HintTile(new Coordinate(0, 0), "Howdy");
 
-		Maze maze = new Maze(tiles, player, null);
+		Maze maze = new Maze(tiles, player, null, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
 		assertTrue(SaveUtils.saveGame(level, ""));
@@ -142,7 +142,7 @@ public class PersistanceTests {
 		tiles[0][0] = new Tile(new Coordinate(0, 0), Tile.TileType.WALL);
 		tiles[0][0].setEntity(new Treasure());
 
-		Maze maze = new Maze(tiles, player, null);
+		Maze maze = new Maze(tiles, player, null, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
 		assertTrue(SaveUtils.saveGame(level, ""));
@@ -165,7 +165,7 @@ public class PersistanceTests {
 		door.unlock();
 		tiles[0][0].setEntity(door);
 
-		Maze maze = new Maze(tiles, player, null);
+		Maze maze = new Maze(tiles, player, null, null);
 		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
 
 		assertTrue(SaveUtils.saveGame(level, ""));

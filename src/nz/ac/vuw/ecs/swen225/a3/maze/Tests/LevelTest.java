@@ -28,7 +28,7 @@ public class LevelTest {
 			}
 		}
 		player = new Player(new Coordinate(3, 3));
-		maze = new Maze(tiles, player, null);
+		maze = new Maze(tiles, player, null,null);
 
 		// Level level = new Level(...
 

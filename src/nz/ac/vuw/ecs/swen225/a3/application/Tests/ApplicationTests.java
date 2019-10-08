@@ -30,7 +30,8 @@ public class ApplicationTests {
 
 		// moving the player to reach the next level.
 		game.loadGame();
-		for(int i= 0; i <5; i++) {
+		
+		for(int i= 0; i <6; i++) {
 			game.getMaze().movePlayer(Direction.UP);
 			if(game.getMaze().isOnHint()) {
 				game.loadLevel(gp, game.getLevelNum()+1);

@@ -37,7 +37,7 @@ class CrateTest {
         crate2 = new Crate(new Coordinate(5, 5));
         crateList = new ArrayList<Crate>(Arrays.asList(crate1, crate2));
 
-        maze = new Maze(tiles, player, crateList);
+        maze = new Maze(tiles, player, crateList,null);
         // Set the player next to the first crate
         player.setCoordinate(new Coordinate(5,2));
     }

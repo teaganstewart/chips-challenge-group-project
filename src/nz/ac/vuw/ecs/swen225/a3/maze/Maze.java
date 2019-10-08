@@ -42,7 +42,7 @@ public class Maze implements Saveable {
 	 *
 	 *               Constructor for a maze.
 	 */
-	public Maze(Tile[][] tiles, Player player, List<Crate> crateList) {
+	public Maze(Tile[][] tiles, Player player, List<Crate> crateList, List<Moveable> enemyList) {
 		this.tiles = tiles;
 		this.player = player;
 		this.goalReached = false;
@@ -51,6 +51,12 @@ public class Maze implements Saveable {
             this.crateList = crateList;
         }else{
 		    this.crateList = new ArrayList<Crate>();
+        }
+		
+		if(crateList != null){
+            this.enemyList = enemyList;
+        }else{
+		    this.enemyList = new ArrayList<Moveable>();
         }
 		this.onHint = false;
 	}
@@ -65,7 +71,7 @@ public class Maze implements Saveable {
 	public boolean movePlayer(Direction dir) {
 		// Set the players direction, regardless of whether they will actually move
 		player.setDirection(dir);
-
+		onHint = false;
 		// Check for player moving out of bounds
 		Coordinate dest = player.getNextPos();
 		int rowDest = dest.getRow();
@@ -136,7 +142,7 @@ public class Maze implements Saveable {
 	 * @return validity
 	 */
 	public boolean checkType(Player player, Tile tile) {
-		onHint = false;
+		
 		Tile.TileType type = tile.getType();
 
 		// can't walk on walls

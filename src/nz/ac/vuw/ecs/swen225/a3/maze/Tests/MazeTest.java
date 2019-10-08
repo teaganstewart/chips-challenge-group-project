@@ -39,7 +39,7 @@ public class MazeTest {
 				new Crate(new Coordinate(5, 5))
 		));
 
-		maze = new Maze(tiles, player, crateList);
+		maze = new Maze(tiles, player, crateList,null);
 	}
 
 	/*

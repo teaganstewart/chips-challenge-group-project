@@ -350,7 +350,7 @@ public class LoadUtils {
 			}
 		}
 
-		return new Maze(tiles, player, crateArrayList);
+		return new Maze(tiles, player, crateArrayList, new ArrayList<Moveable>());
 	}
 
 	/**

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class LevelMaker {
   Tile[][] tiles;
   ArrayList<Crate> crateList = new ArrayList<>();
+  ArrayList<Moveable> enemyList = new ArrayList<>();
   public LevelMaker() {
 
     Player player = new Player(new Coordinate(5, 7));
@@ -29,7 +30,7 @@ public class LevelMaker {
 
 		tiles = new Tile[map.length][map[0].length];
 		generateMap(map);
-		Maze maze = new Maze(tiles, player,crateList);
+		Maze maze = new Maze(tiles, player,crateList, enemyList);
 		Level level = new Level(2 , maze, System.currentTimeMillis(), 0, 60);
 		SaveUtils.saveGame(level, "Level 1");
 	}
