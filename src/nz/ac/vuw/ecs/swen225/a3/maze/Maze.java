@@ -34,7 +34,7 @@ public class Maze implements Saveable {
 	// walking on a fire block
 	private boolean resetLevel = false;
 	private List<Crate> crateList;
-	private List<Moveable> enemyList;
+	private List<Skeleton> enemyList;
 
 	/**
 	 * @param tiles
@@ -42,7 +42,7 @@ public class Maze implements Saveable {
 	 *
 	 *               Constructor for a maze.
 	 */
-	public Maze(Tile[][] tiles, Player player, List<Crate> crateList, List<Moveable> enemyList) {
+	public Maze(Tile[][] tiles, Player player, List<Crate> crateList, List<Skeleton> enemyList) {
 		this.tiles = tiles;
 		this.player = player;
 		this.goalReached = false;
@@ -53,10 +53,10 @@ public class Maze implements Saveable {
 		    this.crateList = new ArrayList<Crate>();
         }
 		
-		if(crateList != null){
+		if(enemyList != null){
             this.enemyList = enemyList;
         }else{
-		    this.enemyList = new ArrayList<Moveable>();
+		    this.enemyList = new ArrayList<Skeleton>();
         }
 		this.onHint = false;
 	}
@@ -274,6 +274,7 @@ public class Maze implements Saveable {
 				.add("tiles", arrayBuilder)
 				.add("treasureData", Treasure.toJSONStatic())
 				.add("crates", createCratesObject())
+				.add("enemies", createEnemiesObject())
 				.build();
 		return build;
 	}
@@ -329,7 +330,7 @@ public class Maze implements Saveable {
 		return crateList;
 	}
 	
-	public List<Moveable> getEnemyList() {
+	public List<Skeleton> getEnemyList() {
 		return enemyList;
 	}
 
@@ -341,6 +342,18 @@ public class Maze implements Saveable {
 	private JsonArray createCratesObject(){
 		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 		for (Crate c : crateList){
+			arrayBuilder.add(c.toJSON());
+		}
+		return arrayBuilder.build();
+	}
+
+	/**
+	 * Form a JsonArray of all the skeletons inside this Maze
+	 * @return serialized Json Array of Skeletons
+	 */
+	private JsonArray createEnemiesObject(){
+		JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+		for (Skeleton c : enemyList){
 			arrayBuilder.add(c.toJSON());
 		}
 		return arrayBuilder.build();

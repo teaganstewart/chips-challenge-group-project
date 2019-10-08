@@ -1,5 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
+import javax.json.Json;
 import javax.json.JsonObject;
 
 import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
@@ -23,10 +24,17 @@ public class Skeleton extends Moveable implements Saveable {
 		return false;
 	}
 
+	/**
+	 * Serialise a skeleton object to json object for the purpose of saving.
+	 * @return Json object skeleton.
+	 */
 	@Override
 	public JsonObject toJSON() {
-		// TODO Auto-generated method stub
-		return null;
+		JsonObject jsonObject = Json.createObjectBuilder()
+				.add("coordinate", getCoordinate().toJSON())
+				.add("direction", getDirection().toString())
+				.build();
+		return jsonObject;
 	}
 
 }
