@@ -1,3 +1,16 @@
+
+**BIG CHONK TODO:**<br>
+<br>
+Finish level 2, maybe make a level 3? Definitely need to update all the hints since they cant be the same<br>
+Recnplay change speed playback<br>
+Recnplay keypress updates, with the controls shown in the info panel<br>
+Player toJson needs enum passed in (please have this in the skeleton Json too!)<br>
+Josh's gitlab bugs<br>
+David's file loader bug<br>
+joptiondialog pop up for level completion with a prompt to show replay or not<br>
+Title screen (with maybe a level select if we're feeling fancy otherwise just Start/Resume)<br>
+Recnplay tests<br>
+<br>
 **Running in IntelliJ** <br>
 <br>
 To import the Project through IntelliJ (just in case we forget or have problems): <br>
@@ -12,4 +25,3 @@ To Open the IntelliJ Project in Eclipse: <br>
 1.) Open Projects form file system. Select "Directory" and choose the gitlab folder <br>
 2.) Right click on the project folder, go to build path, add libraries. Add JUnit <br>
 <br>
-**Program bugs (spotted by Josh)** <br>
