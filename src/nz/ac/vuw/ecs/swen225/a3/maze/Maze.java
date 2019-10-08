@@ -305,6 +305,10 @@ public class Maze implements Saveable {
 	public Player getPlayer() {
 		return player;
 	}
+	
+	public void setPlayer(Player p) {
+		player = p;
+	}
 
 	/**
 	 * @param g

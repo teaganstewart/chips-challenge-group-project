@@ -37,7 +37,7 @@ public class RenderTests {
 		JLabel[][] expected = new JLabel[9][9];
 		for (int row = 0; row < tiles.length; row++) {
 			for (int col = 0; col < tiles[0].length; col++) {
-				JLabel floor = new JLabel(new ImageIcon(getClass().getResource("../icons/tiles/wall.png")));
+				JLabel floor = new JLabel(new ImageIcon(getClass().getResource("../icons/tiles/floor.png")));
 				expected[row][col] = floor;
 			}
 		}
@@ -89,12 +89,13 @@ public class RenderTests {
 		GUI gui = new GUI();
 		gui.disable();
 		Game game = new Game();
-		
+		game.getMaze().setPlayer(player);
 		//setting up the inventory
 		for(BasicColor color : BasicColor.values()) {
 			player.addToInventory(new Key(color));
 		}
 		
+		System.out.println(game.getMaze().getPlayer().getInventory());
 		// testing the rendering of the inventory
 		Render render = new Render(game, game.getMaze());
 		render.renderInventory();
