@@ -33,6 +33,7 @@ public class Maze implements Saveable {
 	// walking on a fire block
 	private boolean resetLevel = false;
 	private List<Crate> crateList;
+	private List<Moveable> enemyList;
 
 	/**
 	 * @param tiles
@@ -310,6 +311,14 @@ public class Maze implements Saveable {
 	 */
 	public void setGame(Game g) {
 		game = g;
+	}
+	
+	public List<Crate> getCrateList() {
+		return crateList;
+	}
+	
+	public List<Moveable> getEnemyList() {
+		return enemyList;
 	}
 
 }

@@ -23,22 +23,37 @@ public class Render {
 
 		Tile[][] tiles = maze.getTiles();
 		board = new JLabel[tiles.length][tiles[0].length];
-		Coordinate playerCoordinate = maze.getPlayer().getCoordinate();
+		
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {
 				JLabel tile = new JLabel(images.getTileIcon(i, j, maze));
 
 				tile.setLayout(new BorderLayout());
 				board[i][j] = tile;
-				if(playerCoordinate.getRow()==i && playerCoordinate.getCol()==j) {
-					board[i][j].add(new JLabel(images.getPlayerIcon(maze.getPlayer().getDirection())));
-				}
+				renderMoveables(i,j);
 				renderEntities(i, j, tiles);
 			}
 		}
 		return board;
 	}
 
+	public void renderMoveables(int i, int j) {
+		
+		Coordinate playerCoordinate = maze.getPlayer().getCoordinate();
+		if(playerCoordinate.getRow()==i && playerCoordinate.getCol()==j) {
+			board[i][j].add(new JLabel(images.getPlayerIcon(maze.getPlayer().getDirection())));
+			return;
+		}
+		
+		
+		for(Crate crate : maze.getCrateList()) {
+			Coordinate crateCoordinate = crate.getCoordinate();
+			if(crateCoordinate.getRow()==i && crateCoordinate.getCol()==j) {
+				board[i][j].add(new JLabel(images.getCrateIcon()));
+			}
+		}
+		
+	}
 	/**
 	 * 
 	 * @param i

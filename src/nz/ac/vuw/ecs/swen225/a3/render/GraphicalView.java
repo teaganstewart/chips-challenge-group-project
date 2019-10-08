@@ -183,9 +183,6 @@ public class GraphicalView {
 		if(entity instanceof FireBoots) {
 			return fireBoots;
 		}
-		if(entity instanceof Crate) {
-			return crate;
-		}
 		return null;
 
 	}
@@ -197,6 +194,15 @@ public class GraphicalView {
 	 */
 	public ImageIcon getSlotIcon() {
 		return slot;
+	}
+	
+	/**
+	 * Generic crate icon.
+	 * 
+	 * @return Returns the crate ImageIcon.
+	 */
+	public ImageIcon getCrateIcon() {
+		return crate;
 	}
 
 	/**
