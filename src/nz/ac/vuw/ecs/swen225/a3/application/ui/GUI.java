@@ -168,7 +168,6 @@ public class GUI extends JFrame {
 
 
 	public void exitPopup(){
-		stopTimer();
 		int prompt = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the game?", "Close Window?",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (prompt == JOptionPane.YES_OPTION){
@@ -188,12 +187,18 @@ public class GUI extends JFrame {
 	public void saveAndExitPopup(){
 		String fileName = JOptionPane.showInputDialog("Enter a name for the save file.");
 		if(fileName != null) {
+			
+			if (replayMode) {
+				// possibly save them to the start of the next level, if possible? if it's the last level, maybe disable saving in this state?
+			}
+			
 			SaveUtils.saveGame(game.getLevel(), fileName);
 			JOptionPane.showMessageDialog(null, "Game has been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
 			System.exit(0);
 		}else{
 			JOptionPane.showMessageDialog(null, "No input for files name or process had been cancelled.");
 		}
+		startTimer();
 	}
 
 
@@ -248,17 +253,26 @@ public class GUI extends JFrame {
 		exitItem = new JMenuItem("Exit");
 		KeyStroke ctrlXKeyStroke = KeyStroke.getKeyStroke("control X");
 		exitItem.setAccelerator(ctrlXKeyStroke);
-		exitItem.addActionListener((event) -> System.exit(0));
+		exitItem.addActionListener((event) -> {
+			stopTimer();
+			exitPopup();
+		});
 
 		saveAndExitItem = new JMenuItem("Save & Exit");
 		KeyStroke ctrlSKeyStroke = KeyStroke.getKeyStroke("control S");
 		saveAndExitItem.setAccelerator(ctrlSKeyStroke);
-		saveAndExitItem.addActionListener((event) -> saveAndExitPopup());
+		saveAndExitItem.addActionListener((event) -> {
+			stopTimer();
+			saveAndExitPopup();
+		});
 
 		loadGameItem = new JMenuItem("Load game");
 		KeyStroke ctrlRKeyStroke = KeyStroke.getKeyStroke("control R");
 		loadGameItem.setAccelerator(ctrlRKeyStroke);
-		loadGameItem.addActionListener((event) -> fileLoader());
+		loadGameItem.addActionListener((event) -> {
+			stopTimer();
+			fileLoader();
+		});
 	}
 
 	public void initializeGameItems(){
@@ -275,7 +289,10 @@ public class GUI extends JFrame {
 
 		pause_Item = new JMenuItem("Pause game");
 		pause_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0));
-		pause_Item.addActionListener((event) -> pauseWindow());
+		pause_Item.addActionListener((event) -> {
+			stopTimer();
+			pauseWindow();
+		});
 
 		resume_Item = new JMenuItem("Resume game",KeyEvent.VK_ESCAPE);
 		resume_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
@@ -348,6 +365,7 @@ public class GUI extends JFrame {
 		JButton select = new JButton("Select");
 		select.setBounds(200,100,100,30);
 		select.addActionListener(event -> {
+			stopTimer();
 			if(cb.getSelectedIndex() !=-1) {
 				fileLoaderWindow.dispose();
 				Object selectItem = cb.getSelectedItem();
@@ -371,6 +389,18 @@ public class GUI extends JFrame {
 		//Set to display at center of screen
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		fileLoaderWindow.setLocation(dim.width/2-fileLoaderWindow.getSize().width/2, dim.height/2-fileLoaderWindow.getSize().height/2);
+		
+        // if closed out using X
+		fileLoaderWindow.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                e.getWindow().dispose();
+				startTimer();
+            }
+        });
+        
 		fileLoaderWindow.setVisible(true);
 
 	}
@@ -417,7 +447,18 @@ public class GUI extends JFrame {
                 }
             }
         });
-
+        
+        // if closed out using X
+        pauseWindow.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                e.getWindow().dispose();
+				startTimer();
+            }
+        });
+        
         pauseWindow.setVisible(true);
 
 	}
@@ -427,6 +468,7 @@ public class GUI extends JFrame {
 		game.loadLevel(gamePanel,lvl);
 
 	}
+	
 	public void restartGame(){
 		if (replayMode) return;
 		game.loadLevel(gamePanel,1);
@@ -518,12 +560,6 @@ public class GUI extends JFrame {
 					int t = ReplayUtils.getActionRecord(recIndex).getTimeSinceLevelStart();
 
 					if (ReplayUtils.roundTimeToTen(t) == keyFrame) {
-						if (recIndex > 0) {
-							Coordinate from = ReplayUtils.getActionRecord(recIndex-1).getMaze().getPlayer().getCoordinate();
-							Coordinate to = m.getPlayer().getCoordinate();
-							Direction dir = Direction.getFacing(from, to);
-							if (dir != null) m.getPlayer().setDirection(dir);
-						}
 
 						game.getRender().setMaze(m);
 						game.setMaze(m);

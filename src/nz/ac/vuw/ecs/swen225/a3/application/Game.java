@@ -134,8 +134,6 @@ public class Game {
 	}
 
 	public void loadLevel(GamePanel gp, int num) {
-		GUI.stopTimer();
-
 		setLevelNum(num);
 		Level l = LoadUtils.loadLevel(getLevelNum());
 		loadSave(l);
@@ -143,8 +141,8 @@ public class Game {
 	}
 
 	public void loadSave(Level lvl){
-		render.setMaze(lvl.getMaze());
 		setMaze(lvl.getMaze());
+		render.setMaze(lvl.getMaze());
 		setPlayer(lvl.getMaze().getPlayer());
 		setTiles(lvl.getMaze().getTiles());
 		setLevelNum(lvl.getLevel());
@@ -157,6 +155,9 @@ public class Game {
 	public void startLevel(Level l) {
 		setTime(l.getTimeAllowed());
 		setLevel(l);
+		
+		GUI.stopTimer();
+		GUI.setReplayMode(false);
 		GUI.startTimer();
 	}
 
