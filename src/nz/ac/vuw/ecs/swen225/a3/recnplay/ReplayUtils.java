@@ -88,6 +88,10 @@ public class ReplayUtils {
 		return true;
 	}
 	
+	public static int roundTimeToTen(int time) {
+		return ((time+5)/10)*10;
+	}
+	
 	public static long getStartTime() {
 		return startTime;
 	}
