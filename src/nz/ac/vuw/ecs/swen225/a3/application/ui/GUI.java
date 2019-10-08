@@ -67,7 +67,7 @@ public class GUI extends JFrame {
 			@Override
 			public void keyReleased(KeyEvent e) {
 
-				if (!replayMode && (!game.getMaze().isOnIce() || game.getPlayer().isInInventory(new IceBoots()))) inGameEvent(e);
+				if (!replayMode) inGameEvent(e);
 				else inReplayEvent(e);
 
 
@@ -85,19 +85,22 @@ public class GUI extends JFrame {
 	public void inGameEvent(KeyEvent e) {
 		boolean moved = false;
 		Maze maze = game.getMaze();
-		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			moved = (maze.movePlayer(Direction.UP));
+		
+		if (!game.getMaze().isOnIce() || game.getPlayer().isInInventory(new IceBoots())) {
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				moved = (maze.movePlayer(Direction.UP));
+			}
+			if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				moved = (maze.movePlayer(Direction.DOWN));
+			}
+			if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+				moved = (maze.movePlayer(Direction.LEFT));
+			}
+			if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+				moved = (maze.movePlayer(Direction.RIGHT));
+			}
 		}
-		if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			moved = (maze.movePlayer(Direction.DOWN));
-		}
-		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			moved = (maze.movePlayer(Direction.LEFT));
-		}
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			moved = (maze.movePlayer(Direction.RIGHT));
-		}
-
+		
 		if (moved) {
 			ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime()), maze));
 			updateBoard();
@@ -117,6 +120,7 @@ public class GUI extends JFrame {
 		// "D" for Do-over/Redo
 		if (e.getKeyCode() == KeyEvent.VK_D) {
 			stopTimer();
+			keyFrame = 0;
 			recIndex = 0;
 			startTimer();
 		}
