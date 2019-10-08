@@ -1,10 +1,8 @@
-
 **BIG CHONK TODO:**<br>
 <br>
 Finish level 2, maybe make a level 3? Definitely need to update all the hints since they cant be the same<br>
 Recnplay change speed playback<br>
 Recnplay keypress updates, with the controls shown in the info panel<br>
-Player toJson needs enum passed in (please have this in the skeleton Json too!)<br>
 Josh's gitlab bugs<br>
 David's file loader bug<br>
 joptiondialog pop up for level completion with a prompt to show replay or not<br>
