@@ -110,17 +110,17 @@ public class GUI extends JFrame {
 		// Check if level needs to be reset. This could be if the player dies for
 		// example
 		if (maze.isResetLevel()) {
-			game.loadLevel(gamePanel, game.getLevel());
+			game.loadLevel(gamePanel, game.getLevelNum());
 		}
 	}
 
 	public void inReplayEvent(KeyEvent e) {
 		// "S" for Skip
 		if (e.getKeyCode() == KeyEvent.VK_S) {
-			if (game.getLevel() < 2) {
+			if (game.getLevelNum() < 2) {
 				stopTimer();
 				setReplayMode(false);
-				game.loadLevel(gamePanel, game.getLevel()+1);
+				game.loadLevel(gamePanel, game.getLevelNum()+1);
 			}
 		}
 
