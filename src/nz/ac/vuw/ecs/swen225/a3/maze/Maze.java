@@ -184,22 +184,6 @@ public class Maze implements Saveable {
 		return true;
 	}
 
-	/**
-	 * Method which keeps moving the Player in the same direction until there are no more
-	 * Ice tiles in that direction
-	 */
-	private void slidePlayer(){
-		Tile destTile = tiles[player.getNextPos().getRow()][player.getNextPos().getCol()];
-		while(destTile.getType() == Tile.TileType.ICE){
-			player.setCoordinate(destTile.getCoordinate());
-			// Update destTile
-			destTile = tiles[player.getNextPos().getRow()][player.getNextPos().getCol()];
-		}
-		if(checkType(player, destTile)){
-			movePlayer(player.getDirection());
-		}
-	}
-
 	/*
 	 * Attempts to push the crate in the players direction. Returns true for
 	 *  a successful push, false for no push
