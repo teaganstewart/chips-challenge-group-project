@@ -423,10 +423,12 @@ public class GUI extends JFrame {
 	}
 
 	public void restartLevel(int lvl){
+		if (replayMode) return;
 		game.loadLevel(gamePanel,lvl);
 
 	}
 	public void restartGame(){
+		if (replayMode) return;
 		game.loadLevel(gamePanel,1);
 
 	}
@@ -571,6 +573,7 @@ public class GUI extends JFrame {
         		keyFrame = 0;
         		recIndex = 0;
         		flashIcon = true;
+        		started = true;
     		}
     		
     		replayLoop.start();
@@ -584,6 +587,7 @@ public class GUI extends JFrame {
 
     public static void setReplayMode(boolean bool) {
     	replayMode = bool;
+    	started = false;
     }
 
     private void checkConditions(Maze maze) {
