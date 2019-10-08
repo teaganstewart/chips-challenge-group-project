@@ -43,8 +43,19 @@ public class Game {
 	}
 
 	public void update() {
-		// put all actor code here
-		// could do the ice sliding here too?
+		// moving of all the enemy's
+		Tile[][] board = maze.getTiles();
+		for(Moveable enemy : maze.getEnemyList()) {
+			Coordinate nextPosition = enemy.getNextPos();
+			if(enemy.canWalkOn(board[nextPosition.getRow()][nextPosition.getCol()].getEntity())) {
+				enemy.setCoordinate(nextPosition);
+			}
+			else {
+				// changes direction if returns false and moves back
+				enemy.setDirection(enemy.getDirection().inverse());
+				enemy.setCoordinate(enemy.getNextPos());
+			}
+		}
 	}
 
 	public void loadGame(){

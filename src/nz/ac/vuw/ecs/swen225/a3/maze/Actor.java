@@ -20,7 +20,6 @@ public class Actor extends Moveable implements Saveable {
 				entity instanceof FireBoots || entity instanceof IceBoots) 
 			return true;
 		
-		super.setDirection(super.getDirection().inverse());
 		return false;
 	}
 
