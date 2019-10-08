@@ -209,6 +209,7 @@ public class LoadUtils {
 	private static Player loadPlayer(JsonObject player) {
 		Player newPlayer = new Player(loadCoordinate(player.getJsonObject("Coordinate")));
 		JsonArray inventory = player.getJsonArray("Inventory");
+		newPlayer.setDirection(Direction.valueOf(player.getString("direction")));
 
 		for (int i = 0; i < inventory.size(); i++) {
 			JsonObject inventoryItem = inventory.getJsonObject(i);
