@@ -78,8 +78,9 @@ public class Game {
 					saveReplay = true;
 				}
 		}
-
-		if (saveReplay) ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime()), getMaze()));
+		if (saveReplay) {
+			new Thread(() -> ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime()), getMaze()))).start();
+		}
 	}
 
 	public void loadGame(){

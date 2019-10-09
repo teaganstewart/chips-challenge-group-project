@@ -110,7 +110,7 @@ public class GUI extends JFrame {
 		}
 
 		if (moved) {
-			ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime()), maze));
+			new Thread(() -> ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime()), maze))).start();
 			updateBoard();
 		}
 	}
@@ -518,7 +518,7 @@ public class GUI extends JFrame {
 
 					// if it's just started, add in a record of the starting pos to the replay
 					if (gameFrame == 0) {
-						ReplayUtils.pushActionRecord(new ActionRecord(0, game.getMaze()));
+						new Thread(() -> ReplayUtils.pushActionRecord(new ActionRecord(0, game.getMaze()))).start();
 					}
 
 					game.update(game.getMaze().isOnIce(), enemyToggle);
