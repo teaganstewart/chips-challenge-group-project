@@ -491,8 +491,8 @@ public class GUI extends JFrame {
 		infoPanel.setLevelDisplay(replayMode, flashIcon);
 		infoPanel.displayTime(replayMode);
 
-		if (game.getMaze().isOnHint() && !replayMode) infoPanel.setHint(game.getMaze().getHintMessage());
-		else infoPanel.setDefaultHint(replayMode);
+		if (game.getMaze().isOnHint()) infoPanel.setHint(game.getMaze().getHintMessage());
+		else infoPanel.setDefaultHint();
 
 		int first = replayMode ? recIndex : Treasure.getTotalCollected();
 		int secnd = replayMode ? ReplayUtils.replaySize()-1 : Treasure.getTotalInLevel();
@@ -501,8 +501,6 @@ public class GUI extends JFrame {
 		infoPanel.drawInventory();
 		infoPanel.updateRec(replayMode);
 		gamePanel.updateUI();
-		
-		
 
 	}
 

@@ -1,7 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.application.ui;
 
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
-import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
 import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.ReplayUtils;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
@@ -26,19 +25,16 @@ public class InfoPanel extends JPanel {
 	private JPanel level;
 	private JPanel rec;
 
-	private boolean pause = false;
-	private ImageIcon infoIcon = makeImageIcon("icons/InfoBackground2.png");
+	private ImageIcon infoIcon = makeImageIcon("icons/InfoBackground.png");
 	private ImageIcon slotIcon = makeImageIcon("icons/Slot.png");
 	private ImageIcon playIcon = makeImageIcon("icons/play.png");
 	private ImageIcon pauseIcon = makeImageIcon("icons/pause.png");
-	private ImageIcon forwardOne = makeImageIcon("icons/forwardOne.png");
-	private ImageIcon backOne = makeImageIcon("icons/backOne.png");
 	private ImageIcon fastIcon = makeImageIcon("icons/fast.png");
 	private ImageIcon rewindIcon = makeImageIcon("icons/rewind.png");
 	private ImageIcon skipIcon = makeImageIcon("icons/skip.png");
-	
+
 	public InfoPanel (Game game, GUI gui){
-		
+
 		this.game = game;
 		this.gui = gui;
 		this.setLayout(new GridBagLayout());
@@ -69,22 +65,17 @@ public class InfoPanel extends JPanel {
 
 	public JPanel inventory(){
 		inv = new JPanel(new GridBagLayout());
-		
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 1;
 		c.gridy = 0;
 		c.gridwidth = 1;
 
-		JLabel text = new JLabel("Inventory:");
-		text.setForeground(Color.white);
-		inv.add(text,c);
-		inv.setBackground(new Color(65, 65, 73));
+		inv.add(new JLabel("Inventory:"),c);
+		inv.setBackground(Color.white);
 
 		c.gridy = 1;
 
 		storage = new JPanel(new GridLayout(2,4));
-		storage.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
-		storage.setBackground(new Color(65, 65, 73));
 		JLabel[] inventory = game.getRender().renderInventory();
 
 		for(int i =0; i < 8;i++){
@@ -93,7 +84,7 @@ public class InfoPanel extends JPanel {
 				item = new JLabel();
 				item.setIcon(slotIcon);
 			}
-			item.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.WHITE));
+			item.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
 			storage.add(item);
 		}
 		storage.setVisible(true);
@@ -104,33 +95,34 @@ public class InfoPanel extends JPanel {
 
 	public JPanel chipPanel() {
 		chip = new JPanel();
-		chip.setPreferredSize(new Dimension(220,50));
-		chip.setMaximumSize(new Dimension(220,50));
-		chip.setMinimumSize(new Dimension(220,50));
-		chip.setBackground(new Color(65, 65, 73));
-		
+		chip.setPreferredSize(new Dimension(200,50));
+		chip.setMaximumSize(new Dimension(200,50));
+		chip.setMinimumSize(new Dimension(200,50));
+		chip.setBackground(Color.white);
+
 		displayChips(false, 0,0);
 		return chip;
 	}
 
 	public JPanel hintPanel() {
 		hint = new JPanel();
-		hint.setPreferredSize(new Dimension(220,100));
-		hint.setMaximumSize(new Dimension(220,100));
-		hint.setMinimumSize(new Dimension(220,100));
-		hint.setBackground(new Color(65, 65, 73));
-		
-		Border type = BorderFactory.createLineBorder(Color.GREEN);
-		Border border = BorderFactory.createTitledBorder(type, "Current Hint:", TitledBorder.CENTER, TitledBorder.TOP, new Font ("Calibri", Font.BOLD, 14), Color.WHITE);
+		hint.setPreferredSize(new Dimension(200,100));
+		hint.setMaximumSize(new Dimension(200,100));
+		hint.setMinimumSize(new Dimension(200,100));
+		hint.setBackground(Color.white);
+
+		Border type = BorderFactory.createLineBorder(Color.black);
+		Border border = BorderFactory.createTitledBorder(type, "Current Hint:", TitledBorder.CENTER, TitledBorder.TOP);
 		hint.setBorder(border);
-		setDefaultHint(false);
+		setDefaultHint();
 		return hint;
 	}
 
 	public JPanel levelPanel() {
 		level = new JPanel();
-		level.setMinimumSize(new Dimension(220,40));
-		level.setBackground(new Color(65, 65, 73));
+		level.setMinimumSize(new Dimension(200,40));
+		level.setBackground(Color.white);
+
 		setLevelDisplay(false, false);
 		return level;
 	}
@@ -144,37 +136,23 @@ public class InfoPanel extends JPanel {
 		try {
 			num = game.getLevelNum();
 		} catch (NullPointerException e) {}
-		JLabel text = new JLabel(!replayMode ?
+		level.add(new JLabel(!replayMode ?
 				"<html>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Level: " + Integer.toString(num) + "&emsp;&emsp;"+
 				"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</html>":
 
 					"<html>&emsp;&emsp;&emsp;&emsp;&emsp;PLAYBACK  " + (flash ? "\u25CF  " : "     " )+
-					"<br>" + new Date(ReplayUtils.getStartTime()).toString() + "</html>");
-		text.setForeground(Color.WHITE);
-		level.add(text);
+					"<br>" + new Date(ReplayUtils.getStartTime()).toString() + "</html>"));
 	}
 
-	public void setDefaultHint(boolean replayMode) {
+	public void setDefaultHint() {
 		try {
 			hint.remove(0);
 		} catch (ArrayIndexOutOfBoundsException e) {}
 		// I wish I could justify this being necessary, but it's the only way to fix the refreshing of the GUI
-		
-		Border type = BorderFactory.createLineBorder(Color.GREEN);
-		Border border = BorderFactory.createTitledBorder(type, replayMode ? "Replay Controls:" : "Current Hint:", TitledBorder.CENTER, TitledBorder.TOP, new Font("Calibri", Font.BOLD, 14), Color.white);
-		hint.setBorder(border);
-		
-		JLabel text = new JLabel(replayMode ?
-								"<html>## to play, ## to pause"+
-								"<br>## to fast forward"+
-								"<br>## to move forward one frame"+
-								"<br>## to move backward one frame<html>":
-								"<html>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
-								"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
-								"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
-								"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</html>");
-		text.setForeground(Color.white);
-		hint.add(text);
+		hint.add(new JLabel("<html>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
+							"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
+							"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
+							"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</html>"));
 	}
 
 	public void setHint(String message) {
@@ -196,18 +174,16 @@ public class InfoPanel extends JPanel {
 			length += phrase.length() + 1;
 		}
 		wrapped.append("</html>");
-		JLabel text = new JLabel(wrapped.toString());
-		text.setForeground(Color.LIGHT_GRAY);
-		hint.add(text);
+		hint.add(new JLabel(wrapped.toString()));
 	}
 
 	public JPanel timePanel() {
 
 		timer = new JPanel();
-		timer.setPreferredSize(new Dimension(220,50));
-		timer.setMinimumSize(new Dimension(220,50));
-		timer.setBackground(new Color(65, 65, 73));
-		
+		timer.setPreferredSize(new Dimension(200,50));
+		timer.setMinimumSize(new Dimension(200,50));
+		timer.setBackground(Color.white);
+
 		displayTime(false);
 		return timer;
 	}
@@ -218,14 +194,11 @@ public class InfoPanel extends JPanel {
 			timer.remove(0);
 		} catch (ArrayIndexOutOfBoundsException e) {}
 
-		Border type = BorderFactory.createLineBorder(Color.GREEN);
-		Border border = BorderFactory.createTitledBorder(type, !replayMode ? "Total Time:" : "Clear Time:", TitledBorder.CENTER, TitledBorder.TOP, new Font ("Calibri", Font.BOLD, 14), Color.WHITE);
-		
+		Border type = BorderFactory.createLineBorder(Color.white);
+		Border border = BorderFactory.createTitledBorder(type, !replayMode ? "Total Time:" : "Clear Time:", TitledBorder.CENTER, TitledBorder.TOP);
 		timer.setBorder(border);
 
-		JLabel text = new JLabel(!replayMode ? timeToMins(game.getTime()) : timeToMins(game.getLevel().getTimeAllowed() - game.getTime()));
-		text.setForeground(Color.WHITE);
-		timer.add(text);
+		timer.add(new JLabel(!replayMode ? timeToMins(game.getTime()) : timeToMins(game.getLevel().getTimeAllowed() - game.getTime())));
 	}
 
 	private String timeToMins(int time) {
@@ -242,10 +215,10 @@ public class InfoPanel extends JPanel {
 	}
 
 	JPanel recnplayPanel() {
-	
-		rec = new JPanel(new GridLayout(1,6,0,0));
+
+		rec = new JPanel(new GridLayout(1,5,5,0));
 		rec.setMinimumSize(new Dimension(220,40));
-		for(int i=0; i<6;i++) {
+		for(int i=0; i<5;i++) {
 			rec.add(new JLabel());
 		}
 		return rec;
@@ -253,107 +226,52 @@ public class InfoPanel extends JPanel {
 
 	void updateRec(boolean replayMode) {
 		try {
-			for(int i=0; i<6;i++) {
+			for(int i=0; i<5;i++) {
 				rec.remove(0);
 			}
 		} catch (NullPointerException e) {}
 
 		if(replayMode) {
 
-			// button for rewinding
+			JButton playButton = new JButton();
+			playButton.setIcon(playIcon);
+			playButton.setOpaque(false);
+			playButton.addActionListener(event -> gui.startTimer());
+			rec.add(playButton);
+
+			JButton pauseButton = new JButton();
+			pauseButton.setIcon(pauseIcon);
+			pauseButton.setOpaque(false);
+			pauseButton.addActionListener(event -> gui.stopTimer());
+			rec.add(pauseButton);
+
+			JButton fastButton = new JButton();
+			fastButton.setIcon(fastIcon);
+			fastButton.setOpaque(false);
+			fastButton.addActionListener(event -> {
+				gui.stopTimer();
+				gui.setSpeed(3);
+				gui.setupTimer();
+				gui.startTimer();
+			});
+			rec.add(fastButton);
+
 			JButton rewindButton = new JButton();
 			rewindButton.setIcon(rewindIcon);
+			rewindButton.setOpaque(false);
 			rewindButton.addActionListener(event -> {
-				if(!pause) { gui.stopTimer();}
+				gui.stopTimer();
 				gui.setSpeed(10);
 				gui.setKeyFrame(0);
 				gui.setRecIndex(0);
-				if(!pause) {gui.startTimer();}
-				gui.main.setFocusable(true);
+				gui.startTimer();
 			});
-			
-			rewindButton.setBorderPainted(false); 
-	        rewindButton.setContentAreaFilled(false); 
-	        rewindButton.setFocusPainted(false); 
-	        rewindButton.setOpaque(false);
 			rec.add(rewindButton);
-		
-			// button for moving back one frame
-			JButton backOneButton = new JButton();
-			
-			backOneButton.setBorderPainted(false); 
-			backOneButton.setContentAreaFilled(false); 
-	        backOneButton.setFocusPainted(false); 
-	        backOneButton.setOpaque(false);
-	        backOneButton.setIcon(backOne);
-	        backOneButton.addActionListener(event -> {
-	        	if(!pause) { gui.stopTimer();}
-	        	gui.setRecIndex(Math.max(0,gui.getRecIndex()-1));
-	        	gui.setKeyFrame(ReplayUtils.roundTimeToTen(ReplayUtils.getActionRecord(gui.getRecIndex()).getTimeSinceLevelStart()));
-	        	
-	        	skipReset();
-	        });
-			rec.add(backOneButton);
-			
-			// button for toggling between play and pause
-			JButton playButton = new JButton();
-			if(pause) playButton.setIcon(playIcon);
-			else playButton.setIcon(pauseIcon);
-					
-			playButton.setBorderPainted(false); 
-	        playButton.setContentAreaFilled(false); 
-	        playButton.setFocusPainted(false); 
-	        playButton.setOpaque(false);
-	        rec.add(playButton);
-	        
-	        playButton.addActionListener(event -> { 
-				if(pause) gui.startTimer();
-				else gui.stopTimer();
-				pause = !(pause);
-				gui.updateBoard();
-			});
-			
-	        // button for moving forward one frame
-	        JButton forwardOneButton = new JButton();
-	        
-	        forwardOneButton.setBorderPainted(false); 
-			forwardOneButton.setContentAreaFilled(false); 
-	        forwardOneButton.setFocusPainted(false); 
-	        forwardOneButton.setOpaque(false);
-	        forwardOneButton.setIcon(forwardOne);
-	        forwardOneButton.addActionListener(event -> {
-	        	if(!pause) { gui.stopTimer();}
-	        	gui.setRecIndex(Math.min(gui.getRecIndex()+1,ReplayUtils.replaySize()-1));
-	        	gui.setKeyFrame(ReplayUtils.roundTimeToTen(ReplayUtils.getActionRecord(gui.getRecIndex()).getTimeSinceLevelStart()));
-	        
-	        	skipReset();
 
-	        });
-			rec.add(forwardOneButton);
-			
-			// button for speeding up recording
-			JButton fastButton = new JButton();
-			fastButton.setIcon(fastIcon);
-			fastButton.addActionListener(event -> {
-				if(!pause) {
-					gui.stopTimer();
-				}
-				gui.setSpeed(3);
-				gui.setupTimer();
-				if(!pause) {
-					gui.startTimer();
-				}
-
-			});
-			fastButton.setBorderPainted(false); 
-	        fastButton.setContentAreaFilled(false); 
-	        fastButton.setFocusPainted(false); 
-	        fastButton.setOpaque(false);
-			rec.add(fastButton);
-			
-			
 			JButton skipButton = new JButton();
 			skipButton.setIcon(skipIcon);
+			skipButton.setOpaque(false);
+
 			skipButton.addActionListener(event -> {
 				if (game.getLevelNum() < 3) {
 					gui.stopTimer();
@@ -362,32 +280,15 @@ public class InfoPanel extends JPanel {
 					game.loadLevel(null, game.getLevelNum()+1);
 				}
 			});
-			skipButton.setBorderPainted(false); 
-	        skipButton.setContentAreaFilled(false); 
-	        skipButton.setFocusPainted(false); 
-	        skipButton.setOpaque(false);
 			rec.add(skipButton);
 		}
 		else {
-			for(int i=0; i<6;i++) {
+			for(int i=0; i<5;i++) {
 				rec.add(new JLabel());
 			}
 		}
 	}
 
-	private void skipReset() {
-
-    	Maze m = ReplayUtils.getActionRecord(gui.getRecIndex()).getMaze();
-    	int t = ReplayUtils.getActionRecord(gui.getRecIndex()).getTimeSinceLevelStart();
-
-    	game.getRender().setMaze(m);
-    	game.setMaze(m);
-    	gui.updateBoard();
-    	if(!pause) {
-    		gui.startTimer();
-    	}
-	}
-	
 	/**
 	 * Clears the game panel so it can be redrawn.
 	 */
@@ -397,7 +298,7 @@ public class InfoPanel extends JPanel {
 		}
 	}
 
-	/** 
+	/**
 	 *  Draws the inventory.
 	 */
 	public void drawInventory() {
@@ -408,7 +309,7 @@ public class InfoPanel extends JPanel {
 		for(int i =0; i < 8;i++){
 			JLabel item = inventory[i];
 
-			item.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.WHITE));
+			item.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
 			storage.add(item);
 		}
 	}
@@ -418,20 +319,17 @@ public class InfoPanel extends JPanel {
 			chip.remove(0);
 		} catch (ArrayIndexOutOfBoundsException e) {}
 
-		Border type = BorderFactory.createLineBorder(Color.GREEN);
-		Border border = BorderFactory.createTitledBorder(type, !replayMode ? "Treasures Collected:" : "Total Board Events:",
-				TitledBorder.CENTER, TitledBorder.TOP, new Font ("Calibri", Font.BOLD, 14), Color.WHITE);
+		Border type = BorderFactory.createLineBorder(Color.white);
+		Border border = BorderFactory.createTitledBorder(type, !replayMode ? "Treasures Remaining:" : "Total Board Events:",
+				TitledBorder.CENTER, TitledBorder.TOP);
 		chip.setBorder(border);
 
 		String form = String.format("%d / %d", first, secnd);
-		JLabel text = new JLabel(form);
-		text.setForeground(Color.WHITE);
-		chip.add(text);
+		chip.add(new JLabel(form));
 	}
 
 	public void paintComponent(Graphics g){
-	
-		g.drawImage(infoIcon.getImage(), 1, 30, getWidth()-30, getHeight()-60, null);
+		g.drawImage(infoIcon.getImage(), 0, 30, getWidth()-30, getHeight()-60, null);
 	}
 
 	public ImageIcon makeImageIcon(String filename){
@@ -443,10 +341,6 @@ public class InfoPanel extends JPanel {
 		} catch(Exception e){
 			return null;
 		}
-	}
-	
-	public void setPause(boolean pause) {
-		this.pause = pause;
 	}
 
 }
