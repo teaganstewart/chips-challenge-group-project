@@ -343,7 +343,4 @@ public class InfoPanel extends JPanel {
 		}
 	}
 
-	public boolean getPause() {
-		return pause;
-	}
 }
