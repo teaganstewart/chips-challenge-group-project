@@ -22,7 +22,8 @@ public class GUI extends JFrame {
 	public static JFrame main = new JFrame("Chap's Challenge");
 	private GamePanel gamePanel;
 	//private JPanel infoPanel;
-	private JDialog fileLoaderWindow, pauseWindow, deathWindow;
+	private JDialog fileLoaderWindow;
+	private JDialog pauseWindow;
 	//Declare variable menu item variable
 	private JMenuBar menuBar;
 	private JMenu fileMenu, gameMenu;
@@ -425,40 +426,6 @@ public class GUI extends JFrame {
 		return window;
 	}
 
-	public void deathWindow(){
-		JPanel panel = new JPanel();
-		JLabel message = new JLabel("GAME OVER. YOU'RE DEAD. ");
-		message.setBounds(70,50,200 ,30);
-
-		JButton button = new JButton("Restart Level");
-		button.addActionListener(e -> {
-			deathWindow.dispose();
-			restartLevel(game.getLevelNum());
-
-
-		});
-		button.setBounds(75,150,150 ,30);
-
-		panel.add(message);
-		panel.add(button);
-		panel.setLayout(null);
-		stopTimer();
-
-		deathWindow = popUpWindow("Death Window", 300,300);
-		deathWindow.add(panel);
-		deathWindow.addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				e.getWindow().dispose();
-				startTimer();
-			}
-		});
-
-		deathWindow.setVisible(true);
-
-	}
 
 	public void pauseWindow(){
 
@@ -467,7 +434,7 @@ public class GUI extends JFrame {
 		message.setBounds(98,50,200 ,30);
 
 		JLabel instruct = new JLabel("PRESS ESC TO RESUME");
-		instruct.setBounds(74,200,200 ,30);
+		instruct.setBounds(74,90,200 ,30);
 
 		//Add items to panel
 		panel.add(message);
@@ -705,7 +672,6 @@ public class GUI extends JFrame {
 		// Check if level needs to be reset. This could be if the player dies for
 		// example
 		if (maze.isResetLevel()) {
-			deathWindow();
 			game.loadLevel(gamePanel, game.getLevelNum());
 		}
     }
