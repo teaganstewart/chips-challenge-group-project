@@ -35,6 +35,7 @@ public class GUI extends JFrame {
     // game variables
     private static Timer gameLoop;
     private static int gameFrame;
+    private static int gameSpeed = 10;
     private static boolean timeToggle;
     private static boolean enemyToggle;
     private static boolean started;
@@ -119,6 +120,7 @@ public class GUI extends JFrame {
 		if (e.getKeyCode() == KeyEvent.VK_S) {
 			if (game.getLevelNum() < 3) {
 				stopTimer();
+				gameSpeed=10;
 				setReplayMode(false);
 				game.loadLevel(gamePanel, game.getLevelNum()+1);
 			}
@@ -127,6 +129,7 @@ public class GUI extends JFrame {
 		// "D" for Do-over/Redo
 		if (e.getKeyCode() == KeyEvent.VK_D) {
 			stopTimer();
+			gameSpeed = 10;
 			keyFrame = 0;
 			recIndex = 0;
 			startTimer();
@@ -143,20 +146,21 @@ public class GUI extends JFrame {
 		//Generate menu
 		createMenuBar();
 
+		//Set window size
+		main.setResizable(false);
+		main.setSize(new Dimension(900,660));
+		main.setPreferredSize(new Dimension(900,660));
+		main.setMinimumSize(new Dimension(900,660));
+		main.setMaximumSize(new Dimension(900,660));
+		main.getContentPane().setBackground(new Color(40, 237, 66));
 		//window layout
 		gamePanel = new GamePanel(game);
-		infoPanel = new InfoPanel(game);
-
-		main.add(gamePanel, BorderLayout.CENTER);
+		gamePanel.setBackground(new Color(40, 237, 66));
+		infoPanel = new InfoPanel(game, this);
+		
+		main.add(gamePanel, BorderLayout.LINE_START);
 		main.add(infoPanel, BorderLayout.LINE_END);
-
-		//Set window size
-		main.setSize(new Dimension(800,600));
-		main.setResizable(false);
-		main.setMinimumSize(new Dimension(800,600));
-		main.setMaximumSize(new Dimension(1600,1800));
-
-
+		
 		//Display window at the center of the screen
 		main.pack();
 		main.setVisible(true);
@@ -493,6 +497,7 @@ public class GUI extends JFrame {
 		infoPanel.displayChips(replayMode, first, secnd);
 		infoPanel.clearInventory();
 		infoPanel.drawInventory();
+		infoPanel.updateRec(replayMode);
 		gamePanel.updateUI();
 
 	}
@@ -500,7 +505,7 @@ public class GUI extends JFrame {
     /**
      * Only ever called once to create the timer and override it's action event
      */
-    private void setupTimer() {
+    void setupTimer() {
 
     	// sets up the game timer, which runs ten times a second
     	gameLoop = new Timer(250, new ActionListener() {
@@ -554,20 +559,26 @@ public class GUI extends JFrame {
 				try {					
 					Maze m = ReplayUtils.getActionRecord(recIndex).getMaze();
 					int t = ReplayUtils.getActionRecord(recIndex).getTimeSinceLevelStart();
-
-					if (ReplayUtils.roundTimeToTen(t) == keyFrame) {
-
-						game.getRender().setMaze(m);
-						game.setMaze(m);
-						updateBoard();
-
-						if (recIndex < ReplayUtils.replaySize()-1) {
-							recIndex++;
+					
+					
+					for(int i=0; i<(10.0/gameSpeed); i++) {
+						if (ReplayUtils.roundTimeToTen(t) == keyFrame) {
+	
+							game.getRender().setMaze(m);
+							game.setMaze(m);
+							updateBoard();
+						
+							
+							if (recIndex < ReplayUtils.replaySize()-1) {
+	
+								recIndex++;
+							}
+							
 						}
+	
+						keyFrame += 10;
+						globalFrame += 10;
 					}
-
-					keyFrame += 10;
-					globalFrame += 10;
 					if (globalFrameCheck(globalFrame)) updateBoard();
 				} catch (NullPointerException e) {}
 			}
@@ -620,6 +631,30 @@ public class GUI extends JFrame {
     public static void setReplayMode(boolean bool) {
     	replayMode = bool;
     	started = false;
+    }
+    
+    public void setKeyFrame(int key) {
+    	keyFrame = key;
+    }
+    
+    public int getKeyFrame() {
+    	return keyFrame;
+    }
+    
+    public void setRecIndex(int rec) {
+    	recIndex = rec;
+    }
+    
+    public int getRecIndex() {
+    	return recIndex;
+    }
+    
+    public void setSpeed(int speed) {
+    	gameSpeed = speed;
+    }
+    
+    public int getSpeed() {
+    	return gameSpeed;
     }
 
     private void checkConditions(Maze maze) {
