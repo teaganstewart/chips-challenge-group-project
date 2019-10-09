@@ -62,6 +62,7 @@ public class InfoPanel extends JPanel {
 		this.add(hintPanel(),c);
 		c.gridy = 5;
 		this.add(inventory(),c);
+		System.out.println("hi");
 		c.gridy = 6;
 		this.add(recnplayPanel(),c);
 
