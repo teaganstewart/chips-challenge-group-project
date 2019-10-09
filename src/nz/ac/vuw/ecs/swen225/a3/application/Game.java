@@ -84,7 +84,6 @@ public class Game {
 
 	public void loadGame(){
 
-
 		try{
 			level = LoadUtils.resumeGame();
 			setLevelNum(level.getLevel());

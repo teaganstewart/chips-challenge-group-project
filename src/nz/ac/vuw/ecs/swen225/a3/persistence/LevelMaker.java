@@ -15,20 +15,20 @@ public class LevelMaker {
     Integer[][] map = { {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
             {2,5,5,5,5,1,1,7,19,1,1,2,1,1,1,1,1,1,1,2},
             {2,5,5,5,2,1,1,2,2,1,1,2,1,1,1,2,2,1,1,2},
-            {2,5,5,5,4,2,2,1,2,7,14,2,1,1,1,1,2,2,10,2},
+            {2,5,5,5,1,2,2,1,2,7,14,2,1,1,1,1,2,2,10,2},
             {2,1,1,1,1,1,1,19,2,2,2,2,2,1,2,2,2,13,1,2},
             {2,1,4,1,1,1,2,1,12,1,1,1,2,1,1,1,2,1,1,2},
             {2,1,1,1,1,1,2,1,2,1,1,7,2,7,1,1,2,7,1,2},
             {2,7,2,2,2,2,2,9,2,2,2,2,2,2,2,1,2,2,2,2},
             {2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,19,1,2,1,1},
-            {2,3,1,1,1,2,2,2,2,16,2,1,1,1,1,1,2,1,1,1},
+            {2,1,1,1,1,2,2,2,2,16,2,1,1,1,1,1,2,1,1,1},
             {2,2,1,1,1,1,1,14,2,4,2,1,2,2,2,1,2,1,1,1},
             {2,2,2,11,2,2,1,1,2,15,2,1,2,1,1,7,2,1,1,1},
             {2,7,1,1,2,2,1,1,1,1,1,1,2,1,2,2,2,2,2,2},
             {2,2,1,2,2,2,7,1,1,1,1,1,1,1,10,1,1,1,1,2},
             {2,1,1,1,1,2,2,2,2,2,2,2,1,1,2,1,7,2,1,2},
             {2,2,1,2,2,7,1,1,1,9,18,2,2,2,2,4,2,2,8,2},
-            {2,15,1,7,2,2,1,2,1,2,2,17,6,6,6,6,2,1,1,1},
+            {2,15,1,7,2,2,1,1,1,2,2,17,6,6,6,6,2,1,1,1},
             {2,2,1,2,2,1,1,7,1,2,2,2,6,6,6,6,2,1,1,1},
             {2,1,1,1,11,1,2,1,1,13,2,7,6,6,6,6,2,1,3,1},
             {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1}};
@@ -38,7 +38,7 @@ public class LevelMaker {
 		generateMap(map);
 		Maze maze = new Maze(tiles, player,crateList, enemyList);
 		Level level = new Level(2 , maze, System.currentTimeMillis(), 0, 60);
-		SaveUtils.saveGame(level, "Level 1");
+		SaveUtils.saveGame(level, "Level 2");
 	}
 
   /**
@@ -52,13 +52,20 @@ public class LevelMaker {
         if(map[i][j] == 19){
           crateList.add(new Crate(new Coordinate(i,j)));
         }
-        if(map[i][j] == 20) {
-        	enemyList.add(new Skeleton(new Coordinate(i,j), Direction.LEFT));
-        }
+
+
+
       }
     }
 
-
+    enemyList.add(new Skeleton(new Coordinate(3,4), Direction.DOWN));
+    enemyList.add(new Skeleton(new Coordinate(3,12), Direction.LEFT));
+    enemyList.add(new Skeleton(new Coordinate(14,1), Direction.LEFT));
+    enemyList.add(new Skeleton(new Coordinate(15,6), Direction.DOWN));
+    enemyList.add(new Skeleton(new Coordinate(18,8), Direction.DOWN));
+    tiles[5][2] = new HintTile(new Coordinate(5, 2), "You must collect a fire boots to walk on the fire");
+    tiles[15][15] = new HintTile(new Coordinate(15, 15), "You must collect a ice boots to walk on ice");
+    tiles[10][9] = new HintTile(new Coordinate(10, 9), "Must avoid the enemy to pass the level. You need to collect certain boots to walk on special tile");
   }
 
   /**
@@ -81,7 +88,7 @@ public class LevelMaker {
         return new Tile(new Coordinate(row, col), Tile.TileType.FIRE);
     }else if(type == 6){
         return new Tile(new Coordinate(row, col), Tile.TileType.ICE);
-    }else if (type ==19 || type ==20) {
+    }else if (type ==19) {
       return new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
     }else {
       Tile t = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
