@@ -122,6 +122,7 @@ public class GUI extends JFrame {
 				gameSpeed=10;
 				setReplayMode(false);
 				game.loadLevel(gamePanel, game.getLevelNum()+1);
+				
 			}
 		}
 
@@ -131,7 +132,9 @@ public class GUI extends JFrame {
 			gameSpeed = 10;
 			keyFrame = 0;
 			recIndex = 0;
-			startTimer();
+			if(!(infoPanel.getPause())) {
+				startTimer();
+			}
 		}
 	}
 
@@ -185,7 +188,9 @@ public class GUI extends JFrame {
 			}
 
 		}
-		startTimer();
+		if(!(infoPanel.getPause())) {
+			startTimer();
+		}
 	}
 
 	public void saveAndExitPopup(){
@@ -203,7 +208,9 @@ public class GUI extends JFrame {
 		}else{
 			JOptionPane.showMessageDialog(null, "No input for files name or process had been cancelled.");
 		}
-		startTimer();
+		if(!(infoPanel.getPause())) {
+			startTimer();
+		}
 	}
 
 
@@ -336,14 +343,14 @@ public class GUI extends JFrame {
 
 					JOptionPane.CLOSED_OPTION) == JOptionPane.YES_OPTION){
 			}
-			startTimer();
+			if(!(infoPanel.getPause())) {
+				startTimer();
+			}
 		});
 	}
 
 
 	public void fileLoader(){
-
-
 
 		fileLoaderWindow = new JDialog();
 		fileLoaderWindow.setTitle("File Loader");
@@ -402,7 +409,9 @@ public class GUI extends JFrame {
             public void windowClosing(WindowEvent e)
             {
                 e.getWindow().dispose();
-				startTimer();
+                if(!(infoPanel.getPause())) {
+    				startTimer();
+    			}
             }
         });
         
@@ -452,7 +461,9 @@ public class GUI extends JFrame {
 			public void windowClosing(WindowEvent e)
 			{
 				e.getWindow().dispose();
-				startTimer();
+				if(!(infoPanel.getPause())) {
+					startTimer();
+				}
 			}
 		});
 
@@ -482,7 +493,9 @@ public class GUI extends JFrame {
                 stopTimer();
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     pauseWindow.dispose();
-    				startTimer();
+                    if(!(infoPanel.getPause())) {
+        				startTimer();
+        			}
                 }
             }
         });
@@ -494,7 +507,9 @@ public class GUI extends JFrame {
             public void windowClosing(WindowEvent e)
             {
                 e.getWindow().dispose();
-				startTimer();
+                if(!(infoPanel.getPause())) {
+    				startTimer();
+    			}
             }
         });
         
@@ -505,12 +520,14 @@ public class GUI extends JFrame {
 	public void restartLevel(int lvl){
 		if (replayMode) return;
 		game.loadLevel(gamePanel,lvl);
+		infoPanel.setPause(false);
 
 	}
 	
 	public void restartGame(){
 		if (replayMode) return;
 		game.loadLevel(gamePanel,1);
+		infoPanel.setPause(false);
 
 	}
 
@@ -568,6 +585,7 @@ public class GUI extends JFrame {
 
 						if (game.getTime() < 0) {
 							game.loadLevel(gamePanel, game.getLevelNum());
+							infoPanel.setPause(false);
 						}
 
 					}
@@ -700,6 +718,7 @@ public class GUI extends JFrame {
 			stopTimer();
 			setReplayMode(true);
 			ReplayUtils.playBack(Long.toString(ReplayUtils.getStartTime()));
+			infoPanel.setPause(false);
 			startTimer();
 			updateBoard();
 		}
@@ -709,6 +728,7 @@ public class GUI extends JFrame {
 		if (maze.isResetLevel()) {
 			deathWindow();
 			game.loadLevel(gamePanel, game.getLevelNum());
+			infoPanel.setPause(false);
 		}
     }
 
