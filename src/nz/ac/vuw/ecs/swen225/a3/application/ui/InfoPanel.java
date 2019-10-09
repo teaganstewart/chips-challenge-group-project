@@ -62,7 +62,6 @@ public class InfoPanel extends JPanel {
 		this.add(hintPanel(),c);
 		c.gridy = 5;
 		this.add(inventory(),c);
-		System.out.println("hi");
 		c.gridy = 6;
 		this.add(recnplayPanel(),c);
 
@@ -269,6 +268,7 @@ public class InfoPanel extends JPanel {
 				gui.setSpeed(10);
 				gui.setKeyFrame(0);
 				gui.setRecIndex(0);
+				skipReset();
 				if(!pause) {gui.startTimer();}
 				gui.main.setFocusable(true);
 			});
@@ -450,4 +450,7 @@ public class InfoPanel extends JPanel {
 		this.pause = pause;
 	}
 
+	public boolean getPause() {
+		return pause;
+	}
 }

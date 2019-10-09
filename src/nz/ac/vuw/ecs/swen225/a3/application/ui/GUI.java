@@ -24,6 +24,7 @@ public class GUI extends JFrame {
 	//private JPanel infoPanel;
 	private JDialog fileLoaderWindow;
 	private JDialog pauseWindow;
+	private JDialog deathWindow;
 	//Declare variable menu item variable
 	private JMenuBar menuBar;
 	private JMenu fileMenu, gameMenu;
@@ -80,6 +81,7 @@ public class GUI extends JFrame {
 		main.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent windowEvent) {
+				stopTimer();
 				exitPopup();
 			}
 		});
@@ -186,7 +188,9 @@ public class GUI extends JFrame {
 			}
 
 		}
-		startTimer();
+		if(!(infoPanel.getPause())) {
+			startTimer();
+		}
 	}
 
 	public void saveAndExitPopup(){
@@ -208,6 +212,43 @@ public class GUI extends JFrame {
 	}
 
 
+	public void deathWindow(){
+		JPanel panel = new JPanel();
+		JLabel message = new JLabel("GAME OVER. YOU'RE DEAD. ");
+		message.setBounds(70,50,200 ,30);
+
+		JButton button = new JButton("Restart Level");
+		button.addActionListener(e -> {
+			deathWindow.dispose();
+			restartLevel(game.getLevelNum());
+
+
+		});
+		button.setBounds(75,150,150 ,30);
+
+		panel.add(message);
+		panel.add(button);
+		panel.setLayout(null);
+		stopTimer();
+
+		deathWindow = popUpWindow("Death Window", 300,300);
+		deathWindow.add(panel);
+		deathWindow.addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				e.getWindow().dispose();
+				if(!(infoPanel.getPause())) {
+					startTimer();
+				}
+			}
+		});
+
+		deathWindow.setVisible(true);
+
+	}
+	
 	/**
 	 * Create menu bar with all the menu items
 	 */
@@ -403,7 +444,9 @@ public class GUI extends JFrame {
             public void windowClosing(WindowEvent e)
             {
                 e.getWindow().dispose();
-				startTimer();
+				if(!(infoPanel.getPause())) {
+					startTimer();
+				}
             }
         });
         
@@ -461,7 +504,9 @@ public class GUI extends JFrame {
             public void windowClosing(WindowEvent e)
             {
                 e.getWindow().dispose();
-				startTimer();
+				if(!(infoPanel.getPause())) {
+					startTimer();
+				}
             }
         });
         
@@ -674,8 +719,10 @@ public class GUI extends JFrame {
 		// Check if level needs to be reset. This could be if the player dies for
 		// example
 		if (maze.isResetLevel()) {
+			deathWindow();
 			game.loadLevel(gamePanel, game.getLevelNum());
+			infoPanel.setPause(false);
 		}
-    }
+	}
 
 }
