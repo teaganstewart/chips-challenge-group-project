@@ -36,7 +36,7 @@ public class GUI extends JFrame {
     private static Timer gameLoop;
     private static int gameFrame;
     private static boolean timeToggle;
-    private static boolean moveNextTurn;
+    private static boolean enemyToggle;
     private static boolean started;
     
     // recnplay variables
@@ -53,7 +53,7 @@ public class GUI extends JFrame {
 		setReplayMode(false);
 		setupTimer();
 		game = new Game();
-
+	
 		createWindow();
 		main.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		main.addKeyListener(new KeyListener() {
@@ -117,7 +117,7 @@ public class GUI extends JFrame {
 	public void inReplayEvent(KeyEvent e) {
 		// "S" for Skip
 		if (e.getKeyCode() == KeyEvent.VK_S) {
-			if (game.getLevelNum() < 2) {
+			if (game.getLevelNum() < 3) {
 				stopTimer();
 				setReplayMode(false);
 				game.loadLevel(gamePanel, game.getLevelNum()+1);
@@ -503,7 +503,7 @@ public class GUI extends JFrame {
     private void setupTimer() {
 
     	// sets up the game timer, which runs ten times a second
-    	gameLoop = new Timer(100, new ActionListener() {
+    	gameLoop = new Timer(250, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -514,10 +514,7 @@ public class GUI extends JFrame {
 						ReplayUtils.pushActionRecord(new ActionRecord(0, game.getMaze()));
 					}
 
-					// this stops the player from going on ice if they aren't already on ice and moving on it would refresh
-					// the screen too jarringly quick
-					boolean dontAllowOnIce = !(gameFrame%2==0 && game.getMaze().isOnIce());
-					game.update(dontAllowOnIce || moveNextTurn);
+					game.update(game.getMaze().isOnIce(), enemyToggle);
 
 					// checks the level reset/ending conditions
 					checkConditions(game.getMaze());
@@ -537,11 +534,10 @@ public class GUI extends JFrame {
 					updateBoard();
 
 					// checks to see whether it should toggle the timer
-					timeToggle = gameFrame % 10 == 0 && gameFrame != 0;
+					timeToggle = gameFrame % 4 == 0 && gameFrame != 0;
+					enemyToggle = gameFrame % 2 == 0 && gameFrame != 0;
 					gameFrame++;
 
-					// if the player pushes to go on ice but this is a turn that it would hang, this forces a move on their next turn
-					moveNextTurn = !dontAllowOnIce;
 				} catch (NullPointerException e) {}
 			}
 
@@ -597,8 +593,8 @@ public class GUI extends JFrame {
     		if (!started) {
     			ReplayUtils.setStartTime(System.currentTimeMillis());
     			gameFrame = 0;
+    			enemyToggle = false;
     	    	timeToggle = false;
-    	    	moveNextTurn = false;
     	    	started = true;
     		}
     		

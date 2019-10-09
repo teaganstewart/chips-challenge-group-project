@@ -44,7 +44,7 @@ public class Game {
 		maze = m;
 	}
 
-	public void update(boolean shiftIfOnIce) {
+	public void update(boolean shiftIfOnIce, boolean enemyToggle) {
 		boolean saveReplay = false;
 
 		// moving chip if he's on ice
@@ -56,25 +56,28 @@ public class Game {
 		}
 
 		// moving of all the enemy's
-		Tile[][] board = maze.getTiles();
-		for(Moveable enemy : maze.getEnemyList()) {
-			Coordinate nextPosition = enemy.getNextPos();
-			if(nextPosition.equals(maze.getPlayer().getCoordinate())) {
-				maze.setResetLevel(true);
-				return;
-			}
-			Tile curr = board[nextPosition.getRow()][nextPosition.getCol()];
-			if (curr.getType() == Tile.TileType.WALL) {  }
-			else if(enemy.canWalkOn(curr.getEntity())) {
-				enemy.setCoordinate(nextPosition);
-				saveReplay = true;
-			}
+		if (enemyToggle) {
+			Tile[][] board = maze.getTiles();
+			for(Moveable enemy : maze.getEnemyList()) {
+				Coordinate nextPosition = enemy.getNextPos();
+				if(nextPosition.equals(maze.getPlayer().getCoordinate())) {
+					maze.setResetLevel(true);
+					return;
+				}
+				Tile curr = board[nextPosition.getRow()][nextPosition.getCol()];
+				if (curr.getType() == Tile.TileType.WALL) {  }
+				else if(enemy.canWalkOn(curr.getEntity())) {
+					enemy.setCoordinate(nextPosition);
+					saveReplay = true;
+					continue;
+				}
 
-				// changes direction if returns false and moves back
-				enemy.setDirection(enemy.getDirection().inverse());
-				enemy.setCoordinate(enemy.getNextPos());
-				saveReplay = true;
-			}
+					// changes direction if returns false and moves back
+					enemy.setDirection(enemy.getDirection().inverse());
+					enemy.setCoordinate(enemy.getNextPos());
+					saveReplay = true;
+				}
+		}
 
 		if (saveReplay) ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime()), getMaze()));
 	}
