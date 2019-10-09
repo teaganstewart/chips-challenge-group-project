@@ -147,8 +147,8 @@ public class InfoPanel extends JPanel {
 		JLabel text = new JLabel(!replayMode ?
 				"<html>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Level: " + Integer.toString(num) + "&emsp;&emsp;"+
 				"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</html>":
-
-					"<html>&emsp;&emsp;&emsp;&emsp;&emsp;PLAYBACK  " + (flash ? "\u25CF  " : "     " )+
+					(pause ? "<html>&emsp;&emsp;&emsp;&emsp;&emsp;PAUSED \u23F3 " :
+					"<html>&emsp;&emsp;&emsp;&emsp;     PLAYBACK  " + (flash ? "\u25CF  " : "     " ))+
 					"<br>" + new Date(ReplayUtils.getStartTime()).toString() + "</html>");
 		text.setForeground(Color.WHITE);
 		level.add(text);
@@ -339,7 +339,7 @@ public class InfoPanel extends JPanel {
 				if(!pause) {
 					gui.stopTimer();
 				}
-				gui.setSpeed(3);
+				gui.setSpeed(gui.getSpeed() == 3 ? 10 : 3);
 				gui.setupTimer();
 				if(!pause) {
 					gui.startTimer();

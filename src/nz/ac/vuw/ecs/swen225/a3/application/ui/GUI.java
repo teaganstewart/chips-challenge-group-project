@@ -605,25 +605,24 @@ public class GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				try {					
+				try {		
 					Maze m = ReplayUtils.getActionRecord(recIndex).getMaze();
 					int t = ReplayUtils.getActionRecord(recIndex).getTimeSinceLevelStart();
 					
-					
 					for(int i=0; i<(10.0/gameSpeed); i++) {
+
+						boolean moreToGo = recIndex < ReplayUtils.replaySize()-1;
 						if (ReplayUtils.roundTimeToTen(t) == keyFrame) {
 	
 							game.getRender().setMaze(m);
 							game.setMaze(m);
 							updateBoard();
-						
-							
-							if (recIndex < ReplayUtils.replaySize()-1) {
-	
-								recIndex++;
-							}
+
+							if (moreToGo) recIndex++;
 							
 						}
+						
+						if (ReplayUtils.roundTimeToTen(t) == keyFrame-10 && moreToGo) recIndex++;
 	
 						keyFrame += 10;
 						globalFrame += 10;
