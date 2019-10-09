@@ -7,7 +7,7 @@ Josh's gitlab bugs<br>
 David's file loader bug<br>
 joptiondialog pop up for level completion with a prompt to show replay or not<br>
 Title screen (with maybe a level select if we're feeling fancy otherwise just Start/Resume)<br>
-Recnplay tests<br>
+Recnplay tests (Josh is currently doing this)<br>
 <br>
 **Running in IntelliJ** <br>
 <br>
