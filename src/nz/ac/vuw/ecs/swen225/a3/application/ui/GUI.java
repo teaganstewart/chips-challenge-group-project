@@ -26,7 +26,7 @@ import java.nio.file.LinkOption;
  * breaking our code, we decided to contain it here instead. Some of the methods have
  * been made static so the GUI object does not need to be passed between classes.
  * 
- * @authors Ethan Munn, ...
+ * @authors Ethan Munn, Meng Veng Taing, Teagan Stewart
  *
  */
 public class GUI extends JFrame {
@@ -184,6 +184,43 @@ public class GUI extends JFrame {
 			recIndex = 0;
 			startTimer();
 		}
+
+		// "," for go back one frame
+		if (e.getKeyCode() == KeyEvent.VK_COMMA) {
+			if(!infoPanel.getPause()) { stopTimer();}
+			setRecIndex(Math.max(0,getRecIndex()-1));
+			setKeyFrame(ReplayUtils.roundTimeToTen(ReplayUtils.getActionRecord(getRecIndex()).getTimeSinceLevelStart()));
+
+			infoPanel.skipReset();
+		}
+
+		// "." for go forward one frame
+		if (e.getKeyCode() == KeyEvent.VK_PERIOD) {
+			if(!infoPanel.getPause()) { stopTimer();}
+			setRecIndex(Math.min(getRecIndex()+1,ReplayUtils.replaySize()-1));
+			setKeyFrame(ReplayUtils.roundTimeToTen(ReplayUtils.getActionRecord(getRecIndex()).getTimeSinceLevelStart()));
+
+			infoPanel.skipReset();
+		}
+
+		// "F" for speed up replay
+		if(e.getKeyCode() == KeyEvent.VK_F) {
+			if (!infoPanel.getPause()) {
+				stopTimer();
+			}
+			setSpeed(getSpeed() == 3 ? 10 : 3);
+			setupTimer();
+			if (!infoPanel.getPause()) {
+				startTimer();
+			}
+		}
+
+		if(e.getKeyCode() == KeyEvent.VK_SPACE){
+			if(infoPanel.getPause()) startTimer();
+			else stopTimer();
+			infoPanel.setPause(!infoPanel.getPause());
+			updateBoard();
+		}
 	}
 
 
@@ -267,7 +304,7 @@ public class GUI extends JFrame {
 	}
 	public void saveReplayPopup(){
 
-		//TODO: ADD THE REMOVE REPLAY
+
 		int i = JOptionPane.showConfirmDialog(null,"Would you like to save the replay recording?", "Save Replay",JOptionPane.YES_NO_OPTION);
 		if( i == 0){
 			JOptionPane.showMessageDialog(null, "Replay had been saved", "Save Replay", JOptionPane.PLAIN_MESSAGE);
