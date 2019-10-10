@@ -113,7 +113,7 @@ public class ReplayUtils {
 	 * @param id the id on the replay to delete.
 	 * @return boolean stating whether or not directory was deleted.
 	 */
-	private static boolean deleteReplay(long id){
+	public static boolean deleteReplay(long id){
 		String path = RECORD_DIRECTORY+"\\"+id;
 
 		File dir = new File(path);

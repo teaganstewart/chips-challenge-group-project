@@ -67,6 +67,8 @@ public class GUI extends JFrame {
 	// switching between recnplay / game
     private static boolean replayMode;
 
+    //Current record ID
+	private Long currentRecordID;
     /**
      * Constructs the game via the GUI
      */
@@ -310,6 +312,8 @@ public class GUI extends JFrame {
 			JOptionPane.showMessageDialog(null, "Replay had been saved", "Save Replay", JOptionPane.PLAIN_MESSAGE);
 		}else{
 			JOptionPane.showMessageDialog(null,"Replay had not been saved","Save Replay", JOptionPane.PLAIN_MESSAGE);
+			System.out.println(ReplayUtils.deleteReplay(currentRecordID));
+
 		}
 		main.setFocusable(true);
 	}
@@ -334,7 +338,8 @@ public class GUI extends JFrame {
 		replayButton.addActionListener(e -> {
 			finishLevelWindow.dispose();
 			setReplayMode(true);
-			ReplayUtils.playBack(Long.toString(ReplayUtils.getStartTime()));
+			currentRecordID = ReplayUtils.getStartTime();
+			ReplayUtils.playBack(Long.toString(currentRecordID));
 		});
 		replayButton.setBounds(75,150,150 ,30);
 
@@ -968,8 +973,6 @@ public class GUI extends JFrame {
 		// if the goal has been reached
 		if (maze.isGoalReached()) {
 			stopTimer();
-//			setReplayMode(true);
-//			ReplayUtils.playBack(Long.toString(ReplayUtils.getStartTime()));
 			finishLevelWindow();
 			startTimer();
 			updateBoard();
