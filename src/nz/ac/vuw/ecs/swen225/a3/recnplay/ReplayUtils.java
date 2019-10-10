@@ -11,6 +11,13 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonWriter;
 
+
+/**
+ * ReplayUtils contains functionality for managing the recording and
+ * playback of replays using JSON files.
+ *
+ * @author Ethan Munn, Matt Rothwell
+ */
 public class ReplayUtils {
 
 	public static final String RECORD_DIRECTORY = "recordings";
@@ -21,7 +28,12 @@ public class ReplayUtils {
     	if (replay != null) replay.clear();
     	replay = loadReplay(id);
     }
-    
+
+	/**
+	 * Load a replay's ActionRecord's from File.
+	 * @param id of the replay to load, usually a long representing time of creation.
+	 * @return a list of ActionRecords representing the Maze at it's various states.
+	 */
 	private static List<ActionRecord> loadReplay(String id){
 
 		List<ActionRecord> record = new ArrayList<>();
@@ -47,6 +59,11 @@ public class ReplayUtils {
 		
 	}
 
+	/**
+	 * Push a new ActionRecord object to the recordings directory to save it.
+	 * @param actionRecord the actionRecord to save.
+	 * @return whether or not saving was successful.
+	 */
 	public static boolean pushActionRecord(ActionRecord actionRecord){
 		String id = Long.toString(getStartTime());
 		String form = String.format("%06d", actionRecord.getTimeSinceLevelStart());
@@ -78,6 +95,12 @@ public class ReplayUtils {
 		return true;
 	}
 
+	/**
+	 * Create the directory in which all the individual JSON files will be
+	 * stored inside the recordings directory.
+	 * @param id the names of the directory, also the ID for the replay.
+	 * @return true if successfully created.
+	 */
 	public static boolean setupDirectory(String id){
 		File directory = new File(RECORD_DIRECTORY+"\\"+id);
 		if (!directory.exists()){

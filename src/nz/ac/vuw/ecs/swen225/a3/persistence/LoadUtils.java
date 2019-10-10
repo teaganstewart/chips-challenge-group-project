@@ -59,7 +59,7 @@ public class LoadUtils {
 	}
 
 	/**
-	 * Creates a hashmap from ID -> Formatted String for GUI
+	 * Creates a HashMap from ID -> Formatted String for GUI.
 	 * @return a HashMap containing ID's to a neatly formatted string for GUI display.
 	 */
 	public static Map<String, Long> getSavesByID(){
@@ -131,8 +131,6 @@ public class LoadUtils {
 		}
 		return 0;
 	}
-
-	// Private Methods
 
 	/**
 	 * Produces a Level object from the JSON input given
