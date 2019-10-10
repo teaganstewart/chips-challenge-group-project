@@ -50,8 +50,26 @@ public class SaveUtils {
 	 * Therefore this method simply saves the number of the last unfinished level
 	 * they were on so that the game can resume on this next time.
 	 */
-	public static void saveLevel() {
+	public static boolean saveLevel(int level) {
+		try {
+			constructSaves();
+			JsonWriter writer = Json.createWriter(
+					new PrintStream(new File(SAVES_DIRECTORY + "\\" + System.currentTimeMillis() + ".json")));
 
+			JsonObject save = Json.createObjectBuilder()
+					.add("LevelNum", level)
+					.build();
+
+			JsonObject toSave = Json.createObjectBuilder()
+					.add("Level", save).build();
+
+			writer.write(toSave);
+			writer.close();
+
+			return true;
+		} catch (FileNotFoundException e) {
+			return false;
+		}
 	}
 
 	/**
@@ -66,5 +84,6 @@ public class SaveUtils {
 		}
 		return true;
 	}
+
 
 }
