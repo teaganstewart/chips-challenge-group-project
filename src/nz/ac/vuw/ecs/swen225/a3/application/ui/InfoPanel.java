@@ -267,6 +267,7 @@ public class InfoPanel extends JPanel {
 	
 		rec = new JPanel(new GridLayout(1,6,0,0));
 		rec.setMinimumSize(new Dimension(220,40));
+		rec.setBackground(new Color(65, 65, 73));
 		for(int i=0; i<6;i++) {
 			rec.add(new JLabel());
 		}
