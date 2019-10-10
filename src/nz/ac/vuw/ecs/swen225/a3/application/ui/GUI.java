@@ -28,7 +28,7 @@ public class GUI extends JFrame {
 	//Declare variable menu item variable
 	private JMenuBar menuBar;
 	private JMenu fileMenu, gameMenu;
-	private JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, resume_Item, pause_Item, help_Item;
+	private JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, pause_Item, help_Item;
 
 	private JRadioButton lvl[] = new JRadioButton[2];
 	private InfoPanel infoPanel;
@@ -281,7 +281,6 @@ public class GUI extends JFrame {
 		gameMenu.add(restart_level_Item);
 		gameMenu.add(restart_game_Item);
 		gameMenu.add(pause_Item);
-		gameMenu.add(resume_Item);
 		gameMenu.add(help_Item);
 
 		//Add file and game menu to menu bar
@@ -299,7 +298,6 @@ public class GUI extends JFrame {
 		 *      Restart Level
 		 *      Restart Game
 		 *      Pause
-		 *      Resume
 		 *      Help
 		 */
 	}
@@ -350,14 +348,6 @@ public class GUI extends JFrame {
 			pauseWindow();
 		});
 
-		resume_Item = new JMenuItem("Resume game",KeyEvent.VK_ESCAPE);
-		resume_Item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
-		resume_Item.addActionListener(e -> {
-			System.out.println("Resume");
-			if(pauseWindow != null) {
-
-			}
-		});
 
 		help_Item = new JMenuItem("Help");
 		KeyStroke ctrlHKeyStroke = KeyStroke.getKeyStroke("control H");
