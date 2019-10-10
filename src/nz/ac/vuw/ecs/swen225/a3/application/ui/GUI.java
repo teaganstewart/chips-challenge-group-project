@@ -180,11 +180,13 @@ public class GUI extends JFrame {
 
 		// "D" for Do-over/Redo
 		if (e.getKeyCode() == KeyEvent.VK_D) {
-			stopTimer();
-			gameSpeed = 10;
-			keyFrame = 0;
-			recIndex = 0;
-			startTimer();
+
+			if(!infoPanel.getPause()) { stopTimer();}
+			setSpeed(10);
+			setKeyFrame(0);
+			setRecIndex(0);
+			infoPanel.skipReset();
+			if(!infoPanel.getPause()) {startTimer();}
 		}
 
 		// "," for go back one frame
@@ -218,11 +220,13 @@ public class GUI extends JFrame {
 		}
 
 		if(e.getKeyCode() == KeyEvent.VK_SPACE){
+
 			if(infoPanel.getPause()) startTimer();
 			else stopTimer();
 			infoPanel.setPause(!infoPanel.getPause());
 			updateBoard();
 		}
+
 	}
 
 
@@ -879,6 +883,7 @@ public class GUI extends JFrame {
     			enemyToggle = false;
     	    	timeToggle = false;
     	    	started = true;
+
     		}
     		
 	    	gameLoop.start();
@@ -891,6 +896,7 @@ public class GUI extends JFrame {
         		recIndex = 0;
         		flashIcon = true;
         		started = true;
+
     		}
     		
     		replayLoop.start();

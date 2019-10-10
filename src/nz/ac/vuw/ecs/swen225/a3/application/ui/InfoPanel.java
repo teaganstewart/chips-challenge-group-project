@@ -172,8 +172,8 @@ public class InfoPanel extends JPanel {
 		hint.setBorder(border);
 		
 		JLabel text = new JLabel(replayMode ?
-								"<html>\"space\" to play, \"space\" to pause"+
-								"<br>\"F\" to fast forward"+
+								"<html>\"space\" to play/pause, \"D\" to rewind"+
+								"<br>\"F\" to fast forward, \"S\" to skip"+
 								"<br>\".\" to move forward one frame"+
 								"<br>\",\" to move backward one frame<html>":
 								"<html>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
@@ -298,10 +298,10 @@ public class InfoPanel extends JPanel {
 				gui.setRecIndex(0);
 				skipReset();
 				if(!pause) {gui.startTimer();}
-				gui.main.setFocusable(true);
+
 			});
-			
-			rewindButton.setBorderPainted(false); 
+
+			rewindButton.setBorderPainted(false);
 	        rewindButton.setContentAreaFilled(false); 
 	        rewindButton.setFocusPainted(false); 
 	        rewindButton.setOpaque(false);
@@ -404,6 +404,14 @@ public class InfoPanel extends JPanel {
 	        skipButton.setFocusPainted(false); 
 	        skipButton.setOpaque(false);
 			rec.add(skipButton);
+
+			//Make all the button not focusable so shortcut keys will work
+			playButton.setFocusable(false);
+			skipButton.setFocusable(false);
+			fastButton.setFocusable(false);
+			fastButton.setFocusable(false);
+			backOneButton.setFocusable(false);
+			forwardOneButton.setFocusable(false);
 		}
 		else {
 			for(int i=0; i<6;i++) {
