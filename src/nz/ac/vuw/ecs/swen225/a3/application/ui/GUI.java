@@ -168,9 +168,11 @@ public class GUI extends JFrame {
 			if (game.getLevelNum() < LEVEL_COUNT) {
 				stopTimer();
 				gameSpeed=10;
+				saveReplayPopup();
 				setReplayMode(false);
 				game.loadLevel(gamePanel, game.getLevelNum()+1);
 			}else{
+				saveReplayPopup();
 				JOptionPane.showMessageDialog(null, "Congratulation, You have won the game");
 			}
 		}
@@ -249,25 +251,25 @@ public class GUI extends JFrame {
 
 		String fileName = JOptionPane.showInputDialog("Enter a name for the save file.");
 		if(fileName != null) {
-
-			if (replayMode) {
-				// possibly save them to the start of the next level, if possible? if it's the last level, maybe disable saving in this state?
-				//TODO: ADD THE REMOVE REPLAY
-                int i = JOptionPane.showConfirmDialog(null,"Would you like to keep the replay recording?", "Save Replay",JOptionPane.YES_NO_OPTION);
-                if( i == 0){
-                    JOptionPane.showMessageDialog(null, "Replay had been saved", "Save Replay", JOptionPane.PLAIN_MESSAGE);
-                }
-			}else{
-
 				SaveUtils.saveGame(game.getLevel(), fileName);
 				JOptionPane.showMessageDialog(null, "Game has been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
 				stopTimer();
 				System.exit(0);
-			}
+
 		}else{
 			JOptionPane.showMessageDialog(null, "No input for files name or process had been cancelled.");
 		}
 		startTimer();
+	}
+	public void saveReplayPopup(){
+
+		//TODO: ADD THE REMOVE REPLAY
+		int i = JOptionPane.showConfirmDialog(null,"Would you like to save the replay recording?", "Save Replay",JOptionPane.YES_NO_OPTION);
+		if( i == 0){
+			JOptionPane.showMessageDialog(null, "Replay had been saved", "Save Replay", JOptionPane.PLAIN_MESSAGE);
+		}else{
+			JOptionPane.showMessageDialog(null,"Replay had not been saved","Save Replay", JOptionPane.PLAIN_MESSAGE);
+		}
 	}
 
 	/**

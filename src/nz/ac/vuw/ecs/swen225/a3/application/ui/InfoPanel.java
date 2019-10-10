@@ -366,8 +366,11 @@ public class InfoPanel extends JPanel {
 				if (game.getLevelNum() < 2) {
 					gui.stopTimer();
 					gui.setReplayMode(false);
+					gui.saveReplayPopup();
 					gui.setSpeed(10);
 					game.loadLevel(null, game.getLevelNum()+1);
+				}else{
+					gui.saveReplayPopup();
 				}
 			});
 			skipButton.setBorderPainted(false); 
