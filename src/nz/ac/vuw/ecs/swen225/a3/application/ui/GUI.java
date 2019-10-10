@@ -279,6 +279,8 @@ public class GUI extends JFrame {
 				stopTimer();
 				System.exit(0);
 			}
+			
+			main.setFocusable(true);
 
 		}
 		//Continue the timer
