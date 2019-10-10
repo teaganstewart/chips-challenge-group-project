@@ -120,11 +120,13 @@ public class GUI extends JFrame {
 	public void inReplayEvent(KeyEvent e) {
 		// "S" for Skip
 		if (e.getKeyCode() == KeyEvent.VK_S) {
-			if (game.getLevelNum() < 3) {
+			if (game.getLevelNum() < 2) {
 				stopTimer();
 				gameSpeed=10;
 				setReplayMode(false);
 				game.loadLevel(gamePanel, game.getLevelNum()+1);
+			}else{
+				JOptionPane.showMessageDialog(null, "Congratulation, You have won the game");
 			}
 		}
 
@@ -194,17 +196,24 @@ public class GUI extends JFrame {
 	}
 
 	public void saveAndExitPopup(){
+
 		String fileName = JOptionPane.showInputDialog("Enter a name for the save file.");
 		if(fileName != null) {
-			
+
 			if (replayMode) {
 				// possibly save them to the start of the next level, if possible? if it's the last level, maybe disable saving in this state?
+				//TODO: ADD THE REMOVE REPLAY
+                int i = JOptionPane.showConfirmDialog(null,"Would you like to keep the replay recording?", "Save Replay",JOptionPane.YES_NO_OPTION);
+                if( i == 0){
+                    JOptionPane.showMessageDialog(null, "Replay had been saved", "Save Replay", JOptionPane.PLAIN_MESSAGE);
+                }
+			}else{
+
+				SaveUtils.saveGame(game.getLevel(), fileName);
+				JOptionPane.showMessageDialog(null, "Game has been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
+				stopTimer();
+				System.exit(0);
 			}
-			
-			SaveUtils.saveGame(game.getLevel(), fileName);
-			JOptionPane.showMessageDialog(null, "Game has been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
-			stopTimer();
-			System.exit(0);
 		}else{
 			JOptionPane.showMessageDialog(null, "No input for files name or process had been cancelled.");
 		}
@@ -385,22 +394,13 @@ public class GUI extends JFrame {
 
 	public void fileLoader(){
 
-
-
-		fileLoaderWindow = new JDialog();
-		fileLoaderWindow.setTitle("File Loader");
-		fileLoaderWindow.setModal(true);
-
 		//Create panel
 		JPanel panel = new JPanel();
 		JLabel text = new JLabel("Select a file to load:");
 		text.setBounds(200,20,200,30);
 
-
-
 		//Create a combo box
 		JComboBox<String> cb = new JComboBox<String>();
-
 
 		for(String s: LoadUtils.getSavesByID().keySet()){
 			cb.addItem(s);
@@ -429,14 +429,11 @@ public class GUI extends JFrame {
 		panel.add(select);
 		panel.setLayout(null);
 
+		fileLoaderWindow = popUpWindow("File Loader",500,200);
+
 		//Add panel to the dialog
 		fileLoaderWindow.add(panel);
-		fileLoaderWindow.setSize(500,200);
 
-		//Set to display at center of screen
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		fileLoaderWindow.setLocation(dim.width/2-fileLoaderWindow.getSize().width/2, dim.height/2-fileLoaderWindow.getSize().height/2);
-		
         // if closed out using X
 		fileLoaderWindow.addWindowListener(new WindowAdapter()
         {

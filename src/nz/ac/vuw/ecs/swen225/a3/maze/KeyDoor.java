@@ -57,6 +57,8 @@ public class KeyDoor extends Door {
 				if (isRightKey(temp)) {
 					unlock();
 					key = temp;
+
+					player.removeInventoryAt(player.getKeyIndex(key));
 					break;
 				}
 			}

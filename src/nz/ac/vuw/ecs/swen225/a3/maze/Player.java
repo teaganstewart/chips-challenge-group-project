@@ -103,6 +103,17 @@ public class Player extends Moveable implements Saveable {
 		return false;
 	}
 
+	public int getKeyIndex(Key key){
+		for(int i = 0; i < inventory.size(); i++){
+			if(inventory.get(i).getClass().equals(key.getClass())){
+				if(((Key) inventory.get(i)).getColor() == key.getColor()){
+					return i;
+				}
+			}
+		}
+		return 0;
+	}
+
 	/**
 	 * Returns whether or not the player can walk on this entity
 	 * 

@@ -356,7 +356,7 @@ public class InfoPanel extends JPanel {
 			JButton skipButton = new JButton();
 			skipButton.setIcon(skipIcon);
 			skipButton.addActionListener(event -> {
-				if (game.getLevelNum() < 3) {
+				if (game.getLevelNum() < 2) {
 					gui.stopTimer();
 					gui.setReplayMode(false);
 					gui.setSpeed(10);
