@@ -4,7 +4,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  * A class that helps determine where they player should go and where they
  * should be, also helps to tell what direction to render the player.
  * 
- * @author Teagan
+ * @author Teagan Stewart
  *
  */
 public abstract class Moveable {
@@ -15,9 +15,9 @@ public abstract class Moveable {
 	private Direction lastDirection;
 
 	/**
-	 * @param coordinate
+	 * Creates a Movable object
 	 * 
-	 *                   Creates a Movable object
+	 * @param coordinate The starting coordinate of a moveable object.
 	 */
 	public Moveable(Coordinate coordinate) {
 		this.coordinate = coordinate;

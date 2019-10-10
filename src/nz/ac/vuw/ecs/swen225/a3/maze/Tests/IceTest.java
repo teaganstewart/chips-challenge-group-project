@@ -1,5 +1,6 @@
 package nz.ac.vuw.ecs.swen225.a3.maze.Tests;
 
+import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,7 @@ public class IceTest {
      * */
     @BeforeEach
     public void setUp() {
+    	GUI gui = new GUI();
         tiles = new Tile[9][9];
         for (int row = 0; row < tiles.length; row++) {
             for (int col = 0; col < tiles[0].length; col++) {
@@ -41,6 +43,7 @@ public class IceTest {
         ));
 
         maze = new Maze(tiles, player, crateList,null);
+        GUI.startTimer();
     }
 
     /*
@@ -117,6 +120,7 @@ public class IceTest {
      */
     @Test
     public void testIceBlockSlidingOntoHint() {
+
         tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.ICE);
         tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
         tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
