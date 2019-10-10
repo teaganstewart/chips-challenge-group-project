@@ -616,6 +616,7 @@ public class GUI extends JFrame {
         });
         
 		fileLoaderWindow.setVisible(true);
+		setReplayMode(false);
 		main.setFocusable(true);
 
 	}
@@ -990,6 +991,7 @@ public class GUI extends JFrame {
 			finishLevelWindow();
 			startTimer();
 			updateBoard();
+			main.setFocusable(true);
 		}
 
 		// Check if level needs to be reset. This could be if the player dies for

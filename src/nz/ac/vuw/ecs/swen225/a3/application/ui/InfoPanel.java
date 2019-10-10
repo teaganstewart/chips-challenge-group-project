@@ -390,9 +390,12 @@ public class InfoPanel extends JPanel {
 					gui.saveReplayPopup();
 					gui.setSpeed(10);
 					game.loadLevel(null, game.getLevelNum()+1);
-
+					GUI.main.setFocusable(true);
+					gui.updateBoard();
 				}else{
 					gui.saveReplayPopup();
+					JOptionPane.showMessageDialog(null, "Congratulation, You have won the game");
+					gui.finishLevelWindow();
 				}
 
 			});
