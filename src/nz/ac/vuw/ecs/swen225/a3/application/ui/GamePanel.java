@@ -9,7 +9,7 @@ import java.awt.*;
 public class GamePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Render render;
 
 	public GamePanel(Game game) {
@@ -27,10 +27,14 @@ public class GamePanel extends JPanel {
 	 * Clears the game panel so it can be redrawn.
 	 */
 	public void clearBoard() {
-		for (int y = 0; y < 9; y++) {
-			for (int x1 = 0; x1 < 9; x1++) {
-				this.remove(0);
+		try{
+			for (int y = 0; y < 9; y++) {
+				for (int x1 = 0; x1 < 9; x1++) {
+					this.remove(0);
+				}
 			}
+		}catch(ArrayIndexOutOfBoundsException e){
+
 		}
 	}
 
@@ -41,12 +45,14 @@ public class GamePanel extends JPanel {
 		render.createGrid();
 		JLabel[][] visibleBoard = render.getVisibleBoard();
 
-		for (int y = 0; y < 9; y++) {
-			for (int x1 = 0; x1 < 9; x1++) {
-
-				this.add(visibleBoard[y][x1]);
-
+		try{
+			for (int y = 0; y < 9; y++) {
+				for (int x1 = 0; x1 < 9; x1++) {
+					this.add(visibleBoard[y][x1]);
+				}
 			}
+		}catch(NullPointerException e){
+
 		}
 	}
 	

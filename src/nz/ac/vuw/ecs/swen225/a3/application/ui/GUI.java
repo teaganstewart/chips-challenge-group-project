@@ -668,6 +668,13 @@ public class GUI extends JFrame {
     	started = false;
     }
 
+    /*
+    * Returns the Game Panel
+    * */
+	public GamePanel getGamePanel() {
+		return gamePanel;
+	}
+
 	public static boolean isReplayMode() {
 		return replayMode;
 	}
@@ -687,6 +694,10 @@ public class GUI extends JFrame {
     public void setRecIndex(int rec) {
     	recIndex = rec;
     }
+
+	public void setGame(Game game) {
+		this.game = game;
+	}
 
     public int getRecIndex() {
     	return recIndex;

@@ -256,7 +256,7 @@ public class InfoPanel extends JPanel {
 			for(int i=0; i<6;i++) {
 				rec.remove(0);
 			}
-		} catch (NullPointerException e) {}
+		} catch (ArrayIndexOutOfBoundsException e) {}
 
 		if(replayMode) {
 
@@ -393,8 +393,12 @@ public class InfoPanel extends JPanel {
 	 * Clears the game panel so it can be redrawn.
 	 */
 	public void clearInventory() {
-		for (int y = 0; y < 8; y++) {
-			storage.remove(0);
+		try{
+			for (int y = 0; y < 8; y++) {
+				storage.remove(0);
+			}
+		}catch(IndexOutOfBoundsException e){
+
 		}
 	}
 

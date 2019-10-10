@@ -23,6 +23,11 @@ public class Game {
 		loadGame();
 	}
 
+	public Game(Maze maze) {
+		this.maze = maze;
+		loadGame();
+	}
+
 	public Maze getMaze() {
 		return maze;
 	}
