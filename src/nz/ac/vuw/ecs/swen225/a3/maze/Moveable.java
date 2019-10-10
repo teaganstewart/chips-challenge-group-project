@@ -10,12 +10,12 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 public abstract class Moveable {
 
 	private Coordinate coordinate;
-	// Initialize direction to avoid null pointers and simulate realistic gameplay
+	// Initialize direction to avoid null pointers and simulate realistic gameplay.
 	private Direction direction = Direction.DOWN;
 	private Direction lastDirection;
 
 	/**
-	 * Creates a Movable object
+	 * Creates a Movable object.
 	 * 
 	 * @param coordinate The starting coordinate of a moveable object.
 	 */
@@ -24,14 +24,18 @@ public abstract class Moveable {
 	}
 
 	/**
-	 * @param entity
-	 * @return validity
+	 * Returns whether or not the player can walk on this entity.
+	 * 
+	 * @param entity the entity checked against
+	 * @return whether it can or can't overwrite the entity
 	 */
 	public abstract boolean canWalkOn(Entity entity);
 
 	/* Getters and Setters */
 
 	/**
+	 * The direction the player is facing.
+	 * 
 	 * @return Returns the direction that the player is facing.
 	 */
 	public Direction getDirection() {
@@ -39,6 +43,8 @@ public abstract class Moveable {
 	}
 
 	/**
+	 * Sets the direction the player is facing.
+	 * 
 	 * @param dir The direction that you want the player to be facing.
 	 */
 	public void setDirection(Direction dir) {
@@ -48,6 +54,8 @@ public abstract class Moveable {
 	}
 
 	/**
+	 * The direction the player was facing before the last move.
+	 * 
 	 * @return Returns the direction that the player was facing.
 	 */
 	public Direction getLastDirection() {
@@ -55,17 +63,15 @@ public abstract class Moveable {
 	}
 
 	/**
-	 *
-	 * The next position that player would move to.
+	 * The next position that player would move to, in direction player 
+	 * is facing.
 	 * 
-	 * @return coordinate
+	 * @return coordinate Coordinate of nextPostion
 	 */
 	public Coordinate getNextPos() {
 
-		// This is not needed as the Direction will never be null. I also took this
-		// out to increase code coverage
-//		if (direction == null)
-//			return null;
+		if (direction == null)
+			return null;
 
 		int col = coordinate.getCol();
 		int row = coordinate.getRow();
@@ -77,8 +83,6 @@ public abstract class Moveable {
 			return new Coordinate(row - 1, col);
 		case LEFT:
 			return new Coordinate(row, col - 1);
-			// RIGHT
-			// This default is used to increase code coverage
 		default:
 			return new Coordinate(row, col + 1);
 		}
@@ -86,15 +90,13 @@ public abstract class Moveable {
 	}
 
 	/**
-	 * The direction that the player was at before it moved.
+	 * The coordinate that the player was at before it moved.
 	 * 
-	 * @return coordinate
+	 * @return coordinate Returns the last coordinate.
 	 */
 	public Coordinate getPrevPos() {
-		// This is not needed as the Direction will never be null. I also took this
-		// out to increase code coverage
-//		if (direction == null)
-//			return null;
+		if (direction == null)
+			return null;
 
 		int col = coordinate.getCol();
 		int row = coordinate.getRow();
@@ -107,7 +109,6 @@ public abstract class Moveable {
 		case LEFT:
 			return new Coordinate(row, col - 1);
 			// RIGHT
-			// This default is used to increase code coverage
 		default:
 			return new Coordinate(row, col + 1);
 		}
@@ -115,14 +116,18 @@ public abstract class Moveable {
 	}
 
 	/**
-	 * @return coordinate
+	 * The coordinate that they player is on in the board.
+	 * 
+	 * @return coordinate Returns the coordinate.
 	 */
 	public Coordinate getCoordinate() {
 		return coordinate;
 	}
 
 	/**
-	 * @param c
+	 * Set the coordinate where the player is on the board.
+	 * 
+	 * @param c The new coordinate of the player.
 	 */
 	public void setCoordinate(Coordinate c) {
 		this.coordinate = c;

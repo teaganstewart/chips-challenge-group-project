@@ -111,7 +111,7 @@ public class Player extends Moveable implements Saveable {
 	 * Returns where the key is in the inventory.
 	 * 
 	 * @param key What key you want to find.
-	 * @return The index of the key, 0 if wasn't found.
+	 * @return The index of the key
 	 */
 	public int getKeyIndex(Key key){
 		for(int i = 0; i < inventory.size(); i++){
@@ -124,12 +124,7 @@ public class Player extends Moveable implements Saveable {
 		return 0;
 	}
 
-	/**
-	 * Returns whether or not the player can walk on this entity
-	 * 
-	 * @param entity the entity checked against
-	 * @return whether it can or can't overwrite the entity
-	 */
+	
 	@Override
 	public boolean canWalkOn(Entity entity) {
 
@@ -173,11 +168,15 @@ public class Player extends Moveable implements Saveable {
 		return startCoordinate;
 	}
 
-
-	public String toString() {
-		return "Player: " + super.toString() + "facing " + super.getNextPos();
-	}
-
+   public String toString() {
+    	return "Player: " + super.toString() + "facing " + super.getNextPos();
+    }
+	       
+	/**
+	 * Generate a Json representation of this Player
+	 * 
+	 * @return Json object player
+	 */
 	@Override
 	public JsonObject toJSON() {
 		JsonArrayBuilder inventoryJson = Json.createArrayBuilder();

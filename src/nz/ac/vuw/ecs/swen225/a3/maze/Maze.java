@@ -9,14 +9,14 @@ import javax.json.JsonObject;
 import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 
 /**
- * @author Josh
  *
- *         Class which holds all information about the maze and its tiles,
- *         entities, player, ect. Also has logic to determine what is allowed to
- *         happen with the objects in the maze
+ * Class which holds all information about the maze and its tiles,
+ * entities, player, etc. Also has logic to determine what is allowed to
+ * happen with the objects in the maze
+ *         
+ * @author Josh O'Hagan
  *
  */
-
 public class Maze implements Saveable {
 
 	private Tile[][] tiles;
@@ -32,27 +32,19 @@ public class Maze implements Saveable {
 	private List<Skeleton> enemyList;
 
 	/**
-	 * @param tiles
-	 * @param player
-	 *
-	 *               Constructor for a maze.
+	 * Constructs a maze object.
+	 * 
+	 * @param tiles The board, represented as a 2d array of tiles.
+	 * @param player The player.
+	 * @param crateList The list of crates.
+	 * @param enemyList The list of skeleton enemies.
 	 */
 	public Maze(Tile[][] tiles, Player player, List<Crate> crateList, List<Skeleton> enemyList) {
 		this.tiles = tiles;
 		this.player = player;
 		this.goalReached = false;
-		// TODO implement proper crate list so that this safeguard can be removed
-		if(crateList != null){
-            this.crateList = crateList;
-        }else{
-		    this.crateList = new ArrayList<Crate>();
-        }
-		
-		if(enemyList != null){
-            this.enemyList = enemyList;
-        }else{
-		    this.enemyList = new ArrayList<Skeleton>();
-        }
+	    this.crateList = new ArrayList<Crate>();
+	    this.enemyList = new ArrayList<Skeleton>();
 		this.onHint = false;
 		this.onIce = false;
 	}
