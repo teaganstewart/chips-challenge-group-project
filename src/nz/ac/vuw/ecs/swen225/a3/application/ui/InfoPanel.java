@@ -14,6 +14,13 @@ import java.awt.*;
 import java.util.Date;
 import java.util.Scanner;
 
+/**
+ * 
+ * The InfoPanel on the side of the window.
+ * 
+ * @authors Ethan Munn
+ *
+ */
 public class InfoPanel extends JPanel {
 
 	private Game game;
