@@ -1,7 +1,5 @@
 package nz.ac.vuw.ecs.swen225.a3.recnplay;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
@@ -108,5 +106,25 @@ public class ReplayUtils {
 	public static ActionRecord getActionRecord(int index) {
 		return replay.get(index);
 	}
-	
+
+
+	/**
+	 * Delete the replay directory associated with the ID, including it's contents.
+	 * @param id the id on the replay to delete.
+	 * @return boolean stating whether or not directory was deleted.
+	 */
+	private static boolean deleteReplay(long id){
+		String path = RECORD_DIRECTORY+"\\"+id;
+
+		File dir = new File(path);
+
+		File[] listFiles = dir.listFiles();
+		if (listFiles != null){
+			for (File f : listFiles){
+				f.delete();
+			}
+		}
+		return dir.delete();
+	}
+
 }
