@@ -71,41 +71,46 @@ public class LoadUtils {
 
 		if (files != null) {
 			for (File f : files) {
-
-				JsonObject save = readJsonFromFile(f);
-
-				JsonObject level;
-
-				//This is for compatibility with older file formats
 				try {
-					level = extractLevel(save);
-				}
-				catch (NullPointerException e){
-					level = save;
-				}
 
-				int levelNumber = level.getInt("levelNumber");
+					JsonObject save = readJsonFromFile(f);
 
-				String id = f.getName().substring(0, f.getName().length()-5);
+					JsonObject level;
 
-				StringBuilder sb = new StringBuilder();
+					//This is for compatibility with older file formats
+					try {
+						level = extractLevel(save);
+					}
+					catch (NullPointerException e){
+						level = save;
+					}
 
-				if (!save.getString("LevelName").trim().isEmpty()){
-					sb.append(save.getString("LevelName"));
+					int levelNumber = level.getInt("levelNumber");
+
+					String id = f.getName().substring(0, f.getName().length()-5);
+
+					StringBuilder sb = new StringBuilder();
+
+					if (!save.getString("LevelName").trim().isEmpty()){
+						sb.append(save.getString("LevelName"));
+						sb.append(" - ");
+					}
+
+					sb.append("Level: ");
+					sb.append(levelNumber);
 					sb.append(" - ");
+
+					long saveTime = Long.parseLong(id);
+
+					Date date = new Date(saveTime);
+					sb.append(date.toString());
+
+
+					namesToId.put(sb.toString(), saveTime);
+
 				}
-
-				sb.append("Level: ");
-				sb.append(levelNumber);
-				sb.append(" - ");
-
-				long saveTime = Long.parseLong(id);
-
-				Date date = new Date(saveTime);
-				sb.append(date.toString());
-
-
-				namesToId.put(sb.toString(), saveTime);
+				// When a file loads that simply stores the level number, not a name, we ignore it.
+				catch (NullPointerException ignored){}
 			}
 		}
 
@@ -136,22 +141,30 @@ public class LoadUtils {
 	 * @return the Json deserialised back into Object form
 	 */
 	private static Level loadLevel(JsonObject level) {
-		int levelNumber = level.getInt("levelNumber");
-		long levelStartTime = Long.parseLong(level.getString("levelBeginTime"));
-		long levelRunningTime = Long.parseLong(level.getString("totalRunningTime"));
+		try {
+			int levelNumber = level.getInt("levelNumber");
+			long levelStartTime = Long.parseLong(level.getString("levelBeginTime"));
+			long levelRunningTime = Long.parseLong(level.getString("totalRunningTime"));
 
-		// Marker for a new level, set the starting time
-		if (levelStartTime == -1) {
-			levelStartTime = System.currentTimeMillis();
+			// Marker for a new level, set the starting time
+			if (levelStartTime == -1) {
+				levelStartTime = System.currentTimeMillis();
+			}
+
+			int timeAllowed = level.getInt("timeAllowed");
+
+			boolean completed = level.getBoolean("completed");
+
+			Maze maze = loadMaze(level.getJsonObject("maze"));
+
+			return new Level(levelNumber, maze, levelStartTime, levelRunningTime, timeAllowed);
+		}
+		//If the game just saved what number level the player was on when they quit.
+		catch (NullPointerException e){
+			int lvl = level.getInt("LevelNum");
+			return LoadUtils.loadLevel(lvl);
 		}
 
-		int timeAllowed = level.getInt("timeAllowed");
-
-		boolean completed = level.getBoolean("completed");
-
-		Maze maze = loadMaze(level.getJsonObject("maze"));
-
-		return new Level(levelNumber, maze, levelStartTime, levelRunningTime, timeAllowed);
 	}
 
 	/**

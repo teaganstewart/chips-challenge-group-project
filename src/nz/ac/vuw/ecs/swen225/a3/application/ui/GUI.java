@@ -26,7 +26,7 @@ import java.nio.file.LinkOption;
  * breaking our code, we decided to contain it here instead. Some of the methods have
  * been made static so the GUI object does not need to be passed between classes.
  * 
- * @authors Ethan Munn, ...
+ * @authors Ethan Munn, Meng Veng Taing, Teagan Stewart
  *
  */
 public class GUI extends JFrame {
@@ -40,14 +40,12 @@ public class GUI extends JFrame {
 	private InfoPanel infoPanel;
 	
 	// windows
-	private JDialog fileLoaderWindow;
-	private JDialog pauseWindow;
-	private JDialog deathWindow;
+	private JDialog fileLoaderWindow, pauseWindow, deathWindow, finishLevelWindow;
 	
 	//Declare variable menu item variable
 	private JMenuBar menuBar;
 	private JMenu fileMenu, gameMenu;
-	private JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, resume_Item, pause_Item, help_Item;
+	private JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, pause_Item, help_Item;
 
 	private JRadioButton lvl[] = new JRadioButton[2];
 
@@ -69,6 +67,8 @@ public class GUI extends JFrame {
 	// switching between recnplay / game
     private static boolean replayMode;
 
+    //Current record ID
+	private Long currentRecordID;
     /**
      * Constructs the game via the GUI
      */
@@ -174,6 +174,7 @@ public class GUI extends JFrame {
 			}else{
 				saveReplayPopup();
 				JOptionPane.showMessageDialog(null, "Congratulation, You have won the game");
+				finishLevelWindow();
 			}
 		}
 
@@ -185,7 +186,45 @@ public class GUI extends JFrame {
 			recIndex = 0;
 			startTimer();
 		}
+
+		// "," for go back one frame
+		if (e.getKeyCode() == KeyEvent.VK_COMMA) {
+			if(!infoPanel.getPause()) { stopTimer();}
+			setRecIndex(Math.max(0,getRecIndex()-1));
+			setKeyFrame(ReplayUtils.roundTimeToTen(ReplayUtils.getActionRecord(getRecIndex()).getTimeSinceLevelStart()));
+
+			infoPanel.skipReset();
+		}
+
+		// "." for go forward one frame
+		if (e.getKeyCode() == KeyEvent.VK_PERIOD) {
+			if(!infoPanel.getPause()) { stopTimer();}
+			setRecIndex(Math.min(getRecIndex()+1,ReplayUtils.replaySize()-1));
+			setKeyFrame(ReplayUtils.roundTimeToTen(ReplayUtils.getActionRecord(getRecIndex()).getTimeSinceLevelStart()));
+
+			infoPanel.skipReset();
+		}
+
+		// "F" for speed up replay
+		if(e.getKeyCode() == KeyEvent.VK_F) {
+			if (!infoPanel.getPause()) {
+				stopTimer();
+			}
+			setSpeed(getSpeed() == 3 ? 10 : 3);
+			setupTimer();
+			if (!infoPanel.getPause()) {
+				startTimer();
+			}
+		}
+
+		if(e.getKeyCode() == KeyEvent.VK_SPACE){
+			if(infoPanel.getPause()) startTimer();
+			else stopTimer();
+			infoPanel.setPause(!infoPanel.getPause());
+			updateBoard();
+		}
 	}
+
 
 
 	/**
@@ -225,20 +264,26 @@ public class GUI extends JFrame {
 	 * The displayed pop up on attempting to exit
 	 */
 	public void exitPopup(){
+		//Ask user if they really want to exit the game and if they would like to save before exiting
 		int prompt = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the game?", "Close Window?",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (prompt == JOptionPane.YES_OPTION){
+			//
 			int save = JOptionPane.showConfirmDialog(null, "Would you like to save before leaving?", "Save option",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if(save == JOptionPane.YES_OPTION){
 				saveAndExitPopup();
 			}else{
 				JOptionPane.showMessageDialog(null, "Game has not been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
+				SaveUtils.saveLevel(game.getLevelNum());
 				stopTimer();
 				System.exit(0);
 			}
+			
+			main.setFocusable(true);
 
 		}
+		//Continue the timer
 		if(!(infoPanel.getPause())) {
 			startTimer();
 		}
@@ -258,20 +303,87 @@ public class GUI extends JFrame {
 
 		}else{
 			JOptionPane.showMessageDialog(null, "No input for files name or process had been cancelled.");
+			main.setFocusable(true);
 		}
 		startTimer();
+
 	}
 	public void saveReplayPopup(){
 
-		//TODO: ADD THE REMOVE REPLAY
+
 		int i = JOptionPane.showConfirmDialog(null,"Would you like to save the replay recording?", "Save Replay",JOptionPane.YES_NO_OPTION);
 		if( i == 0){
 			JOptionPane.showMessageDialog(null, "Replay had been saved", "Save Replay", JOptionPane.PLAIN_MESSAGE);
 		}else{
 			JOptionPane.showMessageDialog(null,"Replay had not been saved","Save Replay", JOptionPane.PLAIN_MESSAGE);
+
 		}
+		setReplayMode(false);
+		main.setFocusable(true);
 	}
 
+	public void finishLevelWindow(){
+		JPanel panel = new JPanel();
+		JLabel message1 = new JLabel("Level completed.");
+		message1.setBounds(105,20,200 ,30);
+		JLabel message2 = new JLabel("Would you like to:");
+		message2.setBounds(100,50,200 ,30);
+
+		JButton restartButton = new JButton("Restart Level");
+		restartButton.addActionListener(e -> {
+			finishLevelWindow.dispose();
+			restartLevel(game.getLevelNum());
+
+
+		});
+		restartButton.setBounds(75,100,150 ,30);
+
+		JButton replayButton = new JButton("Watch replay");
+		replayButton.addActionListener(e -> {
+			finishLevelWindow.dispose();
+			setReplayMode(true);
+			currentRecordID = ReplayUtils.getStartTime();
+			ReplayUtils.playBack(Long.toString(currentRecordID));
+		});
+		replayButton.setBounds(75,150,150 ,30);
+
+		if(game.getLevelNum() < LEVEL_COUNT) {
+			JButton nextButton = new JButton("Next Level");
+			nextButton.addActionListener(e -> {
+				finishLevelWindow.dispose();
+				game.loadLevel(null, game.getLevelNum()+1);
+
+
+			});
+			nextButton.setBounds(75,200,150 ,30);
+			panel.add(nextButton);
+		}
+
+
+		panel.add(message1);
+		panel.add(message2);
+		panel.add(restartButton);
+		panel.add(replayButton);
+
+		panel.setLayout(null);
+		stopTimer();
+
+		finishLevelWindow = popUpWindow("Level Complete", 300,300);
+		finishLevelWindow.add(panel);
+		finishLevelWindow.addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				e.getWindow().dispose();
+				if(!(infoPanel.getPause())) {
+					startTimer();
+				}
+			}
+		});
+
+		finishLevelWindow.setVisible(true);
+	}
 	/**
 	 * The displayed pop up on getting killed by a skeleton/falling in lava
 	 */
@@ -366,6 +478,7 @@ public class GUI extends JFrame {
 		exitItem.setAccelerator(ctrlXKeyStroke);
 		exitItem.addActionListener((event) -> {
 			stopTimer();
+			SaveUtils.saveLevel(game.getLevelNum());
 			System.exit(0);
 		});
 
@@ -383,6 +496,7 @@ public class GUI extends JFrame {
 		loadGameItem.addActionListener((event) -> {
 			stopTimer();
 			fileLoader();
+
 		});
 	}
 
@@ -504,6 +618,8 @@ public class GUI extends JFrame {
         });
         
 		fileLoaderWindow.setVisible(true);
+		setReplayMode(false);
+		main.setFocusable(true);
 
 	}
 
@@ -687,7 +803,10 @@ public class GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				try {		
+				try {
+					if(globalFrame ==0) {
+						infoPanel.setPause(false);
+					}
 					// grabs the time from the action record
 					int t = ReplayUtils.getActionRecord(recIndex).getTimeSinceLevelStart();
 					
@@ -794,6 +913,7 @@ public class GUI extends JFrame {
     public static void setReplayMode(boolean bool) {
     	replayMode = bool;
     	started = false;
+
     }
     
     /**
@@ -850,6 +970,16 @@ public class GUI extends JFrame {
     	return gameSpeed;
     }
 
+	/**
+	 * Return the max level
+	 * @return
+	 */
+	public int getLevelCount(){
+    	return LEVEL_COUNT;
+	}
+
+
+
     /**
      * Checks the conditions of the maze to see if the game needs
      * to be reset or moved onto the next level
@@ -860,10 +990,10 @@ public class GUI extends JFrame {
 		// if the goal has been reached
 		if (maze.isGoalReached()) {
 			stopTimer();
-			setReplayMode(true);
-			ReplayUtils.playBack(Long.toString(ReplayUtils.getStartTime()));
+			finishLevelWindow();
 			startTimer();
 			updateBoard();
+			main.setFocusable(true);
 		}
 
 		// Check if level needs to be reset. This could be if the player dies for

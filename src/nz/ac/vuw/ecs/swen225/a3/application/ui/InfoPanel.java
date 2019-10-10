@@ -172,10 +172,10 @@ public class InfoPanel extends JPanel {
 		hint.setBorder(border);
 		
 		JLabel text = new JLabel(replayMode ?
-								"<html>## to play, ## to pause"+
-								"<br>## to fast forward"+
-								"<br>## to move forward one frame"+
-								"<br>## to move backward one frame<html>":
+								"<html>\"space\" to play, \"space\" to pause"+
+								"<br>\"F\" to fast forward"+
+								"<br>\".\" to move forward one frame"+
+								"<br>\",\" to move backward one frame<html>":
 								"<html>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
 								"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
 								"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
@@ -208,6 +208,10 @@ public class InfoPanel extends JPanel {
 		hint.add(text);
 	}
 
+	/**
+	 * Create a time panel.
+	 * @return
+	 */
 	public JPanel timePanel() {
 
 		timer = new JPanel();
@@ -219,6 +223,10 @@ public class InfoPanel extends JPanel {
 		return timer;
 	}
 
+	/**
+	 * Display the time.
+	 * @param replayMode
+	 */
 	public void displayTime(boolean replayMode) {
 		try {
 			timer.remove(0);
@@ -235,6 +243,9 @@ public class InfoPanel extends JPanel {
 		timer.add(text);
 	}
 
+	/**
+	 * Convert time to mins in format.
+	 */
 	private String timeToMins(int time) {
 		int first = 0;
 		int secnd = 0;
@@ -248,16 +259,26 @@ public class InfoPanel extends JPanel {
 		return (first <= 9 ? "0" : "") + Integer.toString(first) + ":" + (secnd <= 9 ? "0" : "") + Integer.toString(secnd);
 	}
 
+	/**
+	 * Create panel for the replay.
+	 * @return
+	 */
 	JPanel recnplayPanel() {
 	
 		rec = new JPanel(new GridLayout(1,6,0,0));
 		rec.setMinimumSize(new Dimension(220,40));
+		rec.setBackground(new Color(65, 65, 73));
 		for(int i=0; i<6;i++) {
 			rec.add(new JLabel());
 		}
 		return rec;
 	}
 
+
+	/**
+	 * Update the replay action on button event.
+	 * @param replayMode
+	 */
 	void updateRec(boolean replayMode) {
 		try {
 			for(int i=0; i<6;i++) {
@@ -296,10 +317,10 @@ public class InfoPanel extends JPanel {
 	        backOneButton.setIcon(backOne);
 	        backOneButton.addActionListener(event -> {
 	        	if(!pause) { gui.stopTimer();}
-	        	gui.setRecIndex(Math.max(0,gui.getRecIndex()-1));
-	        	gui.setKeyFrame(ReplayUtils.roundTimeToTen(ReplayUtils.getActionRecord(gui.getRecIndex()).getTimeSinceLevelStart()));
-	        	
-	        	skipReset();
+				gui.setRecIndex(Math.max(0,gui.getRecIndex()-1));
+				gui.setKeyFrame(ReplayUtils.roundTimeToTen(ReplayUtils.getActionRecord(gui.getRecIndex()).getTimeSinceLevelStart()));
+
+				skipReset();
 	        });
 			rec.add(backOneButton);
 			
@@ -363,15 +384,20 @@ public class InfoPanel extends JPanel {
 			JButton skipButton = new JButton();
 			skipButton.setIcon(skipIcon);
 			skipButton.addActionListener(event -> {
-				if (game.getLevelNum() < 2) {
+				if (game.getLevelNum() < gui.getLevelCount()) {
 					gui.stopTimer();
 					gui.setReplayMode(false);
 					gui.saveReplayPopup();
 					gui.setSpeed(10);
 					game.loadLevel(null, game.getLevelNum()+1);
+					GUI.main.setFocusable(true);
+					gui.updateBoard();
 				}else{
 					gui.saveReplayPopup();
+					JOptionPane.showMessageDialog(null, "Congratulation, You have won the game");
+					gui.finishLevelWindow();
 				}
+
 			});
 			skipButton.setBorderPainted(false); 
 	        skipButton.setContentAreaFilled(false); 
@@ -384,12 +410,15 @@ public class InfoPanel extends JPanel {
 				rec.add(new JLabel());
 			}
 		}
+
 	}
 
-	private void skipReset() {
+	/**
+	 * Update board replay.
+	 */
+	public void skipReset() {
 
     	Maze m = ReplayUtils.getActionRecord(gui.getRecIndex()).getMaze();
-    	int t = ReplayUtils.getActionRecord(gui.getRecIndex()).getTimeSinceLevelStart();
 
     	game.getRender().setMaze(m);
     	game.setMaze(m);
