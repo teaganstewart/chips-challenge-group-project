@@ -3,7 +3,7 @@ package nz.ac.vuw.ecs.swen225.a3.application;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GamePanel;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
-import nz.ac.vuw.ecs.swen225.a3.persistence.LevelMaker;
+//import nz.ac.vuw.ecs.swen225.a3.persistence.LevelMaker;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.ActionRecord;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.ReplayUtils;

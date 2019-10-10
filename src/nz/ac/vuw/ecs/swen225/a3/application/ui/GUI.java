@@ -978,7 +978,23 @@ public class GUI extends JFrame {
     	return LEVEL_COUNT;
 	}
 
-
+	/**
+	 * Returns the game (for testing purposes, mainly)
+	 * @return
+	 * 		the current game
+	 */
+	public Game getGame() {
+		return game;
+	}
+	
+	/**
+	 * Sets the game (for testing purposes, mainly)
+	 * @param game
+	 * 		the game we wish to change
+	 */
+	public void setGame(Game game) {
+		this.game = game;
+	}
 
     /**
      * Checks the conditions of the maze to see if the game needs
