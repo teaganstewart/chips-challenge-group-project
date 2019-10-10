@@ -136,22 +136,30 @@ public class LoadUtils {
 	 * @return the Json deserialised back into Object form
 	 */
 	private static Level loadLevel(JsonObject level) {
-		int levelNumber = level.getInt("levelNumber");
-		long levelStartTime = Long.parseLong(level.getString("levelBeginTime"));
-		long levelRunningTime = Long.parseLong(level.getString("totalRunningTime"));
+		try {
+			int levelNumber = level.getInt("levelNumber");
+			long levelStartTime = Long.parseLong(level.getString("levelBeginTime"));
+			long levelRunningTime = Long.parseLong(level.getString("totalRunningTime"));
 
-		// Marker for a new level, set the starting time
-		if (levelStartTime == -1) {
-			levelStartTime = System.currentTimeMillis();
+			// Marker for a new level, set the starting time
+			if (levelStartTime == -1) {
+				levelStartTime = System.currentTimeMillis();
+			}
+
+			int timeAllowed = level.getInt("timeAllowed");
+
+			boolean completed = level.getBoolean("completed");
+
+			Maze maze = loadMaze(level.getJsonObject("maze"));
+
+			return new Level(levelNumber, maze, levelStartTime, levelRunningTime, timeAllowed);
+		}
+		//If the game just saved what number level the player was on when they quit.
+		catch (NullPointerException e){
+			int lvl = level.getInt("LevelNum");
+			return LoadUtils.loadLevel(lvl);
 		}
 
-		int timeAllowed = level.getInt("timeAllowed");
-
-		boolean completed = level.getBoolean("completed");
-
-		Maze maze = loadMaze(level.getJsonObject("maze"));
-
-		return new Level(levelNumber, maze, levelStartTime, levelRunningTime, timeAllowed);
 	}
 
 	/**
