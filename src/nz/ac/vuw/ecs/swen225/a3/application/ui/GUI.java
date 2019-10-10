@@ -316,6 +316,7 @@ public class GUI extends JFrame {
 			JOptionPane.showMessageDialog(null,"Replay had not been saved","Save Replay", JOptionPane.PLAIN_MESSAGE);
 
 		}
+		setReplayMode(false);
 		main.setFocusable(true);
 	}
 
@@ -493,6 +494,7 @@ public class GUI extends JFrame {
 		loadGameItem.addActionListener((event) -> {
 			stopTimer();
 			fileLoader();
+
 		});
 	}
 
@@ -614,6 +616,7 @@ public class GUI extends JFrame {
         });
         
 		fileLoaderWindow.setVisible(true);
+		main.setFocusable(true);
 
 	}
 
