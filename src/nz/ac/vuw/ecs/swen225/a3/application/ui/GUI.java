@@ -40,7 +40,7 @@ public class GUI extends JFrame {
     private static boolean timeToggle;
     private static boolean enemyToggle;
     private static boolean started;
-    
+
     // recnplay variables
     private static Timer replayLoop;
     private static int globalFrame;
@@ -55,7 +55,7 @@ public class GUI extends JFrame {
 		setReplayMode(false);
 		setupTimer();
 		game = new Game();
-	
+
 		createWindow();
 		main.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		main.addKeyListener(new KeyListener() {
@@ -161,10 +161,10 @@ public class GUI extends JFrame {
 		gamePanel = new GamePanel(game);
 		gamePanel.setBackground(new Color(40, 237, 66));
 		infoPanel = new InfoPanel(game, this);
-		
+
 		main.add(gamePanel, BorderLayout.LINE_START);
 		main.add(infoPanel, BorderLayout.LINE_END);
-		
+
 		//Display window at the center of the screen
 		main.pack();
 		main.setVisible(true);
@@ -257,7 +257,7 @@ public class GUI extends JFrame {
 		deathWindow.setVisible(true);
 
 	}
-	
+
 	/**
 	 * Create menu bar with all the menu items
 	 */
@@ -436,7 +436,7 @@ public class GUI extends JFrame {
 				}
             }
         });
-        
+
 		fileLoaderWindow.setVisible(true);
 
 	}
@@ -483,7 +483,7 @@ public class GUI extends JFrame {
                 }
             }
         });
-        
+
         // if closed out using X
         pauseWindow.addWindowListener(new WindowAdapter()
         {
@@ -496,7 +496,7 @@ public class GUI extends JFrame {
 				}
             }
         });
-        
+
         pauseWindow.setVisible(true);
 
 	}
@@ -506,7 +506,7 @@ public class GUI extends JFrame {
 		game.loadLevel(gamePanel,lvl);
 
 	}
-	
+
 	public void restartGame(){
 		if (replayMode) return;
 		game.loadLevel(gamePanel,1);
@@ -533,8 +533,8 @@ public class GUI extends JFrame {
 		infoPanel.drawInventory();
 		infoPanel.updateRec(replayMode);
 		gamePanel.updateUI();
-		
-		
+
+
 
 	}
 
@@ -592,25 +592,25 @@ public class GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				try {		
+				try {
 					Maze m = ReplayUtils.getActionRecord(recIndex).getMaze();
 					int t = ReplayUtils.getActionRecord(recIndex).getTimeSinceLevelStart();
-					
+
 					for(int i=0; i<(10.0/gameSpeed); i++) {
 
 						boolean moreToGo = recIndex < ReplayUtils.replaySize()-1;
 						if (ReplayUtils.roundTimeToTen(t) == keyFrame) {
-	
+
 							game.getRender().setMaze(m);
 							game.setMaze(m);
 							updateBoard();
 
 							if (moreToGo) recIndex++;
-							
+
 						}
-						
+
 						if (ReplayUtils.roundTimeToTen(t) == keyFrame-10 && moreToGo) recIndex++;
-	
+
 						keyFrame += 10;
 						globalFrame += 10;
 					}
@@ -633,7 +633,7 @@ public class GUI extends JFrame {
 		}
 		return false;
     }
-    
+
     public static void startTimer() {
     	if (!replayMode) {
     		if (!started) {
@@ -643,7 +643,7 @@ public class GUI extends JFrame {
     	    	timeToggle = false;
     	    	started = true;
     		}
-    		
+
 	    	gameLoop.start();
     	} else {
     		if (!started) {
@@ -653,7 +653,7 @@ public class GUI extends JFrame {
         		flashIcon = true;
         		started = true;
     		}
-    		
+
     		replayLoop.start();
     	}
     }
@@ -667,32 +667,40 @@ public class GUI extends JFrame {
     	replayMode = bool;
     	started = false;
     }
-    
+
+	public static boolean isReplayMode() {
+		return replayMode;
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
     public void setKeyFrame(int key) {
     	keyFrame = key;
     }
-    
+
     public int getKeyFrame() {
     	return keyFrame;
     }
-    
+
     public void setRecIndex(int rec) {
     	recIndex = rec;
     }
-    
+
     public int getRecIndex() {
     	return recIndex;
     }
-    
+
     public void setSpeed(int speed) {
     	gameSpeed = speed;
     }
-    
+
     public int getSpeed() {
     	return gameSpeed;
     }
 
-    private void checkConditions(Maze maze) {
+    public void checkConditions(Maze maze) {
 		// if the goal has been reached
 		if (maze.isGoalReached()) {
 			stopTimer();
