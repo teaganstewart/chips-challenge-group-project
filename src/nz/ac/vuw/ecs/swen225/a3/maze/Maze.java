@@ -43,8 +43,8 @@ public class Maze implements Saveable {
 		this.tiles = tiles;
 		this.player = player;
 		this.goalReached = false;
-		this.crateList = new ArrayList<Crate>();
-		this.enemyList = new ArrayList<Skeleton>();
+		this.crateList = (crateList==null) ? new ArrayList<Crate>() : crateList;
+		this.enemyList = (enemyList==null) ? new ArrayList<Skeleton>() : enemyList;
 		this.onHint = false;
 		this.onIce = false;
 	}
