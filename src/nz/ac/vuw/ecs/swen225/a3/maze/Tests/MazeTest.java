@@ -108,8 +108,8 @@ public class MazeTest {
 		tiles[3][5].setEntity(new KeyDoor(BasicColor.YELLOW));
 		assertTrue(maze.movePlayer(Direction.RIGHT));
 
-		// Make sure Chap keeps the key after unlocking the door
-		assertTrue(player.getInventory().contains(key));
+		// Make sure Chap doesn't keep the key after unlocking the door
+		assertFalse(player.getInventory().contains(key));
 	}
 
 	/**

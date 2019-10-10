@@ -13,15 +13,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author Josh
- *         <p>
- *         Class which contains tests for the Ice Tile
+ * Class which contains tests for the Ice Tile
+ *
+ * @authors Joshua O'Hagan, Ethan Munn
+ *
  */
 public class IceTest {
 
+	private GUI gui;
+	private Level level;
+    private Maze maze;
     private Tile[][] tiles;
     private Player player;
-    private Maze maze;
     private List<Crate> crateList = new ArrayList<>();
 
     /*
@@ -29,7 +32,8 @@ public class IceTest {
      * */
     @BeforeEach
     public void setUp() {
-    	GUI gui = new GUI();
+    	gui = new GUI();
+
         tiles = new Tile[9][9];
         for (int row = 0; row < tiles.length; row++) {
             for (int col = 0; col < tiles[0].length; col++) {
@@ -43,7 +47,10 @@ public class IceTest {
         ));
 
         maze = new Maze(tiles, player, crateList,null);
-        GUI.startTimer();
+        level = new Level(-1, maze, System.currentTimeMillis(), 0, 1000);
+        gui.getGame().loadSave(level);
+        Treasure.reset();
+
     }
 
     /*
@@ -53,6 +60,7 @@ public class IceTest {
     @AfterEach
     public void tearDown() {
         Treasure.reset();
+        GUI.stopTimer();
     }
 
     /**
@@ -80,6 +88,8 @@ public class IceTest {
         tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
         tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
         assertTrue(maze.movePlayer(Direction.RIGHT));
+        // runs the game.update method to actually update the game and check for ice sliding
+        for (int i = 0; i < 3; i++) gui.getGame().update(true, false);
         // Player slides to the next non-ice block
         assertEquals(new Coordinate(3, 7), player.getCoordinate());
     }
@@ -94,6 +104,8 @@ public class IceTest {
         tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
         tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.WALL);
         assertTrue(maze.movePlayer(Direction.RIGHT));
+        // runs the game.update method to actually update the game and check for ice sliding
+        for (int i = 0; i < 3; i++) gui.getGame().update(true, false);
         // Player slides to the next non-ice block
         assertEquals(new Coordinate(3, 6), player.getCoordinate());
     }
@@ -108,6 +120,8 @@ public class IceTest {
         tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
         tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.FIRE);
         assertTrue(maze.movePlayer(Direction.RIGHT));
+        // runs the game.update method to actually update the game and check for ice sliding
+        for (int i = 0; i < 2; i++) gui.getGame().update(true, false);
         // Player should now be standing on last ice block
         assertEquals(new Coordinate(3, 6), player.getCoordinate());
         assertFalse(maze.movePlayer(Direction.RIGHT));
@@ -124,12 +138,14 @@ public class IceTest {
         tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.ICE);
         tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
         tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
-        tiles[3][7] = new HintTile(new Coordinate(3, 7), "You are Big Gay. Stop standing on me!!");
+        tiles[3][7] = new HintTile(new Coordinate(3, 7), "Test Hint! :)");
         assertTrue(maze.movePlayer(Direction.RIGHT));
+        // runs the game.update method to actually update the game and check for ice sliding
+        for (int i = 0; i < 3; i++) gui.getGame().update(true, false);
         // Player should now be standing on hint tile
         HintTile hintTile = (HintTile) tiles[3][7];
-        assertEquals("You are Big Gay. Stop standing on me!!", hintTile.getMessage());
-        assertEquals("You are Big Gay. Stop standing on me!!", maze.getHintMessage());
+        assertEquals("Test Hint! :)", hintTile.getMessage());
+        assertEquals("Test Hint! :)", maze.getHintMessage());
         assertEquals(new Coordinate(3, 7), player.getCoordinate());
     }
 
@@ -143,6 +159,8 @@ public class IceTest {
         tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
         tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.GOAL);
         assertTrue(maze.movePlayer(Direction.RIGHT));
+        // runs the game.update method to actually update the game and check for ice sliding
+        for (int i = 0; i < 3; i++) gui.getGame().update(true, false);
         assertEquals(new Coordinate(3, 7), player.getCoordinate());
         assertTrue(maze.isGoalReached());
     }
@@ -159,6 +177,8 @@ public class IceTest {
         Key key = new Key(BasicColor.YELLOW);
         tiles[3][7].setEntity(key);
         assertTrue(maze.movePlayer(Direction.RIGHT));
+        // runs the game.update method to actually update the game and check for ice sliding
+        for (int i = 0; i < 3; i++) gui.getGame().update(true, false);
         assertEquals(new Coordinate(3, 7), player.getCoordinate());
         assertTrue(player.isInInventory(key));
         assertTrue(player.getInventory().contains(key));
@@ -176,6 +196,8 @@ public class IceTest {
         Treasure treasure = new Treasure();
         tiles[3][7].setEntity(treasure);
         assertTrue(maze.movePlayer(Direction.RIGHT));
+        // runs the game.update method to actually update the game and check for ice sliding
+        for (int i = 0; i < 3; i++) gui.getGame().update(true, false);
         assertEquals(new Coordinate(3, 7), player.getCoordinate());
         assertTrue(Treasure.allCollected());
     }
@@ -194,6 +216,8 @@ public class IceTest {
         Treasure treasure = new Treasure();
         tiles[3][8].setEntity(treasure);
         assertTrue(maze.movePlayer(Direction.RIGHT));
+        // runs the game.update method to actually update the game and check for ice sliding
+        for (int i = 0; i < 3; i++) gui.getGame().update(true, false);
         assertEquals(new Coordinate(3, 6), player.getCoordinate());
         assertFalse(maze.movePlayer(Direction.RIGHT));
     }
@@ -210,7 +234,30 @@ public class IceTest {
         KeyDoor keyDoor = new KeyDoor(BasicColor.YELLOW);
         tiles[3][7].setEntity(keyDoor);
         assertTrue(maze.movePlayer(Direction.RIGHT));
+        // runs the game.update method to actually update the game and check for ice sliding
+        for (int i = 0; i < 3; i++) gui.getGame().update(true, false);
         assertEquals(new Coordinate(3, 6), player.getCoordinate());
         assertFalse(maze.movePlayer(Direction.RIGHT));
+    }
+
+    /**
+     * Test to see if player has ice boots!
+     */
+    @Test
+    public void testIceBlockWithBoots() {
+    	IceBoots ib = new IceBoots();
+        tiles[3][4].setEntity(ib);
+        tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
+        tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
+        tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.FLOOR);
+        assertTrue(maze.movePlayer(Direction.RIGHT));
+        // checks the ice boots are in the inventory
+        assertTrue(player.isInInventory(ib));
+        assertTrue(player.getInventory().contains(ib));
+        assertTrue(maze.movePlayer(Direction.RIGHT));
+        // runs the game.update method to actually update the game and check for ice sliding
+        for (int i = 0; i < 3; i++) gui.getGame().update(true, false);
+        // since they have ice boots, should have no effect
+        assertEquals(new Coordinate(3, 5), player.getCoordinate());
     }
 }
