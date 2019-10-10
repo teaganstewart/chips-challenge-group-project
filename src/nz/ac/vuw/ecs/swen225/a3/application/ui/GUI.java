@@ -301,8 +301,10 @@ public class GUI extends JFrame {
 
 		}else{
 			JOptionPane.showMessageDialog(null, "No input for files name or process had been cancelled.");
+			main.setFocusable(true);
 		}
 		startTimer();
+
 	}
 	public void saveReplayPopup(){
 
@@ -312,7 +314,6 @@ public class GUI extends JFrame {
 			JOptionPane.showMessageDialog(null, "Replay had been saved", "Save Replay", JOptionPane.PLAIN_MESSAGE);
 		}else{
 			JOptionPane.showMessageDialog(null,"Replay had not been saved","Save Replay", JOptionPane.PLAIN_MESSAGE);
-			System.out.println(ReplayUtils.deleteReplay(currentRecordID));
 
 		}
 		main.setFocusable(true);
@@ -962,6 +963,16 @@ public class GUI extends JFrame {
     public int getSpeed() {
     	return gameSpeed;
     }
+
+	/**
+	 * Return the max level
+	 * @return
+	 */
+	public int getLevelCount(){
+    	return LEVEL_COUNT;
+	}
+
+
 
     /**
      * Checks the conditions of the maze to see if the game needs

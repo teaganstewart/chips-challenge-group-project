@@ -384,15 +384,17 @@ public class InfoPanel extends JPanel {
 			JButton skipButton = new JButton();
 			skipButton.setIcon(skipIcon);
 			skipButton.addActionListener(event -> {
-				if (game.getLevelNum() < 2) {
+				if (game.getLevelNum() < gui.getLevelCount()) {
 					gui.stopTimer();
 					gui.setReplayMode(false);
 					gui.saveReplayPopup();
 					gui.setSpeed(10);
 					game.loadLevel(null, game.getLevelNum()+1);
+
 				}else{
 					gui.saveReplayPopup();
 				}
+
 			});
 			skipButton.setBorderPainted(false); 
 	        skipButton.setContentAreaFilled(false); 
@@ -405,6 +407,7 @@ public class InfoPanel extends JPanel {
 				rec.add(new JLabel());
 			}
 		}
+
 	}
 
 	/**
