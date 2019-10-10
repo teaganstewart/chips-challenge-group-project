@@ -4,11 +4,10 @@ import javax.json.Json;
 import javax.json.JsonObject;
 
 /**
- * @author Ethan
+ * Represents a door that needs a key to unlock it. The key color must
+ * be the same color as the door lock.
  * 
- *         Represents a door that needs a key to unlock it. The key color must
- *         be the same color as the door lock
- *
+ * @author Ethan Munn
  */
 public class KeyDoor extends Door {
 
@@ -18,7 +17,7 @@ public class KeyDoor extends Door {
 	 * Creates a new door object, corresponding to a certain key colour. By default,
 	 * every new door should be locked.
 	 *
-	 * @param color Color of the door, using BasicColor enum
+	 * @param color Color of the door, using BasicColor enum.
 	 */
 	public KeyDoor(BasicColor color) {
 		super();
@@ -37,8 +36,8 @@ public class KeyDoor extends Door {
 	/**
 	 * Checks a keyColor to see if it matches the door.
 	 * 
-	 * @param key Color of the key, using the BasicColor enum
-	 * @return Whether or not the player can unlock this door.
+	 * @param key Color of the key, using the BasicColor enum.
+	 * @return Returns true if the player can unlock this door.
 	 */
 	public boolean isRightKey(Key key) {
 		return key.getColor() == color;
@@ -51,6 +50,8 @@ public class KeyDoor extends Door {
 			return false;
 
 		Key key = null;
+		
+		//checks players inventory for a key of the right color
 		for (Entity e : player.getInventory()) {
 			if (e instanceof Key) {
 				Key temp = (Key) e;
@@ -58,6 +59,7 @@ public class KeyDoor extends Door {
 					unlock();
 					key = temp;
 
+					// implements single use keys
 					player.removeInventoryAt(player.getKeyIndex(key));
 					break;
 				}

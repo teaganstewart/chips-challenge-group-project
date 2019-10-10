@@ -41,7 +41,7 @@ public class Render {
 
 		Tile[][] tiles = maze.getTiles();
 		board = new JLabel[tiles.length][tiles[0].length];
-		
+
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {
 				JLabel tile = new JLabel(images.getTileIcon(i, j, maze));
@@ -62,29 +62,29 @@ public class Render {
 	 * @param j The column of the Moveable object.
 	 */
 	public void renderMoveables(int i, int j) {
-		
+
 		Coordinate playerCoordinate = maze.getPlayer().getCoordinate();
 		if(playerCoordinate.getRow()==i && playerCoordinate.getCol()==j) {
 			board[i][j].add(new JLabel(images.getPlayerIcon(maze.getPlayer().getDirection())));
 			return;
 		}
-		
+
 		for(Moveable enemy : maze.getEnemyList()) {
 			Coordinate enemyCoordinate = enemy.getCoordinate();
 			if(enemyCoordinate.getRow()==i && enemyCoordinate.getCol()==j) {
 				board[i][j].add(new JLabel(images.getEnemyIcon(enemy.getDirection())));
 			}
 		}
-		
+
 		for(Crate crate : maze.getCrateList()) {
 			Coordinate crateCoordinate = crate.getCoordinate();
 			if(crateCoordinate.getRow()==i && crateCoordinate.getCol()==j) {
 				board[i][j].add(new JLabel(images.getCrateIcon()));
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Renders the entities on the board e.g. keys, doors.
 	 * 
@@ -119,11 +119,11 @@ public class Render {
 
 		for(int i=0; i<player.getInventory().size(); i++) {
 			Entity entity = player.getInventoryAt(i);
-			
+
 			inventory[i] = new JLabel(images.getSlotIcon());
 			inventory[i].setLayout(new BorderLayout());
 			if(entity instanceof Key) {
-				
+
 				BasicColor keyColor = ((Key) entity).getColor();
 
 				inventory[i].add(new JLabel((images.getKeyIcon(keyColor))));
@@ -135,11 +135,11 @@ public class Render {
 				inventory[i].add(new JLabel(images.getEntityIcon(new IceBoots())));
 			}
 		}
-		
+
 		for(int i= player.getInventory().size(); i<8; i++) {
 			inventory[i] = new JLabel(images.getSlotIcon());
 		}
-		
+
 		return inventory;
 	}
 

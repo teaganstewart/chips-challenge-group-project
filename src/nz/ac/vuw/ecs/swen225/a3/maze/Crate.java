@@ -15,7 +15,8 @@ import javax.json.JsonObject;
 public class Crate extends Moveable implements Saveable {
 
     /**
-     * @param coordinate
+     * Constructor for the Crate object.
+     * @param coordinate The coordinate of the crate at the start.
      */
     public Crate(Coordinate coordinate) {
         super(coordinate);

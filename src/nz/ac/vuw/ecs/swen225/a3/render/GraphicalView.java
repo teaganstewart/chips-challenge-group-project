@@ -205,7 +205,7 @@ public class GraphicalView {
 	public ImageIcon getSlotIcon() {
 		return slot;
 	}
-	
+
 	/**
 	 * Generic crate icon.
 	 * 
