@@ -791,7 +791,10 @@ public class GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				try {		
+				try {
+					if(globalFrame ==0) {
+						infoPanel.setPause(false);
+					}
 					// grabs the time from the action record
 					int t = ReplayUtils.getActionRecord(recIndex).getTimeSinceLevelStart();
 					
@@ -898,6 +901,7 @@ public class GUI extends JFrame {
     public static void setReplayMode(boolean bool) {
     	replayMode = bool;
     	started = false;
+
     }
     
     /**

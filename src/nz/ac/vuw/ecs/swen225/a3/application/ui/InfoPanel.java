@@ -172,10 +172,10 @@ public class InfoPanel extends JPanel {
 		hint.setBorder(border);
 		
 		JLabel text = new JLabel(replayMode ?
-								"<html>space to play, space to pause"+
-								"<br>F to fast forward"+
-								"<br>. to move forward one frame"+
-								"<br>, to move backward one frame<html>":
+								"<html>\"space\" to play, \"space\" to pause"+
+								"<br>\"F\" to fast forward"+
+								"<br>\".\" to move forward one frame"+
+								"<br>\",\" to move backward one frame<html>":
 								"<html>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
 								"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
 								"<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
