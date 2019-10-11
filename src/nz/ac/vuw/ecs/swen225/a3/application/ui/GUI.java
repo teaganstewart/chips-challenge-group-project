@@ -376,6 +376,7 @@ public class GUI extends JFrame {
 			setReplayMode(true);
 			currentRecordID = ReplayUtils.getStartTime();
 			ReplayUtils.playBack(Long.toString(currentRecordID));
+			startTimer();
 		});
 		replayButton.setBounds(75,150,150 ,30);
 
