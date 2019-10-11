@@ -101,6 +101,7 @@ public class GUI extends JFrame {
 				
 				// has to stop the timer here so the game doesn't keep running in the background
 				stopTimer();
+		    	game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
 				exitPopup();
 				
 			}
@@ -142,7 +143,8 @@ public class GUI extends JFrame {
 
 		// if a move was successful, pushes this to the replay action record, and updates the board
 		if (moved) {
-			new Thread(() -> ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime()), maze))).start();
+			new Thread(() -> ReplayUtils.pushActionRecord(
+					new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime() - ReplayUtils.getDifference()), maze))).start();
 			updateBoard();
 		}
 	}
@@ -484,6 +486,7 @@ public class GUI extends JFrame {
 		exitItem.setAccelerator(ctrlXKeyStroke);
 		exitItem.addActionListener((event) -> {
 			stopTimer();
+			game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
 			SaveUtils.saveLevel(game.getLevelNum());
 			System.exit(0);
 		});
@@ -493,6 +496,7 @@ public class GUI extends JFrame {
 		saveAndExitItem.setAccelerator(ctrlSKeyStroke);
 		saveAndExitItem.addActionListener((event) -> {
 			stopTimer();
+			game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
 			saveAndExitPopup();
 		});
 
@@ -501,6 +505,7 @@ public class GUI extends JFrame {
 		loadGameItem.setAccelerator(ctrlRKeyStroke);
 		loadGameItem.addActionListener((event) -> {
 			stopTimer();
+			game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
 			fileLoader();
 
 		});
@@ -526,6 +531,7 @@ public class GUI extends JFrame {
 		pause_Item.addActionListener((event) -> {
 			if (!replayMode) {
 				stopTimer();
+				game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
 				pauseWindow();
 			}
 		});
@@ -536,6 +542,7 @@ public class GUI extends JFrame {
 		help_Item.setAccelerator(ctrlHKeyStroke);
 		help_Item.addActionListener(e -> {
 			stopTimer();
+			game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
 			if(JOptionPane.showConfirmDialog(
 					main,
 					"Welcome to the help page  :D\n" +
@@ -587,6 +594,7 @@ public class GUI extends JFrame {
 		select.setBounds(200,100,100,30);
 		select.addActionListener(event -> {
 			stopTimer();
+			game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
 			if(cb.getSelectedIndex() !=-1) {
 				fileLoaderWindow.dispose();
 				Object selectItem = cb.getSelectedItem();
@@ -675,8 +683,7 @@ public class GUI extends JFrame {
         pauseWindow.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-            	// perpetually has the timer stopped
-                stopTimer();
+            	
                 // starts the timer again
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     pauseWindow.dispose();
@@ -880,12 +887,13 @@ public class GUI extends JFrame {
 			// has to create and initialise a new folder for all the recordings to be saved into, as well as reset
 			// all the variables for toggling when enemies move, for example
     		if (!started) {
-    			ReplayUtils.setStartTime(System.currentTimeMillis());
+    			ReplayUtils.reset();
     			gameFrame = 0;
     			enemyToggle = false;
     	    	timeToggle = false;
     	    	started = true;
-
+    		} else {
+    			ReplayUtils.updateDifference();
     		}
     		
 	    	gameLoop.start();
@@ -909,10 +917,13 @@ public class GUI extends JFrame {
      * Stops whichever timer is active, regardless of which mode its in
      */
     public static void stopTimer() {
-    	if (!replayMode) gameLoop.stop();
+    	if (!replayMode) {
+    		ReplayUtils.setPause();
+    		gameLoop.stop();
+    	}
     	else replayLoop.stop();
     }
-
+    
     /**
      * Switches the replay mode and sets started to false for the timers
      * @param bool

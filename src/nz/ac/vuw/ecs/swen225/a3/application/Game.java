@@ -120,7 +120,8 @@ public class Game {
 				}
 		}
 		if (saveReplay) {
-			new Thread(() -> ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime()), getMaze()))).start();
+			new Thread(() -> ReplayUtils.pushActionRecord(
+					new ActionRecord((int)(System.currentTimeMillis() - ReplayUtils.getStartTime() - ReplayUtils.getDifference()), getMaze()))).start();
 		}
 	}
 
@@ -135,7 +136,8 @@ public class Game {
 			level = LoadUtils.resumeGame();
 			setLevelNum(level.getLevel());
 			
-			// check if the save is valid
+			setTime(level.getTimeAllowed() - (int) level.getRunTime());
+			
 			if(level.getMaze().getTiles().length<9 || level.getMaze().getTiles()[0].length<9) {
 				throw new NullPointerException();
 			}
@@ -148,7 +150,7 @@ public class Game {
 		maze = level.getMaze();
 		player = maze.getPlayer();
 		setLevelNum(level.getLevel());
-
+		
 		startLevel(level);
 
 	}
@@ -253,6 +255,7 @@ public class Game {
 		setPlayer(lvl.getMaze().getPlayer());
 		setTiles(lvl.getMaze().getTiles());
 		setLevelNum(lvl.getLevel());
+		setTime(lvl.getTimeAllowed() - (int)lvl.getRunTime());
 		startLevel(lvl);
 	}
 
@@ -263,7 +266,6 @@ public class Game {
 	 * @param l The level we are loading.
 	 */
 	public void startLevel(Level l) {
-		setTime(l.getTimeAllowed());
 		setLevel(l);
 		
 		GUI.stopTimer();

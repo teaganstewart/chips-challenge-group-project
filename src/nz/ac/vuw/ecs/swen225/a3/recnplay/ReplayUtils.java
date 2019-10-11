@@ -21,7 +21,9 @@ import javax.json.JsonWriter;
 public class ReplayUtils {
 
 	public static final String RECORD_DIRECTORY = "recordings";
-	public static long startTime = 0;
+	public static long startTime;
+	private static long pauseTime;
+	private static long difference;
 	private static List<ActionRecord> replay;
 	
     public static void playBack(String id) {
@@ -113,7 +115,6 @@ public class ReplayUtils {
 		return ((time+5)/10)*10;
 	}
 	
-	
 	public static long getStartTime() {
 		return startTime;
 	}
@@ -130,7 +131,28 @@ public class ReplayUtils {
 		return replay.get(index);
 	}
 
-
+	public static void setPause() {
+		pauseTime = System.currentTimeMillis();
+	}
+	
+	public static void updateDifference() {
+		difference += (System.currentTimeMillis() - pauseTime);
+	}
+	
+	public static long getDifference() {
+		return difference;
+	}
+	
+	/**
+	 * Resets all of the variables for a new level upon startup
+	 */
+	public static void reset() {
+    	if (replay != null) replay.clear();
+    	setStartTime(System.currentTimeMillis());
+		pauseTime = 0;
+		difference = 0;
+	}
+	
 	/**
 	 * Delete the replay directory associated with the ID, including it's contents.
 	 * @param id the id on the replay to delete.
