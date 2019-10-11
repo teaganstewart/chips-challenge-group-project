@@ -71,7 +71,30 @@ public class Level implements Saveable {
 		return level;
 	}
 	
+	/**
+	 * Gets the total time allowed in the level
+	 * @return
+	 * 		the time allowed
+	 */
 	public int getTimeAllowed() {
 		return timeAllowed;
+	}
+	
+	/**
+	 * Gets the time the level has been running
+	 * @return
+	 * 		the time the level has been running for
+	 */
+	public long getRunTime() {
+		return levelRunningTime;
+	}
+	
+	/**
+	 * A setter for the running time, only used when paused
+	 * @param time
+	 * 		the time to be saved
+	 */
+	public void setRunningTime(long time) {
+		levelRunningTime = time;
 	}
 }
