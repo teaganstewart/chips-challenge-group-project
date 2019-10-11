@@ -170,7 +170,39 @@ public class ReplayUtils {
 		return replay.get(index);
 	}
 
-
+	/**
+	 * Sets the time in which the level was paused
+	 */
+	public static void setPause() {
+		pauseTime = System.currentTimeMillis();
+	}
+	
+	/**
+	 * Updates the difference value between when the game was paused
+	 */
+	public static void updateDifference() {
+		difference += (System.currentTimeMillis() - pauseTime);
+	}
+	
+	/**
+	 * Gets the difference calculation for the level
+	 * @return
+	 * 		the difference as a long (which can be converted to int)
+	 */
+	public static long getDifference() {
+		return difference;
+	}
+	
+	/**
+	 * Resets all of the variables for a new level upon startup
+	 */
+	public static void reset() {
+    	if (replay != null) replay.clear();
+    	setStartTime(System.currentTimeMillis());
+		pauseTime = 0;
+		difference = 0;
+	}
+	
 	/**
 	 * Delete the replay directory associated with the ID, including it's contents.
 	 * @param id the id on the replay to delete.
