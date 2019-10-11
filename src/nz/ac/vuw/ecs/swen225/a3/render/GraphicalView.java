@@ -76,23 +76,25 @@ public class GraphicalView {
 	 * @return Returns the correct image icon for this tile.
 	 */
 	public ImageIcon getTileIcon(int i, int j, Maze m) {
-		Tile[][] tiles = m.getTiles();
-		switch (tiles[i][j].getType()) {
-		case FLOOR:
-			return floor;
-		case WALL:
-			return wall;
-		case HINT:
-			return hint;
-		case GOAL:
-			return goal;
-		case FIRE:
-			return fire;
-		case ICE:
-			return ice;
-		default:
-			return null;
-		}
+		try {
+			Tile[][] tiles = m.getTiles();
+			switch (tiles[i][j].getType()) {
+			case FLOOR:
+				return floor;
+			case WALL:
+				return wall;
+			case HINT:
+				return hint;
+			case GOAL:
+				return goal;
+			case FIRE:
+				return fire;
+			case ICE:
+				return ice;
+			default:
+				return null;
+			}
+		} catch (ArrayIndexOutOfBoundsException e) { return null; }
 	}
 
 	/**

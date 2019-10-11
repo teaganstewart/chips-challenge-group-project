@@ -181,7 +181,7 @@ public class ReplayUtils {
 	 * @return Returns the associated ActionRecord.
 	 */
 	public static ActionRecord getActionRecord(int index) {
-		return replay.get(index);
+		return index < replay.size() ? replay.get(index) : null;
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class ReplayUtils {
 	 * Resets all of the variables for a new level upon startup
 	 */
 	public static void reset() {
-    	if (replay != null) replay.clear();
+    	replay = new ArrayList<>();
     	setStartTime(System.currentTimeMillis());
 		pauseTime = 0;
 		difference = 0;

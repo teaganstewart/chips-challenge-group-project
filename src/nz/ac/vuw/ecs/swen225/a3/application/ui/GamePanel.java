@@ -41,7 +41,9 @@ public class GamePanel extends JPanel {
 	public void clearBoard() {
 		for (int y = 0; y < 9; y++) {
 			for (int x1 = 0; x1 < 9; x1++) {
-				this.remove(0);
+				try {
+					this.remove(0);
+				} catch (ArrayIndexOutOfBoundsException e) {}
 			}
 		}
 	}

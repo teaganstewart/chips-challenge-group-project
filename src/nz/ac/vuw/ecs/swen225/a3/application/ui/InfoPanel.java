@@ -327,7 +327,9 @@ public class InfoPanel extends JPanel {
 	public void updateRec(boolean replayMode) {
 		try {
 			for(int i=0; i<6;i++) {
-				rec.remove(0);
+				try {
+					rec.remove(0);
+				} catch (ArrayIndexOutOfBoundsException e) {}
 			}
 		} catch (NullPointerException e) {}
 
