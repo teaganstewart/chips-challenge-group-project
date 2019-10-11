@@ -21,6 +21,7 @@ public class RenderTests {
 	/**
 	 * Tests whether array of JPanel's matches the tiles.
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	void createGridTest() {
 
@@ -44,7 +45,7 @@ public class RenderTests {
 		}
 
 		assertEquals(expected[0][0].getIcon().toString(), outcome[0][0].getIcon().toString());
-
+		gui.disable();
 	}
 
 	/**

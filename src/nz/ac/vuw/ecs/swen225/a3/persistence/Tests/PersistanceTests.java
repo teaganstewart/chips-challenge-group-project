@@ -91,28 +91,28 @@ public class PersistanceTests {
 	/**
 	 * Test that the player's inventory is identical
 	 */
-	//	@Test
-	//	public void test03() {
-	//		Player player = new Player(new Coordinate(0, 0));
-	//		KeyDoor kd = new KeyDoor(GREEN);
-	//		kd.unlock();
-	//		player.addToInventory(kd);
-	//
-	//		Tile[][] tiles = new Tile[1][1];
-	//		tiles[0][0] = new Tile(new Coordinate(0, 0), Tile.TileType.FLOOR);
-	//
-	//		Maze maze = new Maze(tiles, player, null, null);
-	//		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
-	//
-	//		assertTrue(SaveUtils.saveGame(level, ""));
-	//
-	//		Level levelReloaded = LoadUtils.resumeGame();
-	//
-	//		KeyDoor key = (KeyDoor) levelReloaded.getMaze().getPlayer().getInventory().get(0);
-	//
-	//		assertFalse(key.isLocked());
-	//		assertSame(key.getColor(), GREEN);
-	//	}
+	@Test
+	public void test03() {
+		Player player = new Player(new Coordinate(0, 0));
+		KeyDoor kd = new KeyDoor(GREEN);
+		kd.unlock();
+		player.addToInventory(kd);
+
+		Tile[][] tiles = new Tile[1][1];
+		tiles[0][0] = new Tile(new Coordinate(0, 0), Tile.TileType.FLOOR);
+
+		Maze maze = new Maze(tiles, player, null, null);
+		Level level = new Level(1, maze, System.currentTimeMillis(), 0, 0);
+
+		assertTrue(SaveUtils.saveGame(level, ""));
+
+		Level levelReloaded = LoadUtils.resumeGame();
+
+		KeyDoor key = (KeyDoor) levelReloaded.getMaze().getPlayer().getInventory().get(0);
+
+		assertFalse(key.isLocked());
+		assertSame(key.getColor(), GREEN);
+	}
 
 	/**
 	 * Test that a hintTile is a hintTile when saved and reloaded
@@ -152,7 +152,7 @@ public class PersistanceTests {
 
 		Level levelReloaded = LoadUtils.resumeGame();
 
-		//assertTrue(levelReloaded.getMaze().getTiles()[0][0].getEntity() instanceof Treasure);
+		assertTrue(levelReloaded.getMaze().getTiles()[0][0].getEntity() instanceof Treasure);
 	}
 
 	/**
@@ -210,18 +210,18 @@ public class PersistanceTests {
 	 */
 	@Test
 	public void testSaveLevel() {
-		
-		
-		
+
+
+
 		for(Long l : LoadUtils.getSavesByID().values()) {
-			
+
 			Level level = LoadUtils.loadById(l);
-			
+
 			//checks that the level loaded properly
 			assertTrue(level.getMaze()!=null);
-			
+
 		}
-		
+
 		assertEquals(SaveUtils.saveLevel(1),true);
 		// checking that the levels are correct
 		assertEquals(LoadUtils.getAmountOfInstalledLevels(), 2);

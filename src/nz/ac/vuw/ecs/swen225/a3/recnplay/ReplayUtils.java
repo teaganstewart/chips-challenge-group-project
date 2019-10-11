@@ -236,6 +236,10 @@ public class ReplayUtils {
 		return dir.delete();
 	}
 	
+	/**
+	 * Allows action records to be set for testing.
+	 * @param e The new action record list.
+	 */
 	public void setReplayList(List<ActionRecord> e) {
 		replay = e;
 	}

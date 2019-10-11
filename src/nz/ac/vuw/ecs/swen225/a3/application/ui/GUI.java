@@ -36,6 +36,10 @@ public class GUI extends JFrame {
 	
 	// main panels
 	private GamePanel gamePanel;
+	
+	/**
+	 * info panel, for storing game info.
+	 */
 	public InfoPanel infoPanel;
 	
 	// windows
@@ -692,9 +696,9 @@ public class GUI extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     pauseWindow.dispose();
                     // although it's impossible to reach here outside of replay mode, this is the safety check
-    				if(!(infoPanel.getPause())) {
-    					startTimer();
-    				}
+    				
+    				startTimer();
+    				
                 }
             }
         });
