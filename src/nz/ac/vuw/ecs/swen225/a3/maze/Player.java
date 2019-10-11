@@ -8,9 +8,9 @@ import javax.json.JsonObject;
 import java.util.*;
 
 /**
- * @author Teagan
+ * Class for the player, has things essential for only a player.
  * 
- *         Represents a Player
+ * @author Teagan Stewart - 300407769
  *
  */
 public class Player extends Moveable implements Saveable {
@@ -19,7 +19,9 @@ public class Player extends Moveable implements Saveable {
 	private Coordinate startCoordinate;
 
 	/**
-	 * @param coordinate
+	 * Constructs the Player Object.
+	 * 
+	 * @param coordinate Where the player should spawn on the board.
 	 */
 	public Player(Coordinate coordinate) {
 		super(coordinate);
@@ -29,20 +31,24 @@ public class Player extends Moveable implements Saveable {
 
 	/**
 	 * Sets the players inventory. More useful for tests.
-	 * @param inv 
+	 * 
+	 * @param inv The new inventory of the player.
 	 */
 	public void setInventory(List<Entity> inv) {
 		inventory = inv;
 	}
 
 	/**
-	 * @return Returns the players hand.
+	 * Gets the inventory of the player.
+	 * 
+	 * @return Returns the players hand, can't be modified.
 	 */
 	public List<Entity> getInventory() {
 		return Collections.unmodifiableList(inventory);
 	}
 
 	/**
+	 * A method for adding things to inventory.
 	 * 
 	 * @param aInventory The item that needs to be added.
 	 * @return Returns a boolean saying whether the adding was successful.
@@ -58,6 +64,7 @@ public class Player extends Moveable implements Saveable {
 	}
 
 	/**
+	 * Gets inventory item at specific place. Useful for tests.
 	 * 
 	 * @param index The index that the entity that you want is at.
 	 * @return Returns the entity at the given index.
@@ -70,11 +77,10 @@ public class Player extends Moveable implements Saveable {
 	}
 
 	/**
-	 * 
 	 * Remove the entity at the given index.
 	 * 
 	 * @param index The index that the entity that you want to remove is at.
-	 * @return validity
+	 * @return Whether the inventory item was removed properly or not.
 	 */
 	public boolean removeInventoryAt(int index) {
 		if ((0 <= index) && (index < inventory.size())) {
@@ -85,14 +91,12 @@ public class Player extends Moveable implements Saveable {
 	}
 
 	/**
-	 *
 	 * Check if the inventory contains a certain type of Entity. This additional
 	 * method is needed when the player is about to walk on a particular tile which
-	 * requires the player to have a particular type of entity in their inventory
-	 * (e.g. Fire tile requires FireBoots)
-	 * @param queryEntity 
-	 *
-	 * @return validity
+	 * requires the player to have a particular type of entity in their inventory.
+	 * 
+	 * @param queryEntity The item we want to check if inventory contains.
+	 * @return Whether it is or not.
 	 */
 	public boolean isInInventory(Entity queryEntity) {
 		for (Entity entity : inventory) {
@@ -103,6 +107,12 @@ public class Player extends Moveable implements Saveable {
 		return false;
 	}
 
+	/**
+	 * Returns where the key is in the inventory.
+	 * 
+	 * @param key What key you want to find.
+	 * @return The index of the key
+	 */
 	public int getKeyIndex(Key key){
 		for(int i = 0; i < inventory.size(); i++){
 			if(inventory.get(i).getClass().equals(key.getClass())){
@@ -114,12 +124,7 @@ public class Player extends Moveable implements Saveable {
 		return 0;
 	}
 
-	/**
-	 * Returns whether or not the player can walk on this entity
-	 * 
-	 * @param entity the entity checked against
-	 * @return whether it can or can't overwrite the entity
-	 */
+	
 	@Override
 	public boolean canWalkOn(Entity entity) {
 

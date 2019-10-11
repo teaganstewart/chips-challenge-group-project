@@ -10,10 +10,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author Josh
- *         <p>
- *         Class which contains most tests that test classes in the maze
- *         directory
+ * Class which contains most tests that test classes in the maze
+ * directory.
+ * 
+ * @author Josh O'Hagan - 300442801
  */
 public class MazeTest {
 
@@ -22,9 +22,9 @@ public class MazeTest {
 	private Maze maze;
 	private List<Crate> crateList = new ArrayList<>();
 
-	/*
-	* Create a new maze before each test
-	* */
+	/**
+	 * Create a new maze before each test.
+	 */
 	@BeforeEach
 	public void setUp() {
 		tiles = new Tile[9][9];
@@ -42,10 +42,10 @@ public class MazeTest {
 		maze = new Maze(tiles, player, crateList,null);
 	}
 
-	/*
-	* Reset the Treasure class after each test as it contains
-	* static methods that will change it's state
-	* */
+	/**
+	 * Reset the Treasure class after each test as it contains
+	 * static methods that will change it's state.
+	 */
 	@AfterEach
 	public void tearDown() {
 		Treasure.reset();
@@ -108,8 +108,8 @@ public class MazeTest {
 		tiles[3][5].setEntity(new KeyDoor(BasicColor.YELLOW));
 		assertTrue(maze.movePlayer(Direction.RIGHT));
 
-		// Make sure Chap keeps the key after unlocking the door
-		assertTrue(player.getInventory().contains(key));
+		// Make sure Chap doesn't keep the key after unlocking the door
+		assertFalse(player.getInventory().contains(key));
 	}
 
 	/**

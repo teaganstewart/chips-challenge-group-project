@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
- * @author Josh
- *         <p>
- *         Class which contains tests for small classes
+ * Class which contains tests for small classes
+ * 
+ * @author Josh O'Hagan - 300442801
  */
 public class OtherClassesTest {
 

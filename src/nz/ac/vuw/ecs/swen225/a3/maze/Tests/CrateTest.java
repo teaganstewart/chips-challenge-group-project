@@ -11,9 +11,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author Josh
- *         <p>
- *         Class which contains tests for the Crate
+ * Class which contains tests for the Crate.
+ * 
+ * @author Josh O'Hagan - 300442801
  */
 class CrateTest {
 
@@ -24,6 +24,9 @@ class CrateTest {
     private Crate crate1;
     private Crate crate2;
 
+    /**
+     * Sets up tiles and crates before tests.
+     */
     @BeforeEach
     void setUp() {
         tiles = new Tile[9][9];
@@ -32,6 +35,8 @@ class CrateTest {
                 tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
             }
         }
+        
+        // Player is created at (3,3). Crates are created at (5,3) and (5,5)
         player = new Player(new Coordinate(3, 3));
         crate1 = new Crate(new Coordinate(5, 3));
         crate2 = new Crate(new Coordinate(5, 5));
@@ -42,14 +47,12 @@ class CrateTest {
         player.setCoordinate(new Coordinate(5,2));
     }
 
-    // Player is created at (3,3). Crates are created at (5,3) and (5,5)
-
     /**
      * Test to see if player pushes a crate onto an empty floor tile
      */
     @Test
     public void testPlayerPushesCrateValid() {
-        // Assert that crates can't walk, haha
+        // Assert that crates can't walk
         assertFalse(crate1.canWalkOn(new Key(BasicColor.YELLOW)));
         assertEquals(new Coordinate(5, 3), crate1.getCoordinate());
         assertTrue(maze.movePlayer(Direction.RIGHT));
@@ -60,7 +63,7 @@ class CrateTest {
     }
 
     /**
-     * Test to see if player can't push a crate into another crate
+     * Test to see if player can't push a crate into another crate.
      */
     @Test
     public void testPlayerPushesCrateIntoAnotherCrate() {
@@ -71,7 +74,7 @@ class CrateTest {
     }
 
     /**
-     * Test to see if player can't push a crate into a wall
+     * Test to see if player can't push a crate into a wall.
      */
     @Test
     public void testPlayerPushesCrateIntoWall() {
@@ -80,7 +83,7 @@ class CrateTest {
     }
 
     /**
-     * Test to see if player can't push a crate into a HintTile
+     * Test to see if player can't push a crate into a HintTile.
      */
     @Test
     public void testPlayerPushesCrateIntoHintTile() {

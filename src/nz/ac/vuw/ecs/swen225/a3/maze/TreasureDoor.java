@@ -4,21 +4,13 @@ import javax.json.Json;
 import javax.json.JsonObject;
 
 /**
- * @author Ethan
+ * Represents a Door which is locked until the player collects all the
+ * treasure.
  * 
- *         Represents a Door which is locked until the player collects all the
- *         treasure
- *
+ * @author Ethan Munn - 300367257
+ * 
  */
 public class TreasureDoor extends Door {
-
-	/**
-	 * Creates a new door object, corresponding to a certain key colour. By default,
-	 * every new door should be locked.
-	 *
-	 */
-	public TreasureDoor() {
-	}
 
 	@Override
 	public boolean onTouch(Player pl) {

@@ -11,17 +11,16 @@ import javax.json.JsonObjectBuilder;
  * class may be viewed as extraneous as it only holds a string, but in my
  * opinion it helps keep the classes clean.
  * 
- * @author Ethan Munn
- *
+ * @author Ethan Munn - 300367257
  */
 public class HintTile extends Tile implements Saveable {
 
 	private final String message;
 
 	/**
-	 * The tile the hint is on
+	 * The tile the hint is on.
 	 * 
-	 * @param coord
+	 * @param coord The coordinate of the tile.
 	 * @param message The message to display upon this hint being touched.
 	 */
 	public HintTile(Coordinate coord, String message) {
@@ -32,7 +31,7 @@ public class HintTile extends Tile implements Saveable {
 	/**
 	 * Gets the helpful hint so the player knows what to do.
 	 * 
-	 * @return The message
+	 * @return Returns the message for the hint tile.
 	 */
 	public String getMessage() {
 		return message;

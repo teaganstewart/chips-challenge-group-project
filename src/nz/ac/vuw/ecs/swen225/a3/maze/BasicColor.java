@@ -5,7 +5,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  * enum is much faster and we can just use these to determine which graphic to
  * select.
  * 
- * @author Ethan Munn
+ * @author Ethan Munn - 300367257
  *
  */
 public enum BasicColor {
