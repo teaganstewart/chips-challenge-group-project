@@ -163,10 +163,11 @@ public class GUI extends JFrame {
 			if (game.getLevelNum() < LEVEL_COUNT) {
 				stopTimer();
 				gameSpeed=10;
-				saveReplayPopup();
 				setReplayMode(false);
+				saveReplayPopup();
 				game.loadLevel(gamePanel, game.getLevelNum()+1);
 			}else{
+				setReplayMode(false);
 				saveReplayPopup();
 				JOptionPane.showMessageDialog(null, "Congratulation, You have won the game");
 				finishLevelWindow();
@@ -688,9 +689,7 @@ public class GUI extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     pauseWindow.dispose();
                     // although it's impossible to reach here outside of replay mode, this is the safety check
-    				if(!(infoPanel.getPause())) {
-    					startTimer();
-    				}
+					startTimer();
                 }
             }
         });
