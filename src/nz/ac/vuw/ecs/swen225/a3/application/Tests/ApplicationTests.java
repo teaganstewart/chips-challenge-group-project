@@ -20,6 +20,11 @@ import nz.ac.vuw.ecs.swen225.a3.render.Render;
  */
 public class ApplicationTests {
 
+	/**
+	 * Tests whether load level works properly and has the correct
+	 * level in the game class.
+	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void nextLevelTest() {
 		// setup
@@ -32,13 +37,16 @@ public class ApplicationTests {
 		game.loadGame();
 		
 		for(int i= 0; i <6; i++) {
-			game.getMaze().movePlayer(Direction.UP);
+			game.getMaze().movePlayer(Direction.DOWN);
 			if(game.getMaze().isOnHint()) {
 				game.loadLevel(gp, game.getLevelNum()+1);
 			}
 		}
+		
+		assertEquals(2, game.getLevelNum());
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	void keysTest() {
 		GUI gui = new GUI();

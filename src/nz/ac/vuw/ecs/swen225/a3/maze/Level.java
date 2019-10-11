@@ -65,16 +65,17 @@ public class Level implements Saveable {
 	/**
 	 * Getter for the current level number.
 	 * 
-	 * @return level - the level in the maze.
+	 * @return level The level in the maze.
 	 */
 	public int getLevel() {
 		return level;
 	}
 	
+	
 	/**
-	 * Gets the total time allowed in the level
-	 * @return
-	 * 		the time allowed
+	 * Getter for the amount of time allowed.
+	 * 
+	 * @return timeAllowed Returns time for level.
 	 */
 	public int getTimeAllowed() {
 		return timeAllowed;

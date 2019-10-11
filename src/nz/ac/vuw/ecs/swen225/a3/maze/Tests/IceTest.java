@@ -14,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Class which contains tests for the Ice Tile
- * 
+ *
  * @authors Joshua O'Hagan, Ethan Munn
- * 
+ *
  */
 public class IceTest {
 
@@ -27,13 +27,13 @@ public class IceTest {
     private Player player;
     private List<Crate> crateList = new ArrayList<>();
 
-    /*
-     * Create a new maze before each test
-     * */
+    /**
+     *  Creates a new maze before each test.
+     */
     @BeforeEach
     public void setUp() {
     	gui = new GUI();
-    	
+
         tiles = new Tile[9][9];
         for (int row = 0; row < tiles.length; row++) {
             for (int col = 0; col < tiles[0].length; col++) {
@@ -50,13 +50,13 @@ public class IceTest {
         level = new Level(-1, maze, System.currentTimeMillis(), 0, 1000);
         gui.getGame().loadSave(level);
         Treasure.reset();
-        
+
     }
 
-    /*
+    /**
      * Reset the Treasure class after each test as it contains
      * static methods that will change it's state
-     * */
+     */
     @AfterEach
     public void tearDown() {
         Treasure.reset();
@@ -134,6 +134,7 @@ public class IceTest {
      */
     @Test
     public void testIceBlockSlidingOntoHint() {
+
         tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.ICE);
         tiles[3][5] = new Tile(new Coordinate(3, 5), Tile.TileType.ICE);
         tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
@@ -238,7 +239,7 @@ public class IceTest {
         assertEquals(new Coordinate(3, 6), player.getCoordinate());
         assertFalse(maze.movePlayer(Direction.RIGHT));
     }
-    
+
     /**
      * Test to see if player has ice boots!
      */

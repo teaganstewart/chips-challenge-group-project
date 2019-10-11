@@ -5,13 +5,18 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 import javax.json.Json;
 import javax.json.JsonObject;
 
-/*
-* Class which represents a crate that can only be pushed by the player into free floor tiles
-* */
+/**
+ * Class which represents a crate that can only be pushed by the player 
+ * into free floor tiles.
+ * 
+ * @author Teagan Stewart
+ *
+ */
 public class Crate extends Moveable implements Saveable {
 
     /**
-     * @param coordinate
+     * Constructor for the Crate object.
+     * @param coordinate The coordinate of the crate at the start.
      */
     public Crate(Coordinate coordinate) {
         super(coordinate);

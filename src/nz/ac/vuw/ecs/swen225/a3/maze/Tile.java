@@ -7,15 +7,19 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 /**
- * @author Ethan
+ * A class used to set up the base board for the game, the game is made up of
+ * tiles with entities placed on top. Also stores what type those tiles are.
  * 
- *         Represents a tile of the maze
- *
+ * @author Ethan Munn
+ * 
  */
 public class Tile implements Saveable {
 
 	/**
-	 * @author Ethan
+	 * The type for the tile, used to check whether can be walked in and
+	 * what image to render, easier then having separate classes and less code.
+	 * 
+	 * @author Ethan Munn
 	 *
 	 */
 	public enum TileType {
@@ -52,10 +56,10 @@ public class Tile implements Saveable {
 	private Entity entity;
 
 	/**
-	 * Constructs a new Tile object
+	 * Constructs a new Tile object.
 	 * 
-	 * @param coord
-	 * @param type
+	 * @param coord The coordinate of the tile on the board.
+	 * @param type The type of the Tile.
 	 */
 	public Tile(Coordinate coord, TileType type) {
 		this.coord = coord;
@@ -65,7 +69,9 @@ public class Tile implements Saveable {
 	/* Getters and Setters */
 
 	/**
-	 * @return coord
+	 * The coordinate of the tile on the board.
+	 * 
+	 * @return coord Returns the coordinate.
 	 */
 	public Coordinate getCoordinate() {
 		return this.coord;
@@ -74,26 +80,25 @@ public class Tile implements Saveable {
 	/**
 	 * A simple getter for the Entity on this tile, if it exists.
 	 * 
-	 * @return The entity
+	 * @return entity Returns the entity on the tile.
 	 */
 	public Entity getEntity() {
 		return entity;
 	}
 
 	/**
-	 * Sets the entity on this tile to an object, or removes an object if one
-	 * already existed here.
+	 * Used to add an entity to a tile, replaces the old one if there is one.
 	 * 
-	 * @param entity
+	 * @param entity Return the entity to add to the tile.
 	 */
 	public void setEntity(Entity entity) {
 		this.entity = entity;
 	}
 
 	/**
-	 * Return the type of tile this is
+	 * The type of the Tile.
 	 * 
-	 * @return the TileType
+	 * @return type Returns the type of the tile.
 	 */
 	public TileType getType() {
 		return type;
@@ -117,26 +122,5 @@ public class Tile implements Saveable {
 
 		return jsonObjectBuilder.build();
 	}
-
-//	/**
-//	 * Returns the player, if it exists on this tile
-//	 * @return
-//	 * 		the player, if they are on this tile
-//	 */
-//	public Player getPlayer() {
-//		return player;
-//	}
-//
-//	/**
-//	 * Has storage for the Player and an Entity, as for some entities (like the hint),
-//	 * the player is stored on top of these and doesn't remove it from the maze. By
-//	 * default, this player variable is null, as having the player term inside of the
-//	 *  constructor to only ever be used once per load is extraneous and messy.
-//	 *  @param player
-//	 *  	Typically null, will sometimes have the player on it
-//	 */
-//	public void setPlayer(Player player) {
-//		this.player = player;
-//	}
 
 }

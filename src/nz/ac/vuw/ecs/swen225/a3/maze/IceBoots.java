@@ -4,17 +4,14 @@ import javax.json.Json;
 import javax.json.JsonObject;
 
 /**
- * @author Josh
- *
- * Class representing a pickup-able item use for walking on ice blocks
+ * Class representing a pickup-able item use for walking on ice blocks.
+ * 
+ * @author Josh O'Hagan
  */
 public class IceBoots implements Entity {
-
-	/**
-	 * Constructor
-	 */
-	public IceBoots() {
-
+	
+	public String toString() {
+		return "Ice Boots";
 	}
 
 	@Override

@@ -9,14 +9,14 @@ import javax.json.JsonObject;
 import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 
 /**
- * @author Josh
  *
- *         Class which holds all information about the maze and its tiles,
- *         entities, player, ect. Also has logic to determine what is allowed to
- *         happen with the objects in the maze
+ * Class which holds all information about the maze and its tiles,
+ * entities, player, etc. Also has logic to determine what is allowed to
+ * happen with the objects in the maze
+ *         
+ * @author Josh O'Hagan
  *
  */
-
 public class Maze implements Saveable {
 
 	private Tile[][] tiles;
@@ -32,27 +32,19 @@ public class Maze implements Saveable {
 	private List<Skeleton> enemyList;
 
 	/**
-	 * @param tiles
-	 * @param player
-	 *
-	 *               Constructor for a maze.
+	 * Constructs a maze object.
+	 * 
+	 * @param tiles The board, represented as a 2d array of tiles.
+	 * @param player The player.
+	 * @param crateList The list of crates.
+	 * @param enemyList The list of skeleton enemies.
 	 */
 	public Maze(Tile[][] tiles, Player player, List<Crate> crateList, List<Skeleton> enemyList) {
 		this.tiles = tiles;
 		this.player = player;
 		this.goalReached = false;
-		// TODO implement proper crate list so that this safeguard can be removed
-		if(crateList != null){
-            this.crateList = crateList;
-        }else{
-		    this.crateList = new ArrayList<Crate>();
-        }
-		
-		if(enemyList != null){
-            this.enemyList = enemyList;
-        }else{
-		    this.enemyList = new ArrayList<Skeleton>();
-        }
+		this.crateList = (crateList==null) ? new ArrayList<Crate>() : crateList;
+		this.enemyList = (enemyList==null) ? new ArrayList<Skeleton>() : enemyList;
 		this.onHint = false;
 		this.onIce = false;
 	}
@@ -104,13 +96,12 @@ public class Maze implements Saveable {
 	/**
 	 * Returns entity collected, else returns null for no entity collected
 	 * 
-	 * @param player
-	 * @param tile
-	 * @return validity
+	 * @param player The player to test movement of.
+	 * @param tile The tile the player is moving to.
+	 * @return Returns true if can move onto tile, false if not.
 	 */
 	public boolean canWalkOn(Player player, Tile tile) {
-		// checks the type, first and foremost. if it can't be walked on, returns false
-		// here
+		// checks the type, if it can't be walked on, returns false
 		if (!checkType(player, tile))
 			return false;
 		// then checks for enemies in the way
@@ -122,6 +113,8 @@ public class Maze implements Saveable {
 	}
 
 	/**
+	 * Checks the list of enemies in the maze and sees if the player is 
+	 * going to walk into one.
 	 * 
 	 * @param tile The tile the player is moving to.
 	 * @return Returns false if there is an enemy.
@@ -139,15 +132,14 @@ public class Maze implements Saveable {
 	}
 
 	/**
-	 * Checks the tiletype first of all, and sees whether or not the tile should do
-	 * something unique if the player steps on this.
+	 * Checks whether movement is possible based on the TileType.
 	 * 
-	 * @param player
-	 * @param tile
-	 * @return validity
+	 * @param player The player we are moving.
+	 * @param tile The TileType of the tile the player is moving onto.
+	 * @return Returns true if the tile can be walked on.
 	 */
 	public boolean checkType(Player player, Tile tile) {
-		
+
 		Tile.TileType type = tile.getType();
 
 		// can't walk on walls
@@ -165,13 +157,13 @@ public class Maze implements Saveable {
 		}
 
 		// -- ALL TRUE CASES, regardless --//
-		
+
 		// if it's on ice, set on ice to true
 		if (type == Tile.TileType.ICE) onIce = true;
-		
+
 		// if it's a goal, set goalReached to true
 		if (type == Tile.TileType.GOAL) goalReached = true;
-		
+
 		// if it's a hint tile, then set the hint message. otherwise, ensure it's blank
 		// this can be referenced in the render class
 		if (type == Tile.TileType.HINT) {
@@ -184,10 +176,14 @@ public class Maze implements Saveable {
 		return true;
 	}
 
-	/*
+
+	/**
 	 * Attempts to push the crate in the players direction. Returns true for
-	 *  a successful push, false for no push
-	 * */
+	 *  a successful push, false for no push.
+	 *  
+	 * @param crate The crate that is being pushed.
+	 * @return Returns true if crate can be pushed.
+	 */
 	private boolean pushCrate(Crate crate){
 		// Check space in front of crate
 		crate.setDirection(player.getDirection());
@@ -218,33 +214,32 @@ public class Maze implements Saveable {
 	}
 
 	/**
-	 * Returns whether or not the goal has been reached
+	 * If the goal has been reached.
 	 * 
-	 * @return whether or not the player has touched the goal tile
+	 * @return Returns true if player is on a tile of type Goal.
 	 */
 	public boolean isGoalReached() {
 		return goalReached;
 	}
 
 	/**
-	 * Returns whether or not the goal has been reached
-	 * @return
-	 * 		whether or not the player has touched the goal tile
+	 * If the player is on the hint tile.
+	 * 
+	 * @return Returns true if the player is on a hint tile.
 	 */
 	public boolean isOnHint() {
 		return onHint;
 	}
 
 	/**
-	 * Returns whether or not the player is on ice
+	 * If the player is on an ice tile.
 	 * 
-	 * @return
-	 * 		whether or not the place is atop an ice tile
+	 * @return Returns true if player is on a tile of type Ice.
 	 */
 	public boolean isOnIce() {
 		return onIce;
 	}
-	
+
 	/**
 	 * Returns the hintMessage, regardless if it is blank or not
 	 * 
@@ -286,49 +281,58 @@ public class Maze implements Saveable {
 	 * Checks whether the level should be restarted. This is useful 
 	 * when a player steps on a fire block and dies
 	 * 
-	 * @return resetLevel
+	 * @return resetLevel Returns true if the level should be restarted.
 	 */
 	public boolean isResetLevel() {
 		return resetLevel;
 	}
-	
+
 	/**
 	 * Boolean to say whether the level needs to be reset.
 	 * 
-	 * @param reset
+	 * @param reset True if should be reset.
 	 */
 	public void setResetLevel(boolean reset) {
 		resetLevel = reset;
 	}
 
 	/**
-	 *
-	 * @return Returns the list of tiles for uses in other classes.
+	 * Returns the 2d array of tiles, representing the board.
+	 * 
+	 * @return Returns tiles for uses in other classes.
 	 */
 	public Tile[][] getTiles() {
 		return tiles;
 	}
 
 	/**
+	 * Sets the tiles for the board.
 	 * 
-	 * @param tiles
-	 *
+	 * @param tiles The new array of tiles.
 	 */
 	public void setTiles(Tile[][] tiles) {
 		this.tiles = tiles;
 	}
 
 	/**
+	 * Gets the player in the maze.
+	 * 
 	 * @return The player in this maze.
 	 */
 	public Player getPlayer() {
 		return player;
 	}
+
 	
+	/**
+	 * Sets the player in this maze. 
+	 * 
+	 * @param p The new player.
+	 */
 	public void setPlayer(Player p) {
 		player = p;
 	}
-	
+
 	/**
 	 * Gets the list of crates on the board.
 	 * 
@@ -346,7 +350,7 @@ public class Maze implements Saveable {
 	public void setCrateList(List<Crate> crates) {
 		crateList = crates;
 	}
-	
+
 	/**
 	 * Gets the list of enemies on the board.
 	 * 
@@ -356,9 +360,9 @@ public class Maze implements Saveable {
 
 		return enemyList;
 	}
-	
+
 	/**
-	 *  Sets the list of enemies on the board.
+	 * Sets the list of enemies on the board.
 	 *  
 	 * @param enemies What we want the list to be set to.
 	 */
@@ -367,7 +371,8 @@ public class Maze implements Saveable {
 	}
 
 	/**
-	 * Form a JsonArray of all the crates inside this Maze
+	 * Form a JsonArray of all the crates inside this Maze.
+	 * 
 	 * @return serialised Json Array of crates
 	 * @author Matt
 	 */
@@ -380,7 +385,8 @@ public class Maze implements Saveable {
 	}
 
 	/**
-	 * Form a JsonArray of all the skeletons inside this Maze
+	 * Form a JsonArray of all the skeletons inside this Maze.
+	 * 
 	 * @return serialized Json Array of Skeletons
 	 */
 	private JsonArray createEnemiesObject(){

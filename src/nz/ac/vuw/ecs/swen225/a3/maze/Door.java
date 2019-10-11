@@ -29,9 +29,7 @@ public abstract class Door implements Entity {
 	}
 
 	/**
-	 * A protected method for unlocking the door. We don't want this to be public,
-	 * as we don't want the state of the door being controlled by something outside
-	 * of the door.
+	 * Used to unlock the door.
 	 */
 	public void unlock() {
 		locked = false;
