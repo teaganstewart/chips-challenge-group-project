@@ -1,92 +1,92 @@
-package nz.ac.vuw.ecs.swen225.a3.recnplay.IntegrationTest;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.awt.event.KeyEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.swing.SwingUtilities;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
-import nz.ac.vuw.ecs.swen225.a3.maze.Coordinate;
-import nz.ac.vuw.ecs.swen225.a3.maze.Crate;
-import nz.ac.vuw.ecs.swen225.a3.maze.Level;
-import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
-import nz.ac.vuw.ecs.swen225.a3.maze.Player;
-import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
-import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
-import nz.ac.vuw.ecs.swen225.a3.recnplay.ActionRecord;
-import nz.ac.vuw.ecs.swen225.a3.recnplay.ReplayUtils;
-
-/**
- *
- * Testing the recording functionality.
- *
- * @author Joshua O'Hagan, Ethan Munn
- *
- */
-public class IntegrationTest {
-
-	private GUI gui;
-	private Level level;
-    private Maze maze;
-    private Tile[][] tiles;
-    private Player player;
-    private List<Crate> crateList = new ArrayList<>();
-
-    /**
-     *  Creates a new maze before each test.
-     */
-    @BeforeEach
-    public void setUp() {
-    	gui = new GUI();
-
-        tiles = new Tile[9][9];
-        for (int row = 0; row < tiles.length; row++) {
-            for (int col = 0; col < tiles[0].length; col++) {
-                tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-            }
-        }
-        player = new Player(new Coordinate(3, 3));
-        crateList = new ArrayList<Crate>(Arrays.asList(
-                new Crate(new Coordinate(5, 3)),
-                new Crate(new Coordinate(5, 5))
-        ));
-
-        maze = new Maze(tiles, player, crateList,null);
-
-        ReplayUtils.reset();
-        level = new Level(-1, maze, ReplayUtils.getStartTime(), 0, 1000);
-        gui.getGame().loadSave(level);
-        ReplayUtils.pushActionRecord(new ActionRecord(0, maze));
-        Treasure.reset();
-    }
-
-    /**
-     * Test to see if player walks and this is saved
-     */
-    @Test
-    public void testActionRecordGoingRight() {
-        for (int i = 0; i < 3; i++) {
-            try {
-				SwingUtilities.invokeAndWait(() -> {
-				    KeyEvent key = new KeyEvent(GUI.main, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, KeyEvent.VK_RIGHT,'Z');
-				    gui.inGameEvent(key);
-				});
-			} catch (InvocationTargetException | InterruptedException e) {}
-        }
-
-        GUI.stopTimer();
-
-        ReplayUtils.playBack(Long.toString(level.getBeginTime()));
-        assertTrue(player.getCoordinate().equals(new Coordinate(3,6)));
-    }
+//package nz.ac.vuw.ecs.swen225.a3.recnplay.IntegrationTest;
+//
+//import static org.junit.jupiter.api.Assertions.assertTrue;
+//
+//import java.awt.event.KeyEvent;
+//import java.lang.reflect.InvocationTargetException;
+//import java.util.ArrayList;
+//import java.util.Arrays;
+//import java.util.List;
+//
+//import javax.swing.SwingUtilities;
+//
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+//
+//import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
+//import nz.ac.vuw.ecs.swen225.a3.maze.Coordinate;
+//import nz.ac.vuw.ecs.swen225.a3.maze.Crate;
+//import nz.ac.vuw.ecs.swen225.a3.maze.Level;
+//import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
+//import nz.ac.vuw.ecs.swen225.a3.maze.Player;
+//import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
+//import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
+//import nz.ac.vuw.ecs.swen225.a3.recnplay.ActionRecord;
+//import nz.ac.vuw.ecs.swen225.a3.recnplay.ReplayUtils;
+//
+///**
+// *
+// * Testing the recording functionality.
+// *
+// * @author Joshua O'Hagan, Ethan Munn
+// *
+// */
+//public class IntegrationTest {
+//
+//	private GUI gui;
+//	private Level level;
+//    private Maze maze;
+//    private Tile[][] tiles;
+//    private Player player;
+//    private List<Crate> crateList = new ArrayList<>();
+//
+//    /**
+//     *  Creates a new maze before each test.
+//     */
+//    @BeforeEach
+//    public void setUp() {
+//    	gui = new GUI();
+//
+//        tiles = new Tile[9][9];
+//        for (int row = 0; row < tiles.length; row++) {
+//            for (int col = 0; col < tiles[0].length; col++) {
+//                tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
+//            }
+//        }
+//        player = new Player(new Coordinate(3, 3));
+//        crateList = new ArrayList<Crate>(Arrays.asList(
+//                new Crate(new Coordinate(5, 3)),
+//                new Crate(new Coordinate(5, 5))
+//        ));
+//
+//        maze = new Maze(tiles, player, crateList,null);
+//
+//        ReplayUtils.reset();
+//        level = new Level(-1, maze, ReplayUtils.getStartTime(), 0, 1000);
+//        gui.getGame().loadSave(level);
+//        ReplayUtils.pushActionRecord(new ActionRecord(0, maze));
+//        Treasure.reset();
+//    }
+//
+//    /**
+//     * Test to see if player walks and this is saved
+//     */
+//    @Test
+//    public void testActionRecordGoingRight() {
+//        for (int i = 0; i < 3; i++) {
+//            try {
+//				SwingUtilities.invokeAndWait(() -> {
+//				    KeyEvent key = new KeyEvent(GUI.main, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, KeyEvent.VK_RIGHT,'Z');
+//				    gui.inGameEvent(key);
+//				});
+//			} catch (InvocationTargetException | InterruptedException e) {}
+//        }
+//
+//        GUI.stopTimer();
+//
+//        ReplayUtils.playBack(Long.toString(level.getBeginTime()));
+//        assertTrue(player.getCoordinate().equals(new Coordinate(3,6)));
+//    }
 
 //    @Test
 //    public void resetingRecording() {
