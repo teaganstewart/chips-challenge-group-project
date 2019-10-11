@@ -199,10 +199,15 @@ public class LoadUtils {
 				InputStream inputStream = new FileInputStream(file);
 				JsonReader reader = Json.createReader(inputStream);
 
-				return reader.readObject();
+				JsonObject obj = reader.readObject();
+
+				inputStream.close();
+				reader.close();
+
+				return obj;
 
 			}
-			catch (FileNotFoundException e) {
+			catch (IOException e) {
 				return null;
 			}
 		}
