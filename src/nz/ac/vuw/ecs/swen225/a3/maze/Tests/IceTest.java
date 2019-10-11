@@ -27,9 +27,9 @@ public class IceTest {
     private Player player;
     private List<Crate> crateList = new ArrayList<>();
 
-    /*
-     * Create a new maze before each test
-     * */
+    /**
+     *  Creates a new maze before each test.
+     */
     @BeforeEach
     public void setUp() {
     	gui = new GUI();
@@ -53,10 +53,10 @@ public class IceTest {
 
     }
 
-    /*
+    /**
      * Reset the Treasure class after each test as it contains
      * static methods that will change it's state
-     * */
+     */
     @AfterEach
     public void tearDown() {
         Treasure.reset();

@@ -15,23 +15,20 @@ import java.util.Date;
 import java.util.Scanner;
 
 /**
+ * The InfoPanel on the side of the window, holds the game information,
+ * buttons and the inventory.
  * 
- * The InfoPanel on the side of the window.
- * 
- * @authors Ethan Munn
+ * @authors Meng Veng Taing - 300434816, Teagan Stewart - 300407769, 
+ *  		Ethan Munn - 300367257.
  *
  */
 public class InfoPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+	
 	private Game game;
 	private GUI gui;
-	private JPanel inv;
-	private JPanel storage;
-	private JPanel hint;
-	private JPanel timer;
-	private JPanel chip;
-	private JPanel level;
-	private JPanel rec;
+	private JPanel inv, storage, hint, timer, chip, level, rec;
 
 	private boolean pause = false;
 	private ImageIcon infoIcon = makeImageIcon("icons/InfoBackground2.png");
@@ -44,6 +41,12 @@ public class InfoPanel extends JPanel {
 	private ImageIcon rewindIcon = makeImageIcon("icons/rewind.png");
 	private ImageIcon skipIcon = makeImageIcon("icons/skip.png");
 	
+	/**
+	 * The constructor for the information panel.
+	 * 
+	 * @param game The game used for the information.
+	 * @param gui The gui that the panel is in.
+	 */
 	public InfoPanel (Game game, GUI gui){
 		
 		this.game = game;
@@ -74,6 +77,10 @@ public class InfoPanel extends JPanel {
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public JPanel inventory(){
 		inv = new JPanel(new GridBagLayout());
 		
@@ -172,8 +179,8 @@ public class InfoPanel extends JPanel {
 		hint.setBorder(border);
 		
 		JLabel text = new JLabel(replayMode ?
-								"<html>\"space\" to play, \"space\" to pause"+
-								"<br>\"F\" to fast forward"+
+								"<html>\"space\" to play/pause, \"D\" to rewind"+
+								"<br>\"F\" to fast forward, \"S\" to skip"+
 								"<br>\".\" to move forward one frame"+
 								"<br>\",\" to move backward one frame<html>":
 								"<html>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;...&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"+
@@ -298,10 +305,10 @@ public class InfoPanel extends JPanel {
 				gui.setRecIndex(0);
 				skipReset();
 				if(!pause) {gui.startTimer();}
-				gui.main.setFocusable(true);
+
 			});
-			
-			rewindButton.setBorderPainted(false); 
+
+			rewindButton.setBorderPainted(false);
 	        rewindButton.setContentAreaFilled(false); 
 	        rewindButton.setFocusPainted(false); 
 	        rewindButton.setOpaque(false);
@@ -404,6 +411,14 @@ public class InfoPanel extends JPanel {
 	        skipButton.setFocusPainted(false); 
 	        skipButton.setOpaque(false);
 			rec.add(skipButton);
+
+			//Make all the button not focusable so shortcut keys will work
+			playButton.setFocusable(false);
+			skipButton.setFocusable(false);
+			fastButton.setFocusable(false);
+			fastButton.setFocusable(false);
+			backOneButton.setFocusable(false);
+			forwardOneButton.setFocusable(false);
 		}
 		else {
 			for(int i=0; i<6;i++) {

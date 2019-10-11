@@ -6,12 +6,23 @@ import nz.ac.vuw.ecs.swen225.a3.render.Render;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The JPanel that displays the board, uses a grid layout and JPanels
+ * that are selected in Render.
+ * 
+ * @author Meng Veng Taing - 300434816, Teagan Stewart - 300407769
+ *
+ */
 public class GamePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
 	private Render render;
 
+	/**
+	 * The constructor for the GamePanel
+	 * @param game
+	 */
 	public GamePanel(Game game) {
 		this.setLayout(new GridLayout(9, 9, 0, 0));
 		this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 20));

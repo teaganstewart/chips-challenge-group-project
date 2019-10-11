@@ -1,20 +1,13 @@
 package nz.ac.vuw.ecs.swen225.a3.application.ui;
 
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
-import nz.ac.vuw.ecs.swen225.a3.maze.Coordinate;
-import nz.ac.vuw.ecs.swen225.a3.maze.Direction;
-import nz.ac.vuw.ecs.swen225.a3.maze.Level;
-import nz.ac.vuw.ecs.swen225.a3.maze.IceBoots;
-import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
-import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
+import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 import nz.ac.vuw.ecs.swen225.a3.persistence.SaveUtils;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.nio.file.LinkOption;
 
 /**
  * 
@@ -26,12 +19,18 @@ import java.nio.file.LinkOption;
  * breaking our code, we decided to contain it here instead. Some of the methods have
  * been made static so the GUI object does not need to be passed between classes.
  * 
- * @authors Ethan Munn, Meng Veng Taing, Teagan Stewart
+ * @authors Ethan Munn - 300367257, Meng Veng Taing - 300434816, Teagan Stewart - 300407769
  *
  */
 public class GUI extends JFrame {
-
+	
+	private static final long serialVersionUID = 1L;
+	
 	private Game game;
+	
+	/**
+	 * Has to be static to be used in tests.
+	 */
 	public static JFrame main = new JFrame("Chap's Challenge");
 	private static final int LEVEL_COUNT = 2; 
 	
@@ -47,21 +46,15 @@ public class GUI extends JFrame {
 	private JMenu fileMenu, gameMenu;
 	private JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, pause_Item, help_Item;
 
-	private JRadioButton lvl[] = new JRadioButton[2];
-
     // game variables
     private static Timer gameLoop;
     private static int gameFrame;
     private static int gameSpeed = 10;
-    private static boolean timeToggle;
-    private static boolean enemyToggle;
-    private static boolean started;
+    private static boolean timeToggle, enemyToggle, started;
     
     // recnplay variables
     private static Timer replayLoop;
-    private static int globalFrame;
-    private static int keyFrame;
-	private static int recIndex;
+    private static int globalFrame, keyFrame, recIndex;
 	private static boolean flashIcon;
 
 	// switching between recnplay / game
@@ -180,11 +173,13 @@ public class GUI extends JFrame {
 
 		// "D" for Do-over/Redo
 		if (e.getKeyCode() == KeyEvent.VK_D) {
-			stopTimer();
-			gameSpeed = 10;
-			keyFrame = 0;
-			recIndex = 0;
-			startTimer();
+
+			if(!infoPanel.getPause()) { stopTimer();}
+			setSpeed(10);
+			setKeyFrame(0);
+			setRecIndex(0);
+			infoPanel.skipReset();
+			if(!infoPanel.getPause()) {startTimer();}
 		}
 
 		// "," for go back one frame
@@ -218,11 +213,13 @@ public class GUI extends JFrame {
 		}
 
 		if(e.getKeyCode() == KeyEvent.VK_SPACE){
+
 			if(infoPanel.getPause()) startTimer();
 			else stopTimer();
 			infoPanel.setPause(!infoPanel.getPause());
 			updateBoard();
 		}
+
 	}
 
 
@@ -308,6 +305,11 @@ public class GUI extends JFrame {
 		startTimer();
 
 	}
+	
+	/**
+	 *  The popup after a replay ends, asking you whether you want to 
+	 *  save it or not.
+	 */
 	public void saveReplayPopup(){
 
 
@@ -322,6 +324,10 @@ public class GUI extends JFrame {
 		main.setFocusable(true);
 	}
 
+	/**
+	 * The window that gives you your options after you finish a level.
+	 * (Restart, Replay, Next Level)
+	 */
 	public void finishLevelWindow(){
 		JPanel panel = new JPanel();
 		JLabel message1 = new JLabel("Level completed.");
@@ -879,6 +885,7 @@ public class GUI extends JFrame {
     			enemyToggle = false;
     	    	timeToggle = false;
     	    	started = true;
+
     		}
     		
 	    	gameLoop.start();
@@ -891,6 +898,7 @@ public class GUI extends JFrame {
         		recIndex = 0;
         		flashIcon = true;
         		started = true;
+
     		}
     		
     		replayLoop.start();
@@ -917,62 +925,63 @@ public class GUI extends JFrame {
     }
     
     /**
-     * Sets the keyFrame (for classes outside of gui)
-     * @param key
-     * 		the keyframe to set to (should be a multiple of 10)
+     * Sets the keyFrame (for classes outside of gui).
+     * 
+     * @param key The keyframe to set to (should be a multiple of 10)
      */
-    public void setKeyFrame(int key) {
+    public static void setKeyFrame(int key) {
     	keyFrame = key;
     }
     
     /**
      * Gets the keyFrame (for classes outside of this one)
-     * @return
-     * 		the keyframe at this time
+     * @return The keyframe at this time
      */
     public int getKeyFrame() {
     	return keyFrame;
     }
     
     /**
-     * Sets the recIndex (for classes outside of gui)
+     * Sets the recIndex (for classes outside of GUI).
+     * 
      * @param rec
      * 		the recIndex to set to
      */
-    public void setRecIndex(int rec) {
+    public static void setRecIndex(int rec) {
     	recIndex = rec;
     }
     
     /**
-     * Gets the recIndex (for classes outside of this one)
-     * @return
-     * 		the recIndex at this time
+     * Gets the recIndex (for classes outside of this one).
+     * 
+     * @return The recIndex at this time
      */
     public int getRecIndex() {
     	return recIndex;
     }
     
     /**
-     * Sets the speed of the replay
-     * @param speed
-     * 		the speed to set to (10, or 3)
+     * Sets the speed of the replay.
+     * 
+     * @param speed The speed to set to (10, or 3).
      */
-    public void setSpeed(int speed) {
+    public static void setSpeed(int speed) {
     	gameSpeed = speed;
     }
     
     /**
-     * Gets the speed of the replay
-     * @return
-     * 		the speed
+     * Gets the speed of the replay.
+     * 
+     * @return gameSpeed The speed (10 or 3).
      */
     public int getSpeed() {
     	return gameSpeed;
     }
 
 	/**
-	 * Return the max level
-	 * @return
+	 * Return the max level.
+	 * 
+	 * @return LEVEL_COUNT
 	 */
 	public int getLevelCount(){
     	return LEVEL_COUNT;
