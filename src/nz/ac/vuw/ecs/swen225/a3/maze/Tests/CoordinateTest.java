@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.maze.Coordinate;
 
 /**
- * @author Josh
- *         <p>
- *         Class which contains most tests that test the Coordinate class
+ *  Class which contains most tests that test the Coordinate class
+ *  
+ *  @author Josh O'Hagan - 300442801
  */
 public class CoordinateTest {
 	

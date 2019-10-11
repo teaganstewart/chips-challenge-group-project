@@ -6,7 +6,7 @@ import javax.json.JsonObject;
 /**
  * Class representing a pickup-able item use for walking on ice blocks.
  * 
- * @author Josh O'Hagan
+ * @author Josh O'Hagan - 300442801
  */
 public class IceBoots implements Entity {
 	

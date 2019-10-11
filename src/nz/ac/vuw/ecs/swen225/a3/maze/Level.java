@@ -9,7 +9,7 @@ import javax.json.JsonObject;
  * The level class stores information relating to the current level being
  * played. It stores the time details and the maze, as well as the levelNumber
  *
- * @author Matt Rothwell
+ * @author Matt Rothwell - 300434822
  */
 public class Level implements Saveable {
 
@@ -79,5 +79,27 @@ public class Level implements Saveable {
 	 */
 	public int getTimeAllowed() {
 		return timeAllowed;
+	}
+	
+	/**
+	 * Gets the time the level has been running
+	 * @return
+	 * 		the time the level has been running for
+	 */
+	public long getRunTime() {
+		return levelRunningTime;
+	}
+	
+	/**
+	 * A setter for the running time, only used when paused
+	 * @param time
+	 * 		the time to be saved
+	 */
+	public void setRunningTime(long time) {
+		levelRunningTime = time;
+	}
+	
+	public String toString() {
+		return "Level: " + level;
 	}
 }

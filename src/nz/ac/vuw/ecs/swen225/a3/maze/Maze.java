@@ -14,7 +14,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
  * entities, player, etc. Also has logic to determine what is allowed to
  * happen with the objects in the maze
  *         
- * @author Josh O'Hagan
+ * @author Josh O'Hagan - 300442801
  *
  */
 public class Maze implements Saveable {
@@ -53,7 +53,7 @@ public class Maze implements Saveable {
 	 * Returns true if player was moved in the specified direction, else returns
 	 * false if player was not moved. This method also automatically collects items
 	 * 
-	 * @param dir
+	 * @param dir The direction the player is trying to move.
 	 * @return validity of move
 	 */
 	public boolean movePlayer(Direction dir) {

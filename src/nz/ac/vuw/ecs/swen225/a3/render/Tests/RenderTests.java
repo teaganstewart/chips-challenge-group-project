@@ -14,17 +14,20 @@ import nz.ac.vuw.ecs.swen225.a3.render.*;
  * Class which contains all tests that test classes in the render
  * directory.
  * 
- * @author Teagan Stewart
+ * @author Teagan Stewart - 300407769
  */
 public class RenderTests {
 
+	/**
+	 * Tests whether array of JPanel's matches the tiles.
+	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	void createGridTest() {
 
 		Tile[][] tiles = emptyBoard();
 
 		GUI gui = new GUI();
-		System.out.println(gui.toString());
 		Game game = new Game();
 		game.getMaze().setPlayer(new Player(new Coordinate(4,4)));
 		game.setTiles(tiles);
@@ -42,9 +45,13 @@ public class RenderTests {
 		}
 
 		assertEquals(expected[0][0].getIcon().toString(), outcome[0][0].getIcon().toString());
-
+		gui.disable();
 	}
 
+	/**
+	 * Tests rendering entities on the board.
+	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	void drawEntitiesTest() {
 
@@ -76,6 +83,9 @@ public class RenderTests {
 
 	}
 	
+	/**
+	 * Renders the inventory and all entities that can be placed in them.
+	 */
 	@SuppressWarnings("deprecation")
 	@Test
 	void renderInventoryTest() {
@@ -98,6 +108,9 @@ public class RenderTests {
 		
 	}
 	
+	/**
+	 * Tests rendering of enemies and crates.
+	 */
 	@SuppressWarnings("deprecation")
 	@Test
 	void renderMoveablesTest() {
@@ -120,6 +133,11 @@ public class RenderTests {
 		
 	}
 	
+	/**
+	 * Creates and empty board for tests.
+	 * 
+	 * @return tiles An array of floor tiles.
+	 */
 	private Tile[][] emptyBoard() {
 		
 		Tile[][] tiles = new Tile[9][9];
