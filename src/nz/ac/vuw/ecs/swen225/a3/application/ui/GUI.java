@@ -43,7 +43,7 @@ public class GUI extends JFrame {
 	public InfoPanel infoPanel;
 
 	// windows
-	private JDialog fileLoaderWindow, pauseWindow;
+	private JDialog fileLoaderWindow, pauseWindow, replayLoaderWindow;
 
 	private JDialog deathWindow;
 
@@ -52,7 +52,7 @@ public class GUI extends JFrame {
 	//Declare variable menu item variable
 	private JMenuBar menuBar;
 	private JMenu fileMenu, gameMenu;
-	private JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, pause_Item, help_Item;
+	private JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, pause_Item, help_Item, loadReplayItem;
 
 	// game variables
 	private static Timer gameLoop;
@@ -70,6 +70,10 @@ public class GUI extends JFrame {
 
 	//Current record ID
 	private Long currentRecordID;
+	private boolean wouldSave = true;
+	private boolean rewatch = false;
+
+
 	/**
 	 * Constructs the game via the GUI
 	 */
@@ -166,21 +170,26 @@ public class GUI extends JFrame {
 	public void inReplayEvent(KeyEvent e) {
 		// "S" for Skip
 		if (e.getKeyCode() == KeyEvent.VK_S) {
-
-			// doesn't allow a skip if it's beyond the level count
-			if (game.getLevelNum() < LEVEL_COUNT) {
-				stopTimer();
-				gameSpeed=10;
-				setReplayMode(false);
-				saveReplayPopup();
-				game.loadLevel(gamePanel, game.getLevelNum()+1);
+			if(rewatch == false) {
+				// doesn't allow a skip if it's beyond the level count
+				if (game.getLevelNum() < LEVEL_COUNT) {
+					stopTimer();
+					gameSpeed = 10;
+					setReplayMode(false);
+					saveReplayPopup();
+					game.loadLevel(gamePanel, game.getLevelNum() + 1);
+				} else {
+					stopTimer();
+					infoPanel.setPause(true);
+					setReplayMode(false);
+					saveReplayPopup();
+					JOptionPane.showMessageDialog(null, "Congratulation, You have won the game");
+					finishLevelWindow();
+				}
 			}else{
 				stopTimer();
-				infoPanel.setPause(true);
-				setReplayMode(false);
-				saveReplayPopup();
-				JOptionPane.showMessageDialog(null, "Congratulation, You have won the game");
-				finishLevelWindow();
+				JOptionPane.showMessageDialog(null,"SKIP IS DISABLE DURING REWATCH!");
+				startTimer();
 			}
 		}
 
@@ -285,6 +294,9 @@ public class GUI extends JFrame {
 				JOptionPane.showMessageDialog(null, "Game has not been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
 				SaveUtils.saveLevel(game.getLevelNum());
 				stopTimer();
+				if(wouldSave == false){
+					ReplayUtils.deleteReplay(currentRecordID);
+				}
 				System.exit(0);
 			}
 
@@ -307,6 +319,9 @@ public class GUI extends JFrame {
 			SaveUtils.saveGame(game.getLevel(), fileName);
 			JOptionPane.showMessageDialog(null, "Game has been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
 			stopTimer();
+			if(wouldSave == false){
+				ReplayUtils.deleteReplay(currentRecordID);
+			}
 			System.exit(0);
 
 		}else{
@@ -329,7 +344,7 @@ public class GUI extends JFrame {
 			JOptionPane.showMessageDialog(null, "Replay had been saved", "Save Replay", JOptionPane.PLAIN_MESSAGE);
 		}else{
 			JOptionPane.showMessageDialog(null,"Replay had not been saved","Save Replay", JOptionPane.PLAIN_MESSAGE);
-
+			wouldSave = false;
 		}
 		setReplayMode(false);
 		main.setFocusable(true);
@@ -379,15 +394,7 @@ public class GUI extends JFrame {
 			JButton exitButton = new JButton("Exit");
 			exitButton.addActionListener(e -> {
 				finishLevelWindow.dispose();
-				int prompt = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the game?", "Close Window?",
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if (prompt == JOptionPane.YES_OPTION){ 
-					stopTimer();
-					System.exit(0);
-				}
-				else {
-					main.setFocusable(true);
-				}
+				System.exit(0);
 
 			});
 			exitButton.setBounds(75,200,150 ,30);
@@ -475,6 +482,7 @@ public class GUI extends JFrame {
 
 		//Add file items to file menu
 		fileMenu.add(loadGameItem);
+		fileMenu.add(loadReplayItem);
 		fileMenu.add(saveAndExitItem);
 		fileMenu.add(exitItem);
 
@@ -515,6 +523,9 @@ public class GUI extends JFrame {
 			stopTimer();
 			game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
 			SaveUtils.saveLevel(game.getLevelNum());
+			if(wouldSave == false){
+				ReplayUtils.deleteReplay(currentRecordID);
+			}
 			System.exit(0);
 		});
 
@@ -533,8 +544,16 @@ public class GUI extends JFrame {
 		loadGameItem.addActionListener((event) -> {
 			stopTimer();
 			game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
+
 			fileLoader();
 
+		});
+
+
+		loadReplayItem = new JMenuItem("Load replay");
+		loadReplayItem.addActionListener(e-> {
+			stopTimer();
+			replayLoader();
 		});
 	}
 
@@ -596,7 +615,70 @@ public class GUI extends JFrame {
 			startTimer();
 		});
 	}
+	public void replayLoader(){
+		setReplayMode(false);
+		//Create panel
+		JPanel panel = new JPanel();
+		JLabel text = new JLabel("Select a replay record to load:");
+		text.setBounds(200,20,200,30);
 
+		//Create a combo box
+		JComboBox<String> cb = new JComboBox<String>();
+
+		for(String s: ReplayUtils.getRecordingsById().keySet()){
+			cb.addItem(s);
+		}
+
+		cb.setBounds(50,60,400,20);
+
+
+		JButton select = new JButton("Select");
+		select.setBounds(200,100,100,30);
+		select.addActionListener(event -> {
+			stopTimer();
+			if(cb.getSelectedIndex() !=-1) {
+				replayLoaderWindow.dispose();
+				Object selectItem = cb.getSelectedItem();
+				Long replayId = ReplayUtils.getRecordingsById().get(selectItem);
+				ReplayUtils.playBack(replayId.toString());
+				setReplayMode(true);
+				startTimer();
+				rewatch = true;
+			}
+
+		});
+
+		//Add items to panel
+		panel.add(text);
+		panel.add(cb);
+		panel.add(select);
+		panel.setLayout(null);
+
+		replayLoaderWindow = popUpWindow("Replay Loader",500,200);
+
+		//Add panel to the dialog
+		replayLoaderWindow.add(panel);
+
+		// if closed out using X
+		replayLoaderWindow.addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				e.getWindow().dispose();
+
+				// a check to make sure that it doesn't start the replay if that is paused, if a close is attempted
+				if(!(infoPanel.getPause())) {
+					startTimer();
+				}
+			}
+		});
+
+		replayLoaderWindow.setVisible(true);
+
+		main.setFocusable(true);
+
+	}
 	/**
 	 * The menu displayed when the loading file option is selected
 	 */
@@ -628,6 +710,7 @@ public class GUI extends JFrame {
 				Long saveId = LoadUtils.getSavesByID().get(selectItem);
 				Level lvl = LoadUtils.loadById(saveId);
 				game.loadSave(lvl);
+				
 			}
 
 		});
