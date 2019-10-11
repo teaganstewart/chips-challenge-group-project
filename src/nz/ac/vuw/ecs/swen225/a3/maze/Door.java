@@ -38,8 +38,8 @@ public abstract class Door implements Entity {
 	/**
 	 * Used for the different forms of unlocking
 	 * 
-	 * @param player
-	 * @return validity
+	 * @param player The player going through the door.
+	 * @return True if player can move through door.
 	 */
 	public abstract boolean onTouch(Player player);
 

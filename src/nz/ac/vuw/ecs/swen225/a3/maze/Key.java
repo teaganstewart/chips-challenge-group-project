@@ -11,6 +11,9 @@ import javax.json.JsonObject;
  */
 public class Key implements Entity {
 
+	/**
+	 * The color of the key.
+	 */
 	final BasicColor color;
 
 	/**

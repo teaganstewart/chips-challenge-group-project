@@ -53,7 +53,7 @@ public class Maze implements Saveable {
 	 * Returns true if player was moved in the specified direction, else returns
 	 * false if player was not moved. This method also automatically collects items
 	 * 
-	 * @param dir
+	 * @param dir The direction the player is trying to move.
 	 * @return validity of move
 	 */
 	public boolean movePlayer(Direction dir) {

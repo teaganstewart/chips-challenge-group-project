@@ -194,7 +194,7 @@ public class InfoPanel extends JPanel {
 	 * Sets the hint box to empty if in game mode, and to the controls if in 
 	 * replay mode.
 	 * 
-	 * @param replayMode
+	 * @param replayMode True if in a replay.
 	 */
 	public void setDefaultHint(boolean replayMode) {
 		try {
@@ -305,7 +305,8 @@ public class InfoPanel extends JPanel {
 
 	/**
 	 * Create panel for the replay.
-	 * @return
+	 * 
+	 * @return rec Returns the recnplay button panel.
 	 */
 	JPanel recnplayPanel() {
 	
@@ -321,7 +322,7 @@ public class InfoPanel extends JPanel {
 
 	/**
 	 * Update the replay action on button event.
-	 * @param replayMode
+	 * @param replayMode True if in a replay.
 	 */
 	void updateRec(boolean replayMode) {
 		try {
@@ -507,7 +508,7 @@ public class InfoPanel extends JPanel {
 	 * Displays the treasure count if in game mode, and the number of
 	 * actions done if in replay mode.
 	 * 
-	 * @param replayMode
+	 * @param replayMode True if in replay.
 	 * @param first First number, to be displayed on left.
 	 * @param secnd Second number, to be displayed on right.
 	 */

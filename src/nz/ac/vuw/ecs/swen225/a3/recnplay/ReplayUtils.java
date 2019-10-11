@@ -39,6 +39,10 @@ public class ReplayUtils {
 	 * Sets the pauseTime;
 	 */
 	public static long pauseTime;
+	
+	/**
+	 * A list of all the action records in the replay.
+	 */
 	private static List<ActionRecord> replay;
 	
 	/**

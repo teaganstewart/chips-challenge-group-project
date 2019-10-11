@@ -17,14 +17,13 @@ import nz.ac.vuw.ecs.swen225.a3.render.Render;
  *
  */
 public class Game {
-	int levelNum;
+	private int levelNum;
 	private int time = 0;
 
 	private Player player;
 	private Maze maze;
 	private Render render;
 	private Level level;
-	boolean endGame;
 
 	/**
 	 * The constructor for the game object, links packages.

@@ -18,6 +18,9 @@ import nz.ac.vuw.ecs.swen225.a3.render.*;
  */
 public class RenderTests {
 
+	/**
+	 * Tests whether array of JPanel's matches the tiles.
+	 */
 	@Test
 	void createGridTest() {
 
@@ -45,6 +48,9 @@ public class RenderTests {
 
 	}
 
+	/**
+	 * Tests rendering entities on the board.
+	 */
 	@SuppressWarnings("deprecation")
 	@Test
 	void drawEntitiesTest() {
@@ -77,6 +83,9 @@ public class RenderTests {
 
 	}
 	
+	/**
+	 * Renders the inventory and all entities that can be placed in them.
+	 */
 	@SuppressWarnings("deprecation")
 	@Test
 	void renderInventoryTest() {
@@ -99,6 +108,9 @@ public class RenderTests {
 		
 	}
 	
+	/**
+	 * Tests rendering of enemies and crates.
+	 */
 	@SuppressWarnings("deprecation")
 	@Test
 	void renderMoveablesTest() {
@@ -121,6 +133,11 @@ public class RenderTests {
 		
 	}
 	
+	/**
+	 * Creates and empty board for tests.
+	 * 
+	 * @return tiles An array of floor tiles.
+	 */
 	private Tile[][] emptyBoard() {
 		
 		Tile[][] tiles = new Tile[9][9];

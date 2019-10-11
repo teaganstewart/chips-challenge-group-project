@@ -46,6 +46,9 @@ public class ApplicationTests {
 		assertEquals(2, game.getLevelNum());
 	}
 
+	/**
+	 * Tests key presses.
+	 */
 	@SuppressWarnings("deprecation")
 	@Test
 	void keysTest() {

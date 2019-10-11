@@ -24,6 +24,9 @@ class CrateTest {
     private Crate crate1;
     private Crate crate2;
 
+    /**
+     * Sets up tiles and crates before tests.
+     */
     @BeforeEach
     void setUp() {
         tiles = new Tile[9][9];

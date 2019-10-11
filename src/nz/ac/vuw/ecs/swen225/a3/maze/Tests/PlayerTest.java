@@ -16,11 +16,11 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class PlayerTest {
 
-	Player player;
+	private Player player;
 
-	/*
-	* Create a player before each test
-	* */
+	/**
+	 * Create a player before each test
+	 */
 	@BeforeEach
 	public void setUp() {
 		player = new Player(new Coordinate(0, 0));

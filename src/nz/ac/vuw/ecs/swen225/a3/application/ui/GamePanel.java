@@ -20,8 +20,9 @@ public class GamePanel extends JPanel {
 	private Render render;
 
 	/**
-	 * The constructor for the GamePanel
-	 * @param game
+	 * The constructor for the GamePanel.
+	 * 
+	 * @param game The game for displaying on the game panel.
 	 */
 	public GamePanel(Game game) {
 		this.setLayout(new GridLayout(9, 9, 0, 0));
