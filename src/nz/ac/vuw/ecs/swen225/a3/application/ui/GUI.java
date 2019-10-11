@@ -533,6 +533,7 @@ public class GUI extends JFrame {
 		KeyStroke ctrlSKeyStroke = KeyStroke.getKeyStroke("control S");
 		saveAndExitItem.setAccelerator(ctrlSKeyStroke);
 		saveAndExitItem.addActionListener((event) -> {
+			if (rewatch) return;
 			stopTimer();
 			game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
 			saveAndExitPopup();
@@ -551,6 +552,8 @@ public class GUI extends JFrame {
 
 
 		loadReplayItem = new JMenuItem("Load replay");
+		KeyStroke ctrlWKeyStroke = KeyStroke.getKeyStroke("control W");
+		loadReplayItem.setAccelerator(ctrlWKeyStroke);
 		loadReplayItem.addActionListener(e-> {
 			stopTimer();
 			replayLoader();
@@ -587,6 +590,7 @@ public class GUI extends JFrame {
 		KeyStroke ctrlHKeyStroke = KeyStroke.getKeyStroke("control H");
 		help_Item.setAccelerator(ctrlHKeyStroke);
 		help_Item.addActionListener(e -> {
+			if (rewatch) return;
 			stopTimer();
 			game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
 			if(JOptionPane.showConfirmDialog(
@@ -602,6 +606,7 @@ public class GUI extends JFrame {
 							"Ctrl+X - Exit\n" +
 							"Ctrl+S - Save & Exit\n" +
 							"Ctrl+R - Load\n" +
+							"Ctrl+W - Rewatch\n" +
 							"Ctrl+P - Restart Level\n" +
 							"Ctrl+1 - Restart Game\n" +
 							"Space Bar - Pause\n" +
@@ -703,15 +708,18 @@ public class GUI extends JFrame {
 		select.setBounds(200,100,100,30);
 		select.addActionListener(event -> {
 			stopTimer();
-			game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
-			if(cb.getSelectedIndex() !=-1) {
-				fileLoaderWindow.dispose();
-				Object selectItem = cb.getSelectedItem();
-				Long saveId = LoadUtils.getSavesByID().get(selectItem);
-				Level lvl = LoadUtils.loadById(saveId);
-				game.loadSave(lvl);
-				
-			}
+            game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
+            if(cb.getSelectedIndex() !=-1) {
+                fileLoaderWindow.dispose();
+                Object selectItem = cb.getSelectedItem();
+                Long saveId = LoadUtils.getSavesByID().get(selectItem);
+                Level lvl = LoadUtils.loadById(saveId);
+                game.loadSave(lvl);
+                setReplayMode(false);
+                rewatch = false;
+            }else{
+                fileLoaderWindow.dispose();
+            }
 
 		});
 
@@ -742,7 +750,7 @@ public class GUI extends JFrame {
 		});
 
 		fileLoaderWindow.setVisible(true);
-		setReplayMode(false);
+		
 		main.setFocusable(true);
 
 	}
@@ -838,7 +846,8 @@ public class GUI extends JFrame {
 	 * Quick method for restarting the game
 	 */
 	public void restartGame(){
-		if (replayMode) return;
+		setReplayMode(false);
+		rewatch = false;
 		game.loadLevel(gamePanel,1);
 		
 
