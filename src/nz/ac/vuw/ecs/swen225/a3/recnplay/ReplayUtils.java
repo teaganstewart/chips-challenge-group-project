@@ -27,6 +27,7 @@ public class ReplayUtils {
     public static void playBack(String id) {
     	if (replay != null) replay.clear();
     	replay = loadReplay(id);
+
     }
 
 	/**
@@ -140,10 +141,11 @@ public class ReplayUtils {
 		String path = RECORD_DIRECTORY+"\\"+id;
 
 		File dir = new File(path);
-
+		System.out.println(id);
 		File[] listFiles = dir.listFiles();
 		if (listFiles != null){
 			for (File f : listFiles){
+
 				f.delete();
 			}
 		}
