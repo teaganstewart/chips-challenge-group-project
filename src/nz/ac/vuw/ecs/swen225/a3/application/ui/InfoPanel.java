@@ -409,13 +409,14 @@ public class InfoPanel extends JPanel {
 		Render render = game.getRender();
 
 		JLabel[] inventory = game.getRender().renderInventory();
+		try{
+			for(int i =0; i < 8;i++){
+				JLabel item = inventory[i];
 
-		for(int i =0; i < 8;i++){
-			JLabel item = inventory[i];
-
-			item.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.WHITE));
-			storage.add(item);
-		}
+				item.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.WHITE));
+				storage.add(item);
+			}
+		}catch(NullPointerException e){}
 	}
 
 	public void displayChips(boolean replayMode, int first, int secnd) {

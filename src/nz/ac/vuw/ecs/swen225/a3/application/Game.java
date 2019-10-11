@@ -23,9 +23,12 @@ public class Game {
 		loadGame();
 	}
 
+	/*
+	 * Used for the Integration Tests
+	 * */
 	public Game(Maze maze) {
 		this.maze = maze;
-		loadGame();
+		loadGameWithoutGUI();
 	}
 
 	public Maze getMaze() {
@@ -110,6 +113,31 @@ public class Game {
 
 	}
 
+	/*
+	* Used for the Integration Tests
+	* */
+	public void loadGameWithoutGUI(){
+
+		try{
+			level = LoadUtils.resumeGame();
+			setLevelNum(level.getLevel());
+			if(level.getMaze().getTiles().length<9 || level.getMaze().getTiles()[0].length<9) {
+				throw new NullPointerException();
+			}
+		}
+		catch (NullPointerException e){
+			level = LoadUtils.loadLevel(1);
+			setLevelNum(1);
+		}
+
+		maze = level.getMaze();
+		player = maze.getPlayer();
+		setLevelNum(level.getLevel());
+
+		startLevelWithoutGUI(level);
+
+	}
+
 	public void setTime(int t) {
 		time = t;
 	}
@@ -167,6 +195,11 @@ public class Game {
 		GUI.stopTimer();
 		GUI.setReplayMode(false);
 		GUI.startTimer();
+	}
+
+	public void startLevelWithoutGUI(Level l) {
+		setTime(l.getTimeAllowed());
+		setLevel(l);
 	}
 
 

@@ -45,7 +45,6 @@ public class IntegrationTest {
      * */
     @BeforeEach
     public void setUp() {
-        clearSavesAndRecordingsFolders();
 
         // CREATE THE CUSTOM TESTING MAZE
         tiles = new Tile[9][9];
@@ -54,7 +53,7 @@ public class IntegrationTest {
                 tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
             }
         }
-        // Set the goal to enable the replaying
+        // Set the goal to finish level 1 and enable the replaying
         tiles[0][3] = new Tile(new Coordinate(3, 3), Tile.TileType.GOAL);
 
         player = new Player(new Coordinate(0, 0));
@@ -62,38 +61,42 @@ public class IntegrationTest {
         // No crates or enemies in the level
         maze = new Maze(tiles, player, new ArrayList<>(), new ArrayList<Skeleton>());
 
-        // START THE GAME AND SET IT UP WITH OUR CUSTOM TEST GAME
-        gui = new GUI();
-        gui.setGame(new Game(maze));
-        game = gui.getGame();
+        game = new Game(maze);
         Render render = new Render(game, game.getMaze());
         game.setRender(render);
+
+        // Record first Action of the game
+        new Thread(() -> ReplayUtils.pushActionRecord(new ActionRecord(0, game.getMaze()))).start();
 
         movePlayerAndRecord(Direction.RIGHT);
         movePlayerAndRecord(Direction.RIGHT);
         movePlayerAndRecord(Direction.RIGHT);
         assertTrue(maze.isGoalReached());
 
+        ReplayUtils.playBack(Long.toString(ReplayUtils.getStartTime()));
 
-        gui.checkConditions(maze);
-        assertTrue(gui.isReplayMode());
-        assertTrue(gui.isFlashIcon());
+//        clearSavesAndRecordingsFolders();
     }
 
     @AfterEach
     public void tearDown() {
-        // End recording
-        if (game.getLevelNum() < 2) {
-            gui.setReplayMode(false);
-            game.loadLevel(gui.getGamePanel(), game.getLevelNum() + 1);
-        }
+//        // End recording
+//        if (game.getLevelNum() < 2) {
+//            gui.setReplayMode(false);
+//            game.loadLevel(gui.getGamePanel(), game.getLevelNum() + 1);
+//        }
+//
+//        assertEquals(2, game.getLevelNum());
+//        Maze levelTwoMaze = game.getMaze();
+//        assertTrue(levelTwoMaze.movePlayer(Direction.RIGHT));
+//
+//        // Clean up after recording
+//        clearSavesAndRecordingsFolders();
+    }
 
-        assertEquals(2, game.getLevelNum());
-        // Assert player can move again in level 2
-        assertTrue(maze.movePlayer(Direction.RIGHT));
+    @Test
+    public void testingSetupAndTearDown(){
 
-        // Clean up after recording
-        clearSavesAndRecordingsFolders();
     }
 
     @Test
@@ -118,8 +121,7 @@ public class IntegrationTest {
 
     @Test
     public void resetingRecording() {
-        gui.setRecIndex(0);
-        Maze maze = ReplayUtils.getActionRecord(gui.getRecIndex()).getMaze();
+        Maze maze = ReplayUtils.getActionRecord(0).getMaze();
         assertEquals(new Coordinate(0, 1), maze.getPlayer().getCoordinate());
     }
 
@@ -151,8 +153,10 @@ public class IntegrationTest {
      * */
     private void movePlayerAndRecord(Direction dir) {
         maze.movePlayer(dir);
-        assertTrue(ReplayUtils.pushActionRecord(new ActionRecord((int) (System.currentTimeMillis()
-                - ReplayUtils.getStartTime()), maze)));
+//        assertTrue(ReplayUtils.pushActionRecord(new ActionRecord((int) (System.currentTimeMillis()
+//                - ReplayUtils.getStartTime()), maze)));
+        new Thread(() -> ReplayUtils.pushActionRecord(new ActionRecord((int)(System.currentTimeMillis()
+                - ReplayUtils.getStartTime()), maze))).start();
     }
 
     /*

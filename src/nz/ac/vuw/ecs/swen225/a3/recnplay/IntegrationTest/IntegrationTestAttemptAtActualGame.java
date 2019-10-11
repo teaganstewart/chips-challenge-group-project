@@ -62,7 +62,6 @@ public class IntegrationTestAttemptAtActualGame {
         // End recording
         if (game.getLevelNum() < 2) {
             gui.setReplayMode(false);
-            gui.setRecIndex(0);
             game.loadLevel(gui.getGamePanel(), game.getLevelNum() + 1);
         }
 
@@ -73,6 +72,11 @@ public class IntegrationTestAttemptAtActualGame {
 
         // Clean up after recording
         clearSavesAndRecordingsFolders();
+    }
+
+    @Test
+    public void testSetupAndTearDown(){
+
     }
 
     @Test
@@ -99,7 +103,7 @@ public class IntegrationTestAttemptAtActualGame {
     public void resetingRecording() {
         gui.setRecIndex(0);
         Maze maze = ReplayUtils.getActionRecord(gui.getRecIndex()).getMaze();
-        assertEquals(new Coordinate(5, 7), maze.getPlayer().getCoordinate());
+        assertEquals(new Coordinate(4, 7), maze.getPlayer().getCoordinate());
     }
 
     /*
