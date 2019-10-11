@@ -36,12 +36,12 @@ public class GUI extends JFrame {
 	
 	// main panels
 	private GamePanel gamePanel;
-	private InfoPanel infoPanel;
+	public InfoPanel infoPanel;
 	
 	// windows
 	private JDialog fileLoaderWindow, pauseWindow;
 
-	public JDialog deathWindow;
+	private JDialog deathWindow;
 
 	private JDialog finishLevelWindow;
 	

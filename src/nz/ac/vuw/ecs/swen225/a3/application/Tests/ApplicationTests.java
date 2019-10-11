@@ -3,11 +3,16 @@ package nz.ac.vuw.ecs.swen225.a3.application.Tests;
 //import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.*;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.*;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.ActionRecord;
+import nz.ac.vuw.ecs.swen225.a3.recnplay.ReplayUtils;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
 
 /**
@@ -33,7 +38,7 @@ public class ApplicationTests {
 		GamePanel gp = new GamePanel(game);
 
 		// moving the player to reach the next level.
-		game.loadGame();
+		 game.loadLevel(gp, 1);
 		
 		for(int i= 0; i <6; i++) {
 			game.getMaze().movePlayer(Direction.DOWN);
@@ -42,6 +47,7 @@ public class ApplicationTests {
 			}
 		}
 		
+		GUI.stopTimer();
 		assertEquals(2, game.getLevelNum());
 		assertEquals(game.getLevel().toString(), LoadUtils.loadLevel(game.getLevelNum()).toString());
 	}
@@ -53,10 +59,16 @@ public class ApplicationTests {
 	@Test
 	void keysTest() {
 		GUI gui = new GUI();
+		gui.infoPanel.setPause(true);
 		gui.disable();
 		Game game = new Game();
 		Render render = new Render(game, game.getMaze());
 		render.createGrid();
+
+		ReplayUtils r = new ReplayUtils();
+		List<ActionRecord> record = new ArrayList<ActionRecord>();
+		record.add(new ActionRecord(24336, game.getMaze()));
+		r.setReplayList(record);
 
 		Player p = new Player(new Coordinate(3,3));
 		game.setPlayer(p);
@@ -65,11 +77,37 @@ public class ApplicationTests {
 		for(Integer k : events) {
 			KeyEvent key = new KeyEvent(GUI.main, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, k,'Z');
 		    GUI.main.getKeyListeners()[0].keyReleased(key);
+		}
+		
+		Integer[] events2 = {KeyEvent.VK_SPACE, KeyEvent.VK_PERIOD,  KeyEvent.VK_D};
+
+		for(Integer k : events2) {
+			KeyEvent key = new KeyEvent(GUI.main, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, k,'Z');
+			GUI.setReplayMode(true);
+		    GUI.main.getKeyListeners()[0].keyReleased(key);
+		    GUI.setReplayMode(false);
 		    GUI.main.setFocusable(true);
 		}
-
+		GUI.stopTimer();
+		
 		assertEquals(game.getPlayer().toString(),p.toString());
 		assertEquals(new Coordinate(3,3).toString(), game.getPlayer().getCoordinate().toString());
+	}
+	
+	/**
+	 * Tests the recnplay elements of the info panel.
+	 */
+	@Test
+	void testingRec() {
+		GUI gui = new GUI();
+		Game game = new Game();
+		GamePanel gp = new GamePanel(game);
+		
+		gui.infoPanel.setPause(true);
+		gui.infoPanel.updateRec(true);
+		
+		GUI.stopTimer();
+	
 	}
 	
 }

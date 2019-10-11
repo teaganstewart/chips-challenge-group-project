@@ -235,5 +235,9 @@ public class ReplayUtils {
 		}
 		return dir.delete();
 	}
+	
+	public void setReplayList(List<ActionRecord> e) {
+		replay = e;
+	}
 
 }

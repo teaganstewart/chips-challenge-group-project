@@ -324,7 +324,7 @@ public class InfoPanel extends JPanel {
 	 * Update the replay action on button event.
 	 * @param replayMode True if in a replay.
 	 */
-	void updateRec(boolean replayMode) {
+	public void updateRec(boolean replayMode) {
 		try {
 			for(int i=0; i<6;i++) {
 				rec.remove(0);
