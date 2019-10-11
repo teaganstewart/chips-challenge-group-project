@@ -1,6 +1,5 @@
 package nz.ac.vuw.ecs.swen225.a3.recnplay.IntegrationTest;
 
-import static org.junit.Assert.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.event.KeyEvent;
@@ -22,7 +21,6 @@ import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
 import nz.ac.vuw.ecs.swen225.a3.maze.Player;
 import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
-import nz.ac.vuw.ecs.swen225.a3.persistence.SaveUtils;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.ActionRecord;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.ReplayUtils;
 
@@ -83,12 +81,10 @@ public class IntegrationTest {
 				});
 			} catch (InvocationTargetException | InterruptedException e) {}
         }
-        
-		assertTrue(SaveUtils.saveGame(level, ""));
+
         GUI.stopTimer();
         
         ReplayUtils.playBack(Long.toString(level.getBeginTime()));
-        assertSame(ReplayUtils.replaySize(), 4);
         assertTrue(player.getCoordinate().equals(new Coordinate(3,6)));
     }
 
