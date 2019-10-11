@@ -621,6 +621,10 @@ public class GUI extends JFrame {
 			startTimer();
 		});
 	}
+
+	/**
+	 * Replay loader for selecting saved replay.
+	 */
 	public void replayLoader(){
 		setReplayMode(false);
 		//Create panel
