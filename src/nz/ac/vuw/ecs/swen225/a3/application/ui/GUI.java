@@ -371,9 +371,25 @@ public class GUI extends JFrame {
 
 
 			});
-			nextButton.setBounds(75,200,150 ,30);
+			nextButton.setBounds(75,150,150 ,30);
 			panel.add(nextButton);
+		}else{
+			JButton exitButton = new JButton("Exit Game");
+			exitButton.addActionListener(e -> {
+				finishLevelWindow.dispose();
+				SaveUtils.saveLevel(game.getLevelNum());
+				stopTimer();
+				if(willSave == false) {
+					ReplayUtils.deleteReplay(currentRecordID);
+				}
+				System.exit(0);
+
+
+			});
+			exitButton.setBounds(75,200,150 ,30);
+			panel.add(exitButton);
 		}
+
 
 
 		panel.add(message1);
