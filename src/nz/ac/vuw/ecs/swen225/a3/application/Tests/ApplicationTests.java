@@ -34,11 +34,11 @@ public class ApplicationTests {
 		// setup
 		GUI gui = new GUI();
 		gui.disable();
-		Game game = new Game();
+		Game game = gui.getGame();
 		GamePanel gp = new GamePanel(game);
 
 		// moving the player to reach the next level.
-		game.loadGame();
+		game.loadLevel(gp, 1);
 		
 		for(int i= 0; i <6; i++) {
 			game.getMaze().movePlayer(Direction.DOWN);
@@ -69,8 +69,7 @@ public class ApplicationTests {
 			try {
 				SwingUtilities.invokeAndWait(() -> {
 					KeyEvent key = new KeyEvent(GUI.main, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, k,'Z');
-				    GUI.main.getKeyListeners()[0].keyReleased(key);
-				    GUI.main.setFocusable(true);
+				    gui.inGameEvent(key);
 				});
 			} catch (InvocationTargetException | InterruptedException e) {
 			}

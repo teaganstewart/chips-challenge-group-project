@@ -1016,22 +1016,28 @@ public class GUI extends JFrame {
 		this.game = game;
 	}
 
-	/*
+	/**
 	 * Returns the state of the flash icon
+	 * @return
+	 * 		true or false, depending on state
 	 */
 	public static boolean isFlashIcon() {
 		return flashIcon;
 	}
 
-	/*
-	* Returns the Game Panel
-	* */
+	/**
+	 * Gets the game panel
+	 * @return
+	 * 		the game panel
+	 */
 	public GamePanel getGamePanel() {
 		return gamePanel;
 	}
 
 	/**
 	 * Returns whether or not it is in replayMode
+	 * @return
+	 * 		true or false, depending on state
 	 */
 	public static boolean isReplayMode() {
 		return replayMode;

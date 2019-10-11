@@ -98,4 +98,13 @@ public class Level implements Saveable {
 	public void setRunningTime(long time) {
 		levelRunningTime = time;
 	}
+	
+	/**
+	 * Gets the time in which this level began. Can be used as an id.
+	 * @return
+	 * 		the beginning time of the level (can be used as recording ID)
+	 */
+	public long getBeginTime() {
+		return levelBeginTime;
+	}
 }

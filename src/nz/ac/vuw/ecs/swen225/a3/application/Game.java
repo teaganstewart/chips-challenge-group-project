@@ -32,14 +32,21 @@ public class Game {
 		loadGame();
 	}
 
-	/*
+	/**
 	 * Used for the Integration Tests
-	 * */
+	 * @param maze
+	 * 		the maze passed in
+	 */
 	public Game(Maze maze) {
 		this.maze = maze;
 		loadGameWithoutGUI();
 	}
 
+	/**
+	 * A getter for the maze
+	 * @return
+	 * 		the maze associated
+	 */
 	public Maze getMaze() {
 		return maze;
 	}
@@ -157,9 +164,9 @@ public class Game {
 
 	}
 
-	/*
-	* Used for the Integration Tests
-	* */
+	/**
+	 * Used for the Integration Tests
+	 */
 	public void loadGameWithoutGUI(){
 
 		try{
@@ -182,6 +189,11 @@ public class Game {
 
 	}
 
+	/**
+	 * Sets the time left in the game
+	 * @param t
+	 * 		time left
+	 */
 	public void setTime(int t) {
 		time = t;
 	}
@@ -295,6 +307,11 @@ public class Game {
 		GUI.startTimer();
 	}
 
+	/**
+	 * Starts a level without displaying or using the GUI
+	 * @param l
+	 * 		the level to play
+	 */
 	public void startLevelWithoutGUI(Level l) {
 		setTime(l.getTimeAllowed());
 		setLevel(l);
