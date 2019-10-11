@@ -65,10 +65,7 @@ public class ApplicationTests {
 		Render render = new Render(game, game.getMaze());
 		render.createGrid();
 
-		ReplayUtils r = new ReplayUtils();
-		List<ActionRecord> record = new ArrayList<ActionRecord>();
-		record.add(new ActionRecord(24336, game.getMaze()));
-		r.setReplayList(record);
+		recnplayThings(game);
 
 		Player p = new Player(new Coordinate(3,3));
 		game.setPlayer(p);
@@ -79,7 +76,7 @@ public class ApplicationTests {
 		    GUI.main.getKeyListeners()[0].keyReleased(key);
 		}
 		
-		Integer[] events2 = {KeyEvent.VK_SPACE, KeyEvent.VK_PERIOD,  KeyEvent.VK_D};
+		Integer[] events2 = {KeyEvent.VK_SPACE, KeyEvent.VK_COMMA, KeyEvent.VK_PERIOD,  KeyEvent.VK_D};
 
 		for(Integer k : events2) {
 			KeyEvent key = new KeyEvent(GUI.main, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, k,'Z');
@@ -102,12 +99,29 @@ public class ApplicationTests {
 		GUI gui = new GUI();
 		Game game = new Game();
 		GamePanel gp = new GamePanel(game);
-		
+		gp.drawBoard();
 		gui.infoPanel.setPause(true);
+		gui.infoPanel.recnplayPanel();
 		gui.infoPanel.updateRec(true);
 		
 		GUI.stopTimer();
 	
+	}
+	
+	/**
+	 * Mild testing of recnplay but inside application.
+	 */
+	void recnplayThings(Game game) {
+		ReplayUtils r = new ReplayUtils();
+		List<ActionRecord> record = new ArrayList<ActionRecord>();
+		record.add(new ActionRecord(1, game.getMaze()));
+		record.add(new ActionRecord(24336, game.getMaze()));
+		r.setReplayList(record);
+		
+		GUI.stopTimer();
+//		for(String s : LoadUtils.getSavesByID().keySet()) {
+//			ReplayUtils.playBack(s);
+//		}
 	}
 	
 }

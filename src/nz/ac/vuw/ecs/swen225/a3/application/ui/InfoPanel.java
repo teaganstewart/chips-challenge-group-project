@@ -308,7 +308,7 @@ public class InfoPanel extends JPanel {
 	 * 
 	 * @return rec Returns the recnplay button panel.
 	 */
-	JPanel recnplayPanel() {
+	public JPanel recnplayPanel() {
 	
 		rec = new JPanel(new GridLayout(1,6,0,0));
 		rec.setMinimumSize(new Dimension(220,40));
