@@ -29,6 +29,16 @@ public class ReplayUtils {
 	 * Sets the start time.
 	 */
 	public static long startTime = 0;
+	
+	/**
+	 * Sets the difference.
+	 */
+	public static long difference;
+	
+	/**
+	 * Sets the pauseTime;
+	 */
+	public static long pauseTime;
 	private static List<ActionRecord> replay;
 	
 	/**
