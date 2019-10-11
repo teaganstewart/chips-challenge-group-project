@@ -3,6 +3,10 @@ package nz.ac.vuw.ecs.swen225.a3.application.Tests;
 //import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.SwingUtilities;
+
 import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
@@ -62,9 +66,14 @@ public class ApplicationTests {
 		Integer[] events = {KeyEvent.VK_LEFT, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_DOWN };
 
 		for(Integer k : events) {
-			KeyEvent key = new KeyEvent(GUI.main, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, k,'Z');
-		    GUI.main.getKeyListeners()[0].keyReleased(key);
-		    GUI.main.setFocusable(true);
+			try {
+				SwingUtilities.invokeAndWait(() -> {
+					KeyEvent key = new KeyEvent(GUI.main, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, k,'Z');
+				    GUI.main.getKeyListeners()[0].keyReleased(key);
+				    GUI.main.setFocusable(true);
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+			}
 		}
 
 		assertEquals(new Coordinate(3,3).toString(), p.getCoordinate().toString());

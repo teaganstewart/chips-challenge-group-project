@@ -27,8 +27,7 @@ public class RenderTests {
 		Tile[][] tiles = emptyBoard();
 
 		GUI gui = new GUI();
-		System.out.println(gui.toString());
-		Game game = new Game();
+		Game game = gui.getGame();
 		game.getMaze().setPlayer(new Player(new Coordinate(4,4)));
 		game.setTiles(tiles);
 		Render render = new Render(game, game.getMaze());
