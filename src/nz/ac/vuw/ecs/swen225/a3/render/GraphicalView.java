@@ -8,7 +8,7 @@ import javax.swing.*;
 /**
  * A class that supplies the required images for the Render class.
  * 
- * @author Teagan Stewart
+ * @author Teagan Stewart - 300407769
  */
 public class GraphicalView {
 	private Render renderer;

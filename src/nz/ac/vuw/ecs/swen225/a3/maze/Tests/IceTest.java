@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Class which contains tests for the Ice Tile
  *
- * @authors Joshua O'Hagan, Ethan Munn
+ * @authors Joshua O'Hagan - 300442801, Ethan Munn - 300367257
  *
  */
 public class IceTest {
@@ -53,11 +53,12 @@ public class IceTest {
 
     }
 
-    /**
-     * Reset the Treasure class after each test as it contains
-     * static methods that will change it's state
-     */
-    @AfterEach
+    
+	/**
+	 * Reset the Treasure class after each test as it contains
+	 * static methods that will change it's state.
+	 */
+	@AfterEach
     public void tearDown() {
         Treasure.reset();
         GUI.stopTimer();

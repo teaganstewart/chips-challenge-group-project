@@ -16,16 +16,26 @@ import javax.json.JsonWriter;
  * ReplayUtils contains functionality for managing the recording and
  * playback of replays using JSON files.
  *
- * @author Ethan Munn, Matt Rothwell
+ * @author Ethan Munn - 300367257, Matt Rothwell - 300434822
  */
 public class ReplayUtils {
 
+	/**
+	 * Used to access the recordings for loading and saving.
+	 */
 	public static final String RECORD_DIRECTORY = "recordings";
-	public static long startTime;
-	private static long pauseTime;
-	private static long difference;
+	
+	/**
+	 * Sets the start time.
+	 */
+	public static long startTime = 0;
 	private static List<ActionRecord> replay;
 	
+	/**
+	 * Updates the list of action records when starting a new replay.
+	 * 
+	 * @param id The name of the file we are loading.
+	 */
     public static void playBack(String id) {
     	if (replay != null) replay.clear();
     	replay = loadReplay(id);
@@ -111,22 +121,51 @@ public class ReplayUtils {
 		return true;
 	}
 	
+	/**
+	 * Rounds the time to ten, so that the game board doesn't need
+	 * to update randomly, it rounds the time of user inputs to the nearest
+	 * 10 so it can update less and uniformly.
+	 * 
+	 * @param time The time we are trying to round.
+	 * @return The rounded time.
+	 */
 	public static int roundTimeToTen(int time) {
 		return ((time+5)/10)*10;
 	}
 	
+	/**
+	 * Gets the start time of the replaying.
+	 * 
+	 * @return startTime The time.
+	 */
 	public static long getStartTime() {
 		return startTime;
 	}
 
+	/** 
+	 * Sets the start time of the replaying.
+	 * 
+	 * @param start The new start time.
+	 */
 	public static void setStartTime(long start) {
 		startTime = start;
 	}
 	
+	/**
+	 * The amount of action records used for the GUI.
+	 * 
+	 * @return Returns the size of the list.
+	 */
 	public static int replaySize() {
 		return replay.size();
 	}
 	
+	/**
+	 * Gets the action record at the current index.
+	 * 
+	 * @param index The index, based on the timer.
+	 * @return Returns the associated ActionRecord.
+	 */
 	public static ActionRecord getActionRecord(int index) {
 		return replay.get(index);
 	}

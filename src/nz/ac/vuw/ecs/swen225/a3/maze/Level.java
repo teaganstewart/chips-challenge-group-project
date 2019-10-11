@@ -9,7 +9,7 @@ import javax.json.JsonObject;
  * The level class stores information relating to the current level being
  * played. It stores the time details and the maze, as well as the levelNumber
  *
- * @author Matt Rothwell
+ * @author Matt Rothwell - 300434822
  */
 public class Level implements Saveable {
 

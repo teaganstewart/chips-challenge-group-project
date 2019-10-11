@@ -8,7 +8,7 @@ import javax.json.JsonObject;
  * static counter built into it. This allows for the total treasures in a level
  * to be counted up easily.
  * 
- * @author Ethan Munn
+ * @author Ethan Munn - 300367257
  *
  */
 public class Treasure implements Entity {

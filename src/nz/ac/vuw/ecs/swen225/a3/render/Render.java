@@ -9,7 +9,7 @@ import nz.ac.vuw.ecs.swen225.a3.application.*;
  * A class full of methods used to render the board for the game, works closely
  * with the GraphicalView class to supply the required images.
  * 
- * @author Teagan Stewart
+ * @author Teagan Stewart - 300407769
  *
  */
 public class Render {
