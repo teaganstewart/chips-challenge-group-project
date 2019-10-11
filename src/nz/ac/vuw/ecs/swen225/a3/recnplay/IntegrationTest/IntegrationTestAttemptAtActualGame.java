@@ -3,35 +3,21 @@ package nz.ac.vuw.ecs.swen225.a3.recnplay.IntegrationTest;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
-import nz.ac.vuw.ecs.swen225.a3.maze.Tile;
 import nz.ac.vuw.ecs.swen225.a3.persistence.SaveUtils;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.ActionRecord;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.ReplayUtils;
 import nz.ac.vuw.ecs.swen225.a3.render.Render;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * @author Josh
- * <p>
- * Class which contains integration tests for the record and play feature
- */
-public class IntegrationTest {
+public class IntegrationTestAttemptAtActualGame {
 
     private Tile[][] tiles;
     private Player player;
@@ -47,31 +33,22 @@ public class IntegrationTest {
     public void setUp() {
         clearSavesAndRecordingsFolders();
 
-        // CREATE THE CUSTOM TESTING MAZE
-        tiles = new Tile[9][9];
-        for (int row = 0; row < tiles.length; row++) {
-            for (int col = 0; col < tiles[0].length; col++) {
-                tiles[row][col] = new Tile(new Coordinate(row, col), Tile.TileType.FLOOR);
-            }
-        }
-        // Set the goal to enable the replaying
-        tiles[0][3] = new Tile(new Coordinate(3, 3), Tile.TileType.GOAL);
-
-        player = new Player(new Coordinate(0, 0));
-
-        // No crates or enemies in the level
-        maze = new Maze(tiles, player, new ArrayList<>(), new ArrayList<Skeleton>());
-
-        // START THE GAME AND SET IT UP WITH OUR CUSTOM TEST GAME
+        // START THE GAME
         gui = new GUI();
-        gui.setGame(new Game(maze));
         game = gui.getGame();
         Render render = new Render(game, game.getMaze());
         game.setRender(render);
+        maze = game.getMaze();
+        player = maze.getPlayer();
+        tiles = maze.getTiles();
 
-        movePlayerAndRecord(Direction.RIGHT);
-        movePlayerAndRecord(Direction.RIGHT);
-        movePlayerAndRecord(Direction.RIGHT);
+        // Use hack to remove the treasure door
+        assertEquals(new Coordinate(5, 7), player.getCoordinate());
+        tiles[3][7].setEntity(null);
+
+        movePlayerAndRecord(Direction.UP);
+        movePlayerAndRecord(Direction.UP);
+        movePlayerAndRecord(Direction.UP);
         assertTrue(maze.isGoalReached());
 
 
@@ -85,12 +62,14 @@ public class IntegrationTest {
         // End recording
         if (game.getLevelNum() < 2) {
             gui.setReplayMode(false);
+            gui.setRecIndex(0);
             game.loadLevel(gui.getGamePanel(), game.getLevelNum() + 1);
         }
 
         assertEquals(2, game.getLevelNum());
         // Assert player can move again in level 2
-        assertTrue(maze.movePlayer(Direction.RIGHT));
+        Maze levelTwoMaze = game.getMaze();
+        assertTrue(levelTwoMaze.movePlayer(Direction.RIGHT));
 
         // Clean up after recording
         clearSavesAndRecordingsFolders();
@@ -120,7 +99,7 @@ public class IntegrationTest {
     public void resetingRecording() {
         gui.setRecIndex(0);
         Maze maze = ReplayUtils.getActionRecord(gui.getRecIndex()).getMaze();
-        assertEquals(new Coordinate(0, 1), maze.getPlayer().getCoordinate());
+        assertEquals(new Coordinate(5, 7), maze.getPlayer().getCoordinate());
     }
 
     /*

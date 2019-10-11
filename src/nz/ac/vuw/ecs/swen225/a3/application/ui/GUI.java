@@ -41,7 +41,7 @@ public class GUI extends JFrame {
     private static boolean enemyToggle;
     private static boolean started;
 
-    // recnplay variables
+	// recnplay variables
     private static Timer replayLoop;
     private static int globalFrame;
     private static int keyFrame;
@@ -667,6 +667,13 @@ public class GUI extends JFrame {
     	replayMode = bool;
     	started = false;
     }
+
+	/*
+	 * Returns the state of the flash icon
+	 * */
+	public static boolean isFlashIcon() {
+		return flashIcon;
+	}
 
     /*
     * Returns the Game Panel
