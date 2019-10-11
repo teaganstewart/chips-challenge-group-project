@@ -112,11 +112,11 @@ public class Game {
 					continue;
 				}
 
-					// changes direction if returns false and moves back
-					enemy.setDirection(enemy.getDirection().inverse());
-					enemy.setCoordinate(enemy.getNextPos());
-					saveReplay = true;
-				}
+				// changes direction if returns false and moves back
+				enemy.setDirection(enemy.getDirection().inverse());
+				enemy.setCoordinate(enemy.getNextPos());
+				saveReplay = true;
+			}
 		}
 		if (saveReplay) {
 			new Thread(() -> ReplayUtils.pushActionRecord(
@@ -134,9 +134,9 @@ public class Game {
 		try{
 			level = LoadUtils.resumeGame();
 			setLevelNum(level.getLevel());
-			
+
 			setTime(level.getTimeAllowed() - (int) level.getRunTime());
-			
+
 			if(level.getMaze().getTiles().length<9 || level.getMaze().getTiles()[0].length<9) {
 				throw new NullPointerException();
 			}
@@ -149,7 +149,7 @@ public class Game {
 		maze = level.getMaze();
 		player = maze.getPlayer();
 		setLevelNum(level.getLevel());
-		
+
 		startLevel(level);
 
 	}
@@ -199,7 +199,7 @@ public class Game {
 	public void setLevel(Level l) {
 		level = l;
 	}
-	
+
 	/**
 	 * Gets the current level.
 	 * 
@@ -217,7 +217,7 @@ public class Game {
 	public void setRender(Render r) {
 		render = r;
 	}
-	
+
 	/**
 	 * The render, used in many other classes.
 	 * 
@@ -238,7 +238,7 @@ public class Game {
 		setLevelNum(num);
 		Level l = LoadUtils.loadLevel(getLevelNum());
 		loadSave(l);
-		
+
 	}
 
 	/**
@@ -266,7 +266,7 @@ public class Game {
 	 */
 	public void startLevel(Level l) {
 		setLevel(l);
-		
+
 		GUI.stopTimer();
 		GUI.setReplayMode(false);
 		GUI.startTimer();

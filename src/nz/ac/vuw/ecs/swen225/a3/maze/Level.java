@@ -98,4 +98,8 @@ public class Level implements Saveable {
 	public void setRunningTime(long time) {
 		levelRunningTime = time;
 	}
+	
+	public String toString() {
+		return "Level: " + level;
+	}
 }

@@ -55,9 +55,6 @@ public class GraphicalView {
 	 * @return Returns an ImageIcon of the enemy.
 	 */		
 	public ImageIcon getEnemyIcon(Direction dir) {
-		if(dir.equals(Direction.DOWN)) {
-			return skellyFront;
-		}
 		if(dir.equals(Direction.UP)) {
 			return skellyBack;
 		}
@@ -70,38 +67,6 @@ public class GraphicalView {
 		return skellyFront;
 	}
 
-	/**
-	 * Gets the desired number image.
-	 * 
-	 * @param i The number you want the image of, > 9 if colon.
-	 * @return Returns the ImageIcon of the desire number.
-	 */
-	public ImageIcon getNumberIcon(int i) {
-		switch(i) {
-		case 0:
-			return zero;
-		case 1:
-			return one;
-		case 2:
-			return two;
-		case 3:
-			return three;
-		case 4:
-			return four;
-		case 5:
-			return five;
-		case 6:
-			return six;
-		case 7:
-			return seven;
-		case 8:
-			return eight;
-		case 9:
-			return nine;
-		default:
-			return colon;
-		}
-	}
 	/**
 	 * Used to create the board grid.
 	 *
@@ -306,17 +271,4 @@ public class GraphicalView {
 	private final ImageIcon fireBoots = new ImageIcon(getClass().getResource(entitiesDirectory + "fire-boots.png"));
 	private final ImageIcon crate = new ImageIcon(getClass().getResource(entitiesDirectory + "crate.png"));
 
-	// Numbers
-	private final String numbersDirectory = "icons/numbers/";
-	private final ImageIcon zero = new ImageIcon(getClass().getResource(numbersDirectory + "0.png"));
-	private final ImageIcon one = new ImageIcon(getClass().getResource(numbersDirectory + "1.png"));
-	private final ImageIcon two = new ImageIcon(getClass().getResource(numbersDirectory + "2.png"));
-	private final ImageIcon three = new ImageIcon(getClass().getResource(numbersDirectory + "3.png"));
-	private final ImageIcon four = new ImageIcon(getClass().getResource(numbersDirectory + "4.png"));
-	private final ImageIcon five = new ImageIcon(getClass().getResource(numbersDirectory + "5.png"));
-	private final ImageIcon six = new ImageIcon(getClass().getResource(numbersDirectory + "6.png"));
-	private final ImageIcon seven = new ImageIcon(getClass().getResource(numbersDirectory + "7.png"));
-	private final ImageIcon eight = new ImageIcon(getClass().getResource(numbersDirectory + "8.png"));
-	private final ImageIcon nine = new ImageIcon(getClass().getResource(numbersDirectory + "9.png"));
-	private final ImageIcon colon = new ImageIcon(getClass().getResource(numbersDirectory + "colon.png"));
 }

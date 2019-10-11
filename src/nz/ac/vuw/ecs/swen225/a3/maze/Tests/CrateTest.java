@@ -3,11 +3,9 @@ package nz.ac.vuw.ecs.swen225.a3.maze.Tests;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**

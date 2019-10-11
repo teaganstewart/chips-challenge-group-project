@@ -39,7 +39,11 @@ public class GUI extends JFrame {
 	private InfoPanel infoPanel;
 	
 	// windows
-	private JDialog fileLoaderWindow, pauseWindow, deathWindow, finishLevelWindow;
+	private JDialog fileLoaderWindow, pauseWindow;
+
+	public JDialog deathWindow;
+
+	private JDialog finishLevelWindow;
 	
 	//Declare variable menu item variable
 	private JMenuBar menuBar;

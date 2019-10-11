@@ -26,6 +26,7 @@ public class IceTest {
     private Tile[][] tiles;
     private Player player;
     private List<Crate> crateList = new ArrayList<>();
+    private List<Skeleton> enemiesList = new ArrayList<>();
 
     /**
      *  Creates a new maze before each test.
@@ -45,8 +46,14 @@ public class IceTest {
                 new Crate(new Coordinate(5, 3)),
                 new Crate(new Coordinate(5, 5))
         ));
+        
+        enemiesList = new ArrayList<Skeleton>(Arrays.asList(
+        		new Skeleton(new Coordinate(4,3), Direction.UP),
+        		new Skeleton(new Coordinate(5,6), Direction.LEFT),
+        		new Skeleton(new Coordinate(1,2), Direction.RIGHT)
+        ));
 
-        maze = new Maze(tiles, player, crateList,null);
+        maze = new Maze(tiles, player, crateList,enemiesList);
         level = new Level(-1, maze, System.currentTimeMillis(), 0, 1000);
         gui.getGame().loadSave(level);
         Treasure.reset();
@@ -90,7 +97,7 @@ public class IceTest {
         tiles[3][6] = new Tile(new Coordinate(3, 6), Tile.TileType.ICE);
         assertTrue(maze.movePlayer(Direction.RIGHT));
         // runs the game.update method to actually update the game and check for ice sliding
-        for (int i = 0; i < 3; i++) gui.getGame().update(true, false);
+        for (int i = 0; i < 3; i++) gui.getGame().update(true, true);
         // Player slides to the next non-ice block
         assertEquals(new Coordinate(3, 7), player.getCoordinate());
     }
@@ -106,7 +113,7 @@ public class IceTest {
         tiles[3][7] = new Tile(new Coordinate(3, 7), Tile.TileType.WALL);
         assertTrue(maze.movePlayer(Direction.RIGHT));
         // runs the game.update method to actually update the game and check for ice sliding
-        for (int i = 0; i < 3; i++) gui.getGame().update(true, false);
+        for (int i = 0; i < 3; i++) gui.getGame().update(true, true);
         // Player slides to the next non-ice block
         assertEquals(new Coordinate(3, 6), player.getCoordinate());
     }
@@ -260,5 +267,38 @@ public class IceTest {
         for (int i = 0; i < 3; i++) gui.getGame().update(true, false);
         // since they have ice boots, should have no effect
         assertEquals(new Coordinate(3, 5), player.getCoordinate());
+    }
+    
+    /**
+     * Checks what skeletons can walk on.
+     */
+    @Test
+    public void testSkeletonEntityMovement() {
+    	
+    	// what the skeleton can walk on
+    	assertTrue(enemiesList.get(1).canWalkOn(null));
+    	assertTrue(enemiesList.get(1).canWalkOn(new IceBoots()));
+    	assertTrue(enemiesList.get(1).canWalkOn(new FireBoots()));
+    	assertTrue(enemiesList.get(1).canWalkOn(new Key(BasicColor.GREEN)));
+    	assertTrue(enemiesList.get(1).canWalkOn(new Treasure()));
+    	
+    	// what the skeleton can't walk on
+    	assertFalse(enemiesList.get(1).canWalkOn(new TreasureDoor()));
+    	assertFalse(enemiesList.get(1).canWalkOn(new KeyDoor(BasicColor.GREEN)));
+    }
+    
+    /**
+     * Testing skeleton movement.
+     */
+    @Test
+    public void testWall() {
+        tiles[3][4] = new Tile(new Coordinate(3, 4), Tile.TileType.FLOOR);
+        enemiesList.get(0).setCoordinate(new Coordinate(2,3));
+        tiles[1][3] = new Tile(new Coordinate(1, 3), Tile.TileType.WALL);
+        // runs the game.update method to actually update the game and check for ice sliding
+        assertEquals(enemiesList.get(0).getDirection(), Direction.UP);
+        gui.getGame().update(false, true);
+        // Player slides to the next non-ice block
+        assertEquals(enemiesList.get(0).getDirection(), Direction.DOWN);
     }
 }
