@@ -276,7 +276,7 @@ public class ReplayUtils {
 	 * Allows action records to be set for testing.
 	 * @param e The new action record list.
 	 */
-	public void setReplayList(List<ActionRecord> e) {
+	public static void setReplayList(List<ActionRecord> e) {
 		replay = e;
 	}
 

@@ -757,6 +757,7 @@ public class GUI extends JFrame {
 	public void restartGame(){
 		if (replayMode) return;
 		game.loadLevel(gamePanel,1);
+		
 
 	}
 

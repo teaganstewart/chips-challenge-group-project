@@ -112,16 +112,36 @@ public class ApplicationTests {
 	 * Mild testing of recnplay but inside application.
 	 */
 	void recnplayThings(Game game) {
-		ReplayUtils r = new ReplayUtils();
 		List<ActionRecord> record = new ArrayList<ActionRecord>();
 		record.add(new ActionRecord(1, game.getMaze()));
 		record.add(new ActionRecord(24336, game.getMaze()));
-		r.setReplayList(record);
+		ReplayUtils.setReplayList(record);
 		
 		GUI.stopTimer();
-//		for(String s : LoadUtils.getSavesByID().keySet()) {
-//			ReplayUtils.playBack(s);
-//		}
 	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	@SuppressWarnings("deprecation")
+	void testingRestart() {
+		GUI gui = new GUI();
+		gui.disable();
+		Game game = gui.getGame();
+		GamePanel gp = new GamePanel(game);
+		
+		game.loadLevel(gp, 1);
+		gui.restartLevel(1);
+		assertEquals(1,game.getLevelNum());
+		
+		game.loadLevel(gp, 2);
+		assertEquals(2,game.getLevelNum());
+		
+		gui.restartGame();
+		assertEquals(1,game.getLevelNum());
+	}
+	
+	
 	
 }
