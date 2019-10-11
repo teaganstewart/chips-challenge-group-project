@@ -14,13 +14,10 @@ import java.util.*;
  * The LoadUtils class contains methods that are used for loading games and
  * levels.
  *
- * @author Matt Rothwell - 300434822
+ * @author Matt Rothwell
  */
 public class LoadUtils {
 
-	/**
-	 * The directory of all the levels.
-	 */
 	private static String LEVELS_DIRECTORY = "levels";
 
 	/**
@@ -39,7 +36,6 @@ public class LoadUtils {
 	 * Loads the specified level in JSON format from default source
 	 *
 	 * @param levelNumber - the level to load
-	 * @return Returns the level associated with the levelNumber.
 	 */
 	public static Level loadLevel(int levelNumber) {
 		File levelFile = new File(LEVELS_DIRECTORY + "\\" + levelNumber + ".json");
@@ -154,6 +150,8 @@ public class LoadUtils {
 			}
 
 			int timeAllowed = level.getInt("timeAllowed");
+
+			boolean completed = level.getBoolean("completed");
 
 			Maze maze = loadMaze(level.getJsonObject("maze"));
 

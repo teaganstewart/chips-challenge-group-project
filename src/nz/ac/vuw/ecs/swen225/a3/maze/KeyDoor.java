@@ -7,7 +7,7 @@ import javax.json.JsonObject;
  * Represents a door that needs a key to unlock it. The key color must
  * be the same color as the door lock.
  * 
- * @author Ethan Munn - 300367257
+ * @author Ethan Munn
  */
 public class KeyDoor extends Door {
 

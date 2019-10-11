@@ -12,7 +12,7 @@ import java.util.Objects;
  * and col. This should never be reused, as it is purely for storing a row and
  * col, so no setters are necessary.
  *
- * @author Ethan Munn - 300367257
+ * @author Ethan Munn
  *
  */
 public class Coordinate implements Saveable {

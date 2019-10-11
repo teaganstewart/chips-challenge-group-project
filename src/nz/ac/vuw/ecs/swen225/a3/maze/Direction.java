@@ -3,7 +3,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
 /**
  * Directions for the four ways you can move.
  * 
- * @author Teagan Stewart - 300407769
+ * @author Teagan Stewart
  */
 public enum Direction {
 	/**

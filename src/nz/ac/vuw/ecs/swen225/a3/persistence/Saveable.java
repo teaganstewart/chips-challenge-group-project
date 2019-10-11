@@ -6,7 +6,7 @@ import javax.json.JsonObject;
  * Saveable class provides methods that have to be implemented on objects that
  * will have to be saved as a JSON.
  *
- * @author Matt Rothwell - 300434822
+ * @author Matt Rothwell
  */
 public interface Saveable {
 

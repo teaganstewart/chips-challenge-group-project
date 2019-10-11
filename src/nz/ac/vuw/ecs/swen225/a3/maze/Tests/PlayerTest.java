@@ -9,18 +9,13 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Tests for testing how the player moves and their inventory.
- * 
- * @author Josh O'Hagan - 300442801
- */
 class PlayerTest {
 
-	private Player player;
+	Player player;
 
-	/**
-	 * Create a player before each test
-	 */
+	/*
+	* Create a player before each test
+	* */
 	@BeforeEach
 	public void setUp() {
 		player = new Player(new Coordinate(0, 0));

@@ -3,10 +3,6 @@ package nz.ac.vuw.ecs.swen225.a3.application.Tests;
 //import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.awt.event.KeyEvent;
-import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.SwingUtilities;
-
 import org.junit.jupiter.api.Test;
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.application.ui.GUI;
@@ -24,11 +20,6 @@ import nz.ac.vuw.ecs.swen225.a3.render.Render;
  */
 public class ApplicationTests {
 
-	/**
-	 * Tests whether load level works properly and has the correct
-	 * level in the game class.
-	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	public void nextLevelTest() {
 		// setup
@@ -46,14 +37,8 @@ public class ApplicationTests {
 				game.loadLevel(gp, game.getLevelNum()+1);
 			}
 		}
-		
-		assertEquals(2, game.getLevelNum());
 	}
 
-	/**
-	 * Tests key presses.
-	 */
-	@SuppressWarnings("deprecation")
 	@Test
 	void keysTest() {
 		GUI gui = new GUI();
@@ -66,14 +51,9 @@ public class ApplicationTests {
 		Integer[] events = {KeyEvent.VK_LEFT, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_DOWN };
 
 		for(Integer k : events) {
-			try {
-				SwingUtilities.invokeAndWait(() -> {
-					KeyEvent key = new KeyEvent(GUI.main, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, k,'Z');
-				    GUI.main.getKeyListeners()[0].keyReleased(key);
-				    GUI.main.setFocusable(true);
-				});
-			} catch (InvocationTargetException | InterruptedException e) {
-			}
+			KeyEvent key = new KeyEvent(GUI.main, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, k,'Z');
+		    GUI.main.getKeyListeners()[0].keyReleased(key);
+		    GUI.main.setFocusable(true);
 		}
 
 		assertEquals(new Coordinate(3,3).toString(), p.getCoordinate().toString());

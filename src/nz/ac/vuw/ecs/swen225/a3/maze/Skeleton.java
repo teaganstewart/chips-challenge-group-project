@@ -9,7 +9,7 @@ import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
  * A class that provides where skeletons are able to move and allows them
  * to be saved. 
  * 
- * @author Teagan Stewart - 300407769
+ * @author Teagan Stewart
  *
  */
 public class Skeleton extends Moveable implements Saveable {

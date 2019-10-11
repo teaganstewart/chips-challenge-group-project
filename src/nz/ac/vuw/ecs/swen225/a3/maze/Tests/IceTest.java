@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Class which contains tests for the Ice Tile
  *
- * @authors Joshua O'Hagan - 300442801, Ethan Munn - 300367257
+ * @authors Joshua O'Hagan, Ethan Munn
  *
  */
 public class IceTest {
@@ -27,9 +27,9 @@ public class IceTest {
     private Player player;
     private List<Crate> crateList = new ArrayList<>();
 
-    /**
-     *  Creates a new maze before each test.
-     */
+    /*
+     * Create a new maze before each test
+     * */
     @BeforeEach
     public void setUp() {
     	gui = new GUI();
@@ -53,12 +53,11 @@ public class IceTest {
 
     }
 
-    
-	/**
-	 * Reset the Treasure class after each test as it contains
-	 * static methods that will change it's state.
-	 */
-	@AfterEach
+    /*
+     * Reset the Treasure class after each test as it contains
+     * static methods that will change it's state
+     * */
+    @AfterEach
     public void tearDown() {
         Treasure.reset();
         GUI.stopTimer();

@@ -6,7 +6,7 @@ import javax.json.JsonObject;
 /**
  * Class representing a pickup-able item use for walking on fire blocks
  * 
- * @author Josh O'Hagan - 300442801
+ * @author Josh O'Hagan
  */
 public class FireBoots implements Entity {
 

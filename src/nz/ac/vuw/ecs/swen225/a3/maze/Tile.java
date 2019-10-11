@@ -10,7 +10,7 @@ import javax.json.JsonObjectBuilder;
  * A class used to set up the base board for the game, the game is made up of
  * tiles with entities placed on top. Also stores what type those tiles are.
  * 
- * @author Ethan Munn - 300367257
+ * @author Ethan Munn
  * 
  */
 public class Tile implements Saveable {
