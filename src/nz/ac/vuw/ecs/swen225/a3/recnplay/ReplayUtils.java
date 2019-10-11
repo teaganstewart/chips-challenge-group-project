@@ -131,14 +131,25 @@ public class ReplayUtils {
 		return replay.get(index);
 	}
 
+	/**
+	 * Sets the time in which the level was paused
+	 */
 	public static void setPause() {
 		pauseTime = System.currentTimeMillis();
 	}
 	
+	/**
+	 * Updates the difference value between when the game was paused
+	 */
 	public static void updateDifference() {
 		difference += (System.currentTimeMillis() - pauseTime);
 	}
 	
+	/**
+	 * Gets the difference calculation for the level
+	 * @return
+	 * 		the difference as a long (which can be converted to int)
+	 */
 	public static long getDifference() {
 		return difference;
 	}
