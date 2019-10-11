@@ -4,7 +4,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  * The door class, prevents the players from passing through the door if the
  * player does not have the right key equipped.
  * 
- * @author Ethan Munn
+ * @author Ethan Munn - 300367257
  *
  */
 public abstract class Door implements Entity {
@@ -38,8 +38,8 @@ public abstract class Door implements Entity {
 	/**
 	 * Used for the different forms of unlocking
 	 * 
-	 * @param player
-	 * @return validity
+	 * @param player The player going through the door.
+	 * @return True if player can move through door.
 	 */
 	public abstract boolean onTouch(Player player);
 

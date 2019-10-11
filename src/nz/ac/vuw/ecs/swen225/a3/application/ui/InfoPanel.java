@@ -2,10 +2,7 @@ package nz.ac.vuw.ecs.swen225.a3.application.ui;
 
 import nz.ac.vuw.ecs.swen225.a3.application.Game;
 import nz.ac.vuw.ecs.swen225.a3.maze.Maze;
-import nz.ac.vuw.ecs.swen225.a3.maze.Treasure;
 import nz.ac.vuw.ecs.swen225.a3.recnplay.ReplayUtils;
-import nz.ac.vuw.ecs.swen225.a3.render.Render;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -15,23 +12,20 @@ import java.util.Date;
 import java.util.Scanner;
 
 /**
+ * The InfoPanel on the side of the window, holds the game information,
+ * buttons and the inventory.
  * 
- * The InfoPanel on the side of the window.
- * 
- * @authors Ethan Munn
+ * @authors Meng Veng Taing - 300434816, Teagan Stewart - 300407769, 
+ *  		Ethan Munn - 300367257.
  *
  */
 public class InfoPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+	
 	private Game game;
 	private GUI gui;
-	private JPanel inv;
-	private JPanel storage;
-	private JPanel hint;
-	private JPanel timer;
-	private JPanel chip;
-	private JPanel level;
-	private JPanel rec;
+	private JPanel inv, storage, hint, timer, chip, level, rec;
 
 	private boolean pause = false;
 	private ImageIcon infoIcon = makeImageIcon("icons/InfoBackground2.png");
@@ -44,6 +38,12 @@ public class InfoPanel extends JPanel {
 	private ImageIcon rewindIcon = makeImageIcon("icons/rewind.png");
 	private ImageIcon skipIcon = makeImageIcon("icons/skip.png");
 	
+	/**
+	 * The constructor for the information panel.
+	 * 
+	 * @param game The game used for the information.
+	 * @param gui The gui that the panel is in.
+	 */
 	public InfoPanel (Game game, GUI gui){
 		
 		this.game = game;
@@ -74,6 +74,12 @@ public class InfoPanel extends JPanel {
 
 	}
 
+	/**
+	 * Method for rendering the inventory JPanel, and renders the 
+	 * JPanels into the inventory each time something is added.
+	 * 
+	 * @return inv Returns the inventory panel.
+	 */
 	public JPanel inventory(){
 		inv = new JPanel(new GridBagLayout());
 		
@@ -109,6 +115,12 @@ public class InfoPanel extends JPanel {
 		return inv;
 	}
 
+	/**
+	 * Creates the panel that displays treasures left or action 
+	 * records left.
+	 * 
+	 * @return chip Returns treasure panel.
+	 */
 	public JPanel chipPanel() {
 		chip = new JPanel();
 		chip.setPreferredSize(new Dimension(220,50));
@@ -120,6 +132,11 @@ public class InfoPanel extends JPanel {
 		return chip;
 	}
 
+	/**
+	 * Creates the hint panel to help the player when they are stuck.
+	 * 
+	 * @return hint Returns the hint panel.
+	 */
 	public JPanel hintPanel() {
 		hint = new JPanel();
 		hint.setPreferredSize(new Dimension(220,100));
@@ -134,6 +151,11 @@ public class InfoPanel extends JPanel {
 		return hint;
 	}
 
+	/**
+	 * Creates the level panel, shows level number.
+	 * 
+	 * @return level Returns level panel.
+	 */
 	public JPanel levelPanel() {
 		level = new JPanel();
 		level.setMinimumSize(new Dimension(220,40));
@@ -142,6 +164,13 @@ public class InfoPanel extends JPanel {
 		return level;
 	}
 
+	/**
+	 * Displays level if in game mode, if in replay mode will display the
+	 * time that the replay started.
+	 * 
+	 * @param replayMode True if in a replay.
+	 * @param flash Whether the circle next to play is shown or not.
+	 */
 	public void setLevelDisplay(boolean replayMode, boolean flash) {
 		try {
 			level.remove(0);
@@ -161,6 +190,12 @@ public class InfoPanel extends JPanel {
 		level.add(text);
 	}
 
+	/**
+	 * Sets the hint box to empty if in game mode, and to the controls if in 
+	 * replay mode.
+	 * 
+	 * @param replayMode True if in a replay.
+	 */
 	public void setDefaultHint(boolean replayMode) {
 		try {
 			hint.remove(0);
@@ -184,6 +219,11 @@ public class InfoPanel extends JPanel {
 		hint.add(text);
 	}
 
+	/**
+	 * Sets the hint, for when the player is standing on a hint tile.
+	 * 
+	 * @param message The message in the hint
+	 */
 	public void setHint(String message) {
 		try {
 			hint.remove(0);
@@ -202,6 +242,7 @@ public class InfoPanel extends JPanel {
 			wrapped.append(phrase + " ");
 			length += phrase.length() + 1;
 		}
+		sc.close();
 		wrapped.append("</html>");
 		JLabel text = new JLabel(wrapped.toString());
 		text.setForeground(Color.LIGHT_GRAY);
@@ -209,8 +250,10 @@ public class InfoPanel extends JPanel {
 	}
 
 	/**
-	 * Create a time panel.
-	 * @return
+	 * Create a time panel for displaying time left/ time used in 
+	 * replay mode.
+	 * 
+	 * @return timer Returns the time panel.
 	 */
 	public JPanel timePanel() {
 
@@ -224,8 +267,9 @@ public class InfoPanel extends JPanel {
 	}
 
 	/**
-	 * Display the time.
-	 * @param replayMode
+	 * Display the time depending on the replay mode.
+	 * 
+	 * @param replayMode True if replaying.
 	 */
 	public void displayTime(boolean replayMode) {
 		try {
@@ -261,7 +305,8 @@ public class InfoPanel extends JPanel {
 
 	/**
 	 * Create panel for the replay.
-	 * @return
+	 * 
+	 * @return rec Returns the recnplay button panel.
 	 */
 	JPanel recnplayPanel() {
 	
@@ -277,7 +322,7 @@ public class InfoPanel extends JPanel {
 
 	/**
 	 * Update the replay action on button event.
-	 * @param replayMode
+	 * @param replayMode True if in a replay.
 	 */
 	void updateRec(boolean replayMode) {
 		try {
@@ -292,12 +337,12 @@ public class InfoPanel extends JPanel {
 			JButton rewindButton = new JButton();
 			rewindButton.setIcon(rewindIcon);
 			rewindButton.addActionListener(event -> {
-				if(!pause) { gui.stopTimer();}
-				gui.setSpeed(10);
-				gui.setKeyFrame(0);
-				gui.setRecIndex(0);
+				if(!pause) { GUI.stopTimer();}
+				GUI.setSpeed(10);
+				GUI.setKeyFrame(0);
+				GUI.setRecIndex(0);
 				skipReset();
-				if(!pause) {gui.startTimer();}
+				if(!pause) {GUI.startTimer();}
 
 			});
 
@@ -316,9 +361,9 @@ public class InfoPanel extends JPanel {
 	        backOneButton.setOpaque(false);
 	        backOneButton.setIcon(backOne);
 	        backOneButton.addActionListener(event -> {
-	        	if(!pause) { gui.stopTimer();}
-				gui.setRecIndex(Math.max(0,gui.getRecIndex()-1));
-				gui.setKeyFrame(ReplayUtils.roundTimeToTen(ReplayUtils.getActionRecord(gui.getRecIndex()).getTimeSinceLevelStart()));
+	        	if(!pause) { GUI.stopTimer();}
+				GUI.setRecIndex(Math.max(0,gui.getRecIndex()-1));
+				GUI.setKeyFrame(ReplayUtils.roundTimeToTen(ReplayUtils.getActionRecord(gui.getRecIndex()).getTimeSinceLevelStart()));
 
 				skipReset();
 	        });
@@ -336,8 +381,8 @@ public class InfoPanel extends JPanel {
 	        rec.add(playButton);
 	        
 	        playButton.addActionListener(event -> { 
-				if(pause) gui.startTimer();
-				else gui.stopTimer();
+				if(pause) GUI.startTimer();
+				else GUI.stopTimer();
 				pause = !(pause);
 				gui.updateBoard();
 			});
@@ -351,9 +396,9 @@ public class InfoPanel extends JPanel {
 	        forwardOneButton.setOpaque(false);
 	        forwardOneButton.setIcon(forwardOne);
 	        forwardOneButton.addActionListener(event -> {
-	        	if(!pause) { gui.stopTimer();}
-	        	gui.setRecIndex(Math.min(gui.getRecIndex()+1,ReplayUtils.replaySize()-1));
-	        	gui.setKeyFrame(ReplayUtils.roundTimeToTen(ReplayUtils.getActionRecord(gui.getRecIndex()).getTimeSinceLevelStart()));
+	        	if(!pause) { GUI.stopTimer();}
+	        	GUI.setRecIndex(Math.min(gui.getRecIndex()+1,ReplayUtils.replaySize()-1));
+	        	GUI.setKeyFrame(ReplayUtils.roundTimeToTen(ReplayUtils.getActionRecord(gui.getRecIndex()).getTimeSinceLevelStart()));
 	        
 	        	skipReset();
 
@@ -365,12 +410,12 @@ public class InfoPanel extends JPanel {
 			fastButton.setIcon(fastIcon);
 			fastButton.addActionListener(event -> {
 				if(!pause) {
-					gui.stopTimer();
+					GUI.stopTimer();
 				}
-				gui.setSpeed(gui.getSpeed() == 3 ? 10 : 3);
+				GUI.setSpeed(gui.getSpeed() == 3 ? 10 : 3);
 				gui.setupTimer();
 				if(!pause) {
-					gui.startTimer();
+					GUI.startTimer();
 				}
 
 			});
@@ -385,10 +430,10 @@ public class InfoPanel extends JPanel {
 			skipButton.setIcon(skipIcon);
 			skipButton.addActionListener(event -> {
 				if (game.getLevelNum() < gui.getLevelCount()) {
-					gui.stopTimer();
-					gui.setReplayMode(false);
+					GUI.stopTimer();
+					GUI.setReplayMode(false);
 					gui.saveReplayPopup();
-					gui.setSpeed(10);
+					GUI.setSpeed(10);
 					game.loadLevel(null, game.getLevelNum()+1);
 					GUI.main.setFocusable(true);
 					gui.updateBoard();
@@ -432,7 +477,7 @@ public class InfoPanel extends JPanel {
     	game.setMaze(m);
     	gui.updateBoard();
     	if(!pause) {
-    		gui.startTimer();
+    		GUI.startTimer();
     	}
 	}
 	
@@ -449,8 +494,6 @@ public class InfoPanel extends JPanel {
 	 *  Draws the inventory.
 	 */
 	public void drawInventory() {
-		Render render = game.getRender();
-
 		JLabel[] inventory = game.getRender().renderInventory();
 
 		for(int i =0; i < 8;i++){
@@ -461,6 +504,14 @@ public class InfoPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Displays the treasure count if in game mode, and the number of
+	 * actions done if in replay mode.
+	 * 
+	 * @param replayMode True if in replay.
+	 * @param first First number, to be displayed on left.
+	 * @param secnd Second number, to be displayed on right.
+	 */
 	public void displayChips(boolean replayMode, int first, int secnd) {
 		try {
 			chip.remove(0);
@@ -477,11 +528,18 @@ public class InfoPanel extends JPanel {
 		chip.add(text);
 	}
 
+	@Override
 	public void paintComponent(Graphics g){
 	
 		g.drawImage(infoIcon.getImage(), 1, 30, getWidth()-30, getHeight()-60, null);
 	}
 
+	/**
+	 * Creates image icons.
+	 * 
+	 * @param filename The file we want the image of.
+	 * @return Returns imageIcon if it exists.
+	 */
 	public ImageIcon makeImageIcon(String filename){
 		java.net.URL imageUrl = this.getClass().getResource(filename);
 		try {
@@ -493,10 +551,20 @@ public class InfoPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Sets whether the replay is paused or not.
+	 * 
+	 * @param pause True if wants to be paused, false if not.
+	 */
 	public void setPause(boolean pause) {
 		this.pause = pause;
 	}
 
+	/**
+	 * Gets whether the replay is paused or not.
+	 * 
+	 * @return pause True if paused.
+	 */
 	public boolean getPause() {
 		return pause;
 	}

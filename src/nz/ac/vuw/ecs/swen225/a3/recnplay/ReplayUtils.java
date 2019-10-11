@@ -16,14 +16,40 @@ import javax.json.JsonWriter;
  * ReplayUtils contains functionality for managing the recording and
  * playback of replays using JSON files.
  *
- * @author Ethan Munn, Matt Rothwell
+ * @author Ethan Munn - 300367257, Matt Rothwell - 300434822
  */
 public class ReplayUtils {
 
+	/**
+	 * Used to access the recordings for loading and saving.
+	 */
 	public static final String RECORD_DIRECTORY = "recordings";
+	
+	/**
+	 * Sets the start time.
+	 */
 	public static long startTime = 0;
+	
+	/**
+	 * Sets the difference.
+	 */
+	public static long difference;
+	
+	/**
+	 * Sets the pauseTime;
+	 */
+	public static long pauseTime;
+	
+	/**
+	 * A list of all the action records in the replay.
+	 */
 	private static List<ActionRecord> replay;
 	
+	/**
+	 * Updates the list of action records when starting a new replay.
+	 * 
+	 * @param id The name of the file we are loading.
+	 */
     public static void playBack(String id) {
     	if (replay != null) replay.clear();
     	replay = loadReplay(id);
@@ -110,28 +136,88 @@ public class ReplayUtils {
 		return true;
 	}
 	
+	/**
+	 * Rounds the time to ten, so that the game board doesn't need
+	 * to update randomly, it rounds the time of user inputs to the nearest
+	 * 10 so it can update less and uniformly.
+	 * 
+	 * @param time The time we are trying to round.
+	 * @return The rounded time.
+	 */
 	public static int roundTimeToTen(int time) {
 		return ((time+5)/10)*10;
 	}
 	
-	
+	/**
+	 * Gets the start time of the replaying.
+	 * 
+	 * @return startTime The time.
+	 */
 	public static long getStartTime() {
 		return startTime;
 	}
 
+	/** 
+	 * Sets the start time of the replaying.
+	 * 
+	 * @param start The new start time.
+	 */
 	public static void setStartTime(long start) {
 		startTime = start;
 	}
 	
+	/**
+	 * The amount of action records used for the GUI.
+	 * 
+	 * @return Returns the size of the list.
+	 */
 	public static int replaySize() {
 		return replay.size();
 	}
 	
+	/**
+	 * Gets the action record at the current index.
+	 * 
+	 * @param index The index, based on the timer.
+	 * @return Returns the associated ActionRecord.
+	 */
 	public static ActionRecord getActionRecord(int index) {
 		return replay.get(index);
 	}
 
-
+	/**
+	 * Sets the time in which the level was paused
+	 */
+	public static void setPause() {
+		pauseTime = System.currentTimeMillis();
+	}
+	
+	/**
+	 * Updates the difference value between when the game was paused
+	 */
+	public static void updateDifference() {
+		difference += (System.currentTimeMillis() - pauseTime);
+	}
+	
+	/**
+	 * Gets the difference calculation for the level
+	 * @return
+	 * 		the difference as a long (which can be converted to int)
+	 */
+	public static long getDifference() {
+		return difference;
+	}
+	
+	/**
+	 * Resets all of the variables for a new level upon startup
+	 */
+	public static void reset() {
+    	if (replay != null) replay.clear();
+    	setStartTime(System.currentTimeMillis());
+		pauseTime = 0;
+		difference = 0;
+	}
+	
 	/**
 	 * Delete the replay directory associated with the ID, including it's contents.
 	 * @param id the id on the replay to delete.
