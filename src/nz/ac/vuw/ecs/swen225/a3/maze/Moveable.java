@@ -4,7 +4,7 @@ package nz.ac.vuw.ecs.swen225.a3.maze;
  * A class that helps determine where they player should go and where they
  * should be, also helps to tell what direction to render the player.
  * 
- * @author Teagan Stewart
+ * @author Teagan Stewart - 300407769
  *
  */
 public abstract class Moveable {

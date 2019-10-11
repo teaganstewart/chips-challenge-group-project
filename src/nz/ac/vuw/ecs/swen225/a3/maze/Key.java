@@ -6,7 +6,7 @@ import javax.json.JsonObject;
 /**
  * The key class, used to unlock doors matching the BasicColor of this object.
  * 
- * @author Ethan Munn
+ * @author Ethan Munn - 300367257
  *
  */
 public class Key implements Entity {

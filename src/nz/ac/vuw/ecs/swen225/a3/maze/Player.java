@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Class for the player, has things essential for only a player.
  * 
- * @author Teagan Stewart
+ * @author Teagan Stewart - 300407769
  *
  */
 public class Player extends Moveable implements Saveable {

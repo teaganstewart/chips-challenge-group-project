@@ -3,16 +3,18 @@ package nz.ac.vuw.ecs.swen225.a3.persistence.Tests;
 import nz.ac.vuw.ecs.swen225.a3.maze.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
 import nz.ac.vuw.ecs.swen225.a3.persistence.SaveUtils;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static nz.ac.vuw.ecs.swen225.a3.maze.BasicColor.GREEN;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.File;
-import java.util.List;
 
+/**
+ * 
+ * Class which contains most tests that test classes in the persistence
+ * directory.
+ * 
+ * @author Matt Rothwell - 300434822
+ */
 public class PersistanceTests {
 
 	/**

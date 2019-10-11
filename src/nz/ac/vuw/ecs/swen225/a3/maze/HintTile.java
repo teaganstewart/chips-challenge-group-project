@@ -11,7 +11,7 @@ import javax.json.JsonObjectBuilder;
  * class may be viewed as extraneous as it only holds a string, but in my
  * opinion it helps keep the classes clean.
  * 
- * @author Ethan Munn
+ * @author Ethan Munn - 300367257
  */
 public class HintTile extends Tile implements Saveable {
 

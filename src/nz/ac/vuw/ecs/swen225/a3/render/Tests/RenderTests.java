@@ -14,7 +14,7 @@ import nz.ac.vuw.ecs.swen225.a3.render.*;
  * Class which contains all tests that test classes in the render
  * directory.
  * 
- * @author Teagan Stewart
+ * @author Teagan Stewart - 300407769
  */
 public class RenderTests {
 
@@ -45,6 +45,7 @@ public class RenderTests {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	void drawEntitiesTest() {
 

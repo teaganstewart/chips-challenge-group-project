@@ -7,7 +7,7 @@ import javax.json.JsonObject;
  * Represents a Door which is locked until the player collects all the
  * treasure.
  * 
- * @author Ethan Munn
+ * @author Ethan Munn - 300367257
  * 
  */
 public class TreasureDoor extends Door {
