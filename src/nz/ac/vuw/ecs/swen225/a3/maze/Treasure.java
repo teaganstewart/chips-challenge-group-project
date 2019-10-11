@@ -8,7 +8,7 @@ import javax.json.JsonObject;
  * static counter built into it. This allows for the total treasures in a level
  * to be counted up easily.
  * 
- * @author Ethan Munn
+ * @author Ethan Munn - 300367257
  *
  */
 public class Treasure implements Entity {
@@ -17,7 +17,8 @@ public class Treasure implements Entity {
 	private static int totalCollected;
 
 	/**
-	 * The treasure constructor doesn't really need anything inside of it
+	 * The Treasure object constructor, adds one to the static total every time.
+	 * Static so it can be accessed from any treasure.
 	 */
 	public Treasure() {
 		totalInLevel++;
@@ -35,7 +36,7 @@ public class Treasure implements Entity {
 	}
 
 	// -------------------------------------//
-	// STATIC METHODS //
+	// -----------STATIC METHODS----------- //
 	// -------------------------------------//
 
 	/**
@@ -47,39 +48,39 @@ public class Treasure implements Entity {
 	}
 
 	/**
-	 * Called to reset the Treasure counter.
+	 * Adds one to the total treasures collected.
 	 */
 	public static void incrTreasuresCollected() {
 		totalCollected++;
 	}
 
 	/**
-	 * Returns if the total collected equals total amount in the level
+	 * Checks whether there are any treasures left to collect.
 	 * 
-	 * @return true or false, depending on this condition
+	 * @return Returns true if they are, false if they aren't.
 	 */
 	public static boolean allCollected() {
 		return totalCollected == totalInLevel;
 	}
-	
+
 	/**
-	 * Returns the amount of treasures collected
+	 * The amount of treasures the user has collected.
 	 * 
-	 * @return the total treasures collected
+	 * @return Returns the total treasures collected
 	 */
 	public static int getTotalCollected() {
 		return totalCollected;
 	}
 
 	/**
-	 * Returns the amount of treasures in the level
+	 * The amount of treasures in the level
 	 * 
-	 * @return the total treasures in the level
+	 * @return Returns the total treasures in the level
 	 */
 	public static int getTotalInLevel() {
 		return totalInLevel;
 	}
-	
+
 	/**
 	 * Serialize the static fields within Treasure to JSON object format
 	 * 
@@ -94,9 +95,9 @@ public class Treasure implements Entity {
 	/**
 	 * Set the treasure counters to the correct values from the file.
 	 * 
-	 * @param totalInLevelFromFile   amount of treasure in the map originally from
+	 * @param totalInLevelFromFile Amount of treasure in the map originally from
 	 *                               file.
-	 * @param totalCollectedFromFile amount of treasure the player has already
+	 * @param totalCollectedFromFile Amount of treasure the player has already
 	 *                               collected.
 	 */
 	public static void setTreasureCountersUponLoad(int totalInLevelFromFile, int totalCollectedFromFile) {

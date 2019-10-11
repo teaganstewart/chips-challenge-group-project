@@ -1,9 +1,9 @@
 package nz.ac.vuw.ecs.swen225.a3.maze;
 
 /**
- * Directions for the four ways you can move in Cluedo.
+ * Directions for the four ways you can move.
  * 
- * @author
+ * @author Teagan Stewart - 300407769
  */
 public enum Direction {
 	/**

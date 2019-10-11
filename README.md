@@ -23,3 +23,9 @@ To Open the IntelliJ Project in Eclipse: <br>
 1.) Open Projects form file system. Select "Directory" and choose the gitlab folder <br>
 2.) Right click on the project folder, go to build path, add libraries. Add JUnit <br>
 <br>
+**Turning on Javadoc Errors in Eclipse**<br>
+->right click on the project folder<br>
+->build path->configure build path<br>
+->Java Compiler<br>
+->Javadoc<br>
+->set everything drop down box to Error<br>

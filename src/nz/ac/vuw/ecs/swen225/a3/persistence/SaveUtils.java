@@ -14,10 +14,13 @@ import java.io.PrintStream;
  * The SaveUtils contains methods relevant to saving of the current game state
  * to a Json file.
  *
- * @author Matt Rothwell
+ * @author Matt Rothwell - 300434822
  */
 public class SaveUtils {
 
+	/**
+	 * The directory of all the saves.
+	 */
 	public static String SAVES_DIRECTORY = "saves";
 
 	/**
@@ -25,6 +28,8 @@ public class SaveUtils {
 	 * opened.
 	 * 
 	 * @param level object to save.
+	 * @param saveName The name you want the level to be saved as.
+	 * @return Returns true if the level was saved, false if it doesn't exist.
 	 */
 	public static boolean saveGame(Level level, String saveName) {
 		try {
@@ -49,9 +54,30 @@ public class SaveUtils {
 	 * The player has chosen to exit the game, without saving the current game state
 	 * Therefore this method simply saves the number of the last unfinished level
 	 * they were on so that the game can resume on this next time.
-	 */
-	public static void saveLevel() {
+	 * 
+	 * @param level The number of the level we want to save.
+	 * @return Returns true if the level was saved, false if it doesn't exist.
+	 */ 
+	public static boolean saveLevel(int level) {
+		try {
+			constructSaves();
+			JsonWriter writer = Json.createWriter(
+					new PrintStream(new File(SAVES_DIRECTORY + "\\" + System.currentTimeMillis() + ".json")));
 
+			JsonObject save = Json.createObjectBuilder()
+					.add("LevelNum", level)
+					.build();
+
+			JsonObject toSave = Json.createObjectBuilder()
+					.add("Level", save).build();
+
+			writer.write(toSave);
+			writer.close();
+
+			return true;
+		} catch (FileNotFoundException e) {
+			return false;
+		}
 	}
 
 	/**
@@ -66,5 +92,6 @@ public class SaveUtils {
 		}
 		return true;
 	}
+
 
 }

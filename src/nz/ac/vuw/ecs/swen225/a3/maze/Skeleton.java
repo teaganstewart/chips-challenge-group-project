@@ -5,8 +5,21 @@ import javax.json.JsonObject;
 
 import nz.ac.vuw.ecs.swen225.a3.persistence.Saveable;
 
+/**
+ * A class that provides where skeletons are able to move and allows them
+ * to be saved. 
+ * 
+ * @author Teagan Stewart - 300407769
+ *
+ */
 public class Skeleton extends Moveable implements Saveable {
 
+	/**
+	 * The constructor for a Skeleton object.
+	 * 
+	 * @param coordinate Coordinate skeleton spawns at.
+	 * @param start The direction skeleton moves in at start.
+	 */
 	public Skeleton(Coordinate coordinate, Direction start) {
 		super(coordinate);
 		super.setDirection(start);
