@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.*;
 import nz.ac.vuw.ecs.swen225.a3.persistence.LoadUtils;
+import nz.ac.vuw.ecs.swen225.a3.persistence.SaveUtils;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -152,4 +153,39 @@ public class ReplayUtils {
 		return dir.delete();
 	}
 
+	/**
+	 * Returns a HashMap containing a neatly formatted String for display
+	 * which maps to an ID which can be used for loading a recording.
+	 * @return HashMap from String -> ID.
+	 */
+	public static Map<String, Long> getRecordingsById(){
+		Map<String, Long> recordingsToId = new HashMap<>();
+
+		//Grab the directories that contain files
+		File directory = new File(RECORD_DIRECTORY);
+		FileFilter filter = pathname -> pathname.isDirectory() && pathname.listFiles() != null;
+		File[] files = directory.listFiles(filter);
+
+		if (files != null){
+			for (File f : files){
+
+				//Add files to the map
+				String filename = f.getName();
+				long id;
+				try {
+					id = Long.parseLong(filename);
+				}
+				catch (NumberFormatException e){
+					continue;
+				}
+
+				Date date = new Date(id);
+
+				String formatted = date.toString();
+
+				recordingsToId.put(formatted, id);
+			}
+		}
+		return Collections.unmodifiableMap(recordingsToId);
+	}
 }
