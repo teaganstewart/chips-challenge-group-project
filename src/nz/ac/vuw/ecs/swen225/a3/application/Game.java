@@ -114,6 +114,10 @@ public class Game {
 
 				// changes direction if returns false and moves back
 				enemy.setDirection(enemy.getDirection().inverse());
+				if(enemy.getNextPos().equals(maze.getPlayer().getCoordinate())) {
+					maze.setResetLevel(true);
+					return;
+				}
 				enemy.setCoordinate(enemy.getNextPos());
 				saveReplay = true;
 			}

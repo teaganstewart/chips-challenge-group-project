@@ -7,6 +7,8 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.stream.JsonParsingException;
+
 import java.io.*;
 import java.util.*;
 
@@ -209,9 +211,9 @@ public class LoadUtils {
 				return obj;
 
 			}
-			catch (IOException e) {
-				return null;
-			}
+			catch (IOException | JsonParsingException e) {
+                return null;
+            }
 		}
 
 		return null;

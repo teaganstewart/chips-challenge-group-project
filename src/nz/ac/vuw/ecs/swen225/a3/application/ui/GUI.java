@@ -23,63 +23,63 @@ import java.awt.event.*;
  *
  */
 public class GUI extends JFrame {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private Game game;
-	
+
 	/**
 	 * Has to be static to be used in tests.
 	 */
 	public static JFrame main = new JFrame("Chap's Challenge");
 	private static final int LEVEL_COUNT = 2; 
-	
+
 	// main panels
 	private GamePanel gamePanel;
-	
+
 	/**
 	 * info panel, for storing game info.
 	 */
 	public InfoPanel infoPanel;
-	
+
 	// windows
 	private JDialog fileLoaderWindow, pauseWindow;
 
 	private JDialog deathWindow;
 
 	private JDialog finishLevelWindow;
-	
+
 	//Declare variable menu item variable
 	private JMenuBar menuBar;
 	private JMenu fileMenu, gameMenu;
 	private JMenuItem exitItem, saveAndExitItem, loadGameItem, restart_level_Item, restart_game_Item, pause_Item, help_Item;
 
-    // game variables
-    private static Timer gameLoop;
-    private static int gameFrame;
-    private static int gameSpeed = 10;
-    private static boolean timeToggle, enemyToggle, started;
-    
-    // recnplay variables
-    private static Timer replayLoop;
-    private static int globalFrame, keyFrame, recIndex;
+	// game variables
+	private static Timer gameLoop;
+	private static int gameFrame;
+	private static int gameSpeed = 10;
+	private static boolean timeToggle, enemyToggle, started;
+
+	// recnplay variables
+	private static Timer replayLoop;
+	private static int globalFrame, keyFrame, recIndex;
 	private static boolean flashIcon;
 
 	// switching between recnplay / game
-    private static boolean replayMode;
+	private static boolean replayMode;
 
-    //Current record ID
+	//Current record ID
 	private Long currentRecordID;
-    /**
-     * Constructs the game via the GUI
-     */
+	/**
+	 * Constructs the game via the GUI
+	 */
 	public GUI() {
-		
+
 		// sets up both timers and ensure the game by default starts on Game Mode, not Replay Mode
 		setReplayMode(false);
 		setupTimer();
 		game = new Game();
-	
+
 		createWindow();
 		main.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		main.addKeyListener(new KeyListener() {
@@ -106,12 +106,12 @@ public class GUI extends JFrame {
 		main.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent windowEvent) {
-				
+
 				// has to stop the timer here so the game doesn't keep running in the background
 				stopTimer();
-		    	game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
+				game.getLevel().setRunningTime(game.getLevel().getTimeAllowed() - game.getTime());
 				exitPopup();
-				
+
 			}
 		});
 
@@ -124,7 +124,7 @@ public class GUI extends JFrame {
 	 * 		the key the user pressed to check against
 	 */
 	public void inGameEvent(KeyEvent e) {
-		
+
 		// basically a check to see if the key they pressed was an arrow key
 		boolean moved = false;
 		Maze maze = game.getMaze();
@@ -166,15 +166,18 @@ public class GUI extends JFrame {
 	public void inReplayEvent(KeyEvent e) {
 		// "S" for Skip
 		if (e.getKeyCode() == KeyEvent.VK_S) {
-			
+
 			// doesn't allow a skip if it's beyond the level count
 			if (game.getLevelNum() < LEVEL_COUNT) {
 				stopTimer();
 				gameSpeed=10;
-				saveReplayPopup();
 				setReplayMode(false);
+				saveReplayPopup();
 				game.loadLevel(gamePanel, game.getLevelNum()+1);
 			}else{
+				stopTimer();
+				infoPanel.setPause(true);
+				setReplayMode(false);
 				saveReplayPopup();
 				JOptionPane.showMessageDialog(null, "Congratulation, You have won the game");
 				finishLevelWindow();
@@ -231,7 +234,7 @@ public class GUI extends JFrame {
 		}
 
 	}
-	
+
 	/**
 	 * Create Game window
 	 */
@@ -252,10 +255,10 @@ public class GUI extends JFrame {
 		gamePanel = new GamePanel(game);
 		gamePanel.setBackground(new Color(40, 237, 66));
 		infoPanel = new InfoPanel(game, this);
-		
+
 		main.add(gamePanel, BorderLayout.LINE_START);
 		main.add(infoPanel, BorderLayout.LINE_END);
-		
+
 		//Display window at the center of the screen
 		main.pack();
 		main.setVisible(true);
@@ -284,7 +287,7 @@ public class GUI extends JFrame {
 				stopTimer();
 				System.exit(0);
 			}
-			
+
 			main.setFocusable(true);
 
 		}
@@ -301,10 +304,10 @@ public class GUI extends JFrame {
 
 		String fileName = JOptionPane.showInputDialog("Enter a name for the save file.");
 		if(fileName != null) {
-				SaveUtils.saveGame(game.getLevel(), fileName);
-				JOptionPane.showMessageDialog(null, "Game has been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
-				stopTimer();
-				System.exit(0);
+			SaveUtils.saveGame(game.getLevel(), fileName);
+			JOptionPane.showMessageDialog(null, "Game has been saved. Goodbye", "Save and Exit", JOptionPane.PLAIN_MESSAGE);
+			stopTimer();
+			System.exit(0);
 
 		}else{
 			JOptionPane.showMessageDialog(null, "No input for files name or process had been cancelled.");
@@ -313,7 +316,7 @@ public class GUI extends JFrame {
 		startTimer();
 
 	}
-	
+
 	/**
 	 *  The popup after a replay ends, asking you whether you want to 
 	 *  save it or not.
@@ -371,6 +374,24 @@ public class GUI extends JFrame {
 			});
 			nextButton.setBounds(75,200,150 ,30);
 			panel.add(nextButton);
+		}
+		else {
+			JButton exitButton = new JButton("Exit");
+			exitButton.addActionListener(e -> {
+				finishLevelWindow.dispose();
+				int prompt = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the game?", "Close Window?",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (prompt == JOptionPane.YES_OPTION){ 
+					stopTimer();
+					System.exit(0);
+				}
+				else {
+					main.setFocusable(true);
+				}
+
+			});
+			exitButton.setBounds(75,200,150 ,30);
+			panel.add(exitButton);
 		}
 
 
@@ -437,7 +458,7 @@ public class GUI extends JFrame {
 		deathWindow.setVisible(true);
 
 	}
-	
+
 	/**
 	 * Create menu bar with all the menu items
 	 */
@@ -516,7 +537,7 @@ public class GUI extends JFrame {
 
 		});
 	}
-	
+
 	/**
 	 * Creates all of the items for the game menu in the menu bar.
 	 */
@@ -568,9 +589,9 @@ public class GUI extends JFrame {
 							"Esc - Resume\n\n\n" +
 							"Lastly do not forget to have fun   ; )",
 
-					"Help Page",
+							"Help Page",
 
-					JOptionPane.CLOSED_OPTION) == JOptionPane.YES_OPTION){
+							JOptionPane.CLOSED_OPTION) == JOptionPane.YES_OPTION){
 			}
 			startTimer();
 		});
@@ -622,21 +643,21 @@ public class GUI extends JFrame {
 		//Add panel to the dialog
 		fileLoaderWindow.add(panel);
 
-        // if closed out using X
+		// if closed out using X
 		fileLoaderWindow.addWindowListener(new WindowAdapter()
-        {
-            @Override
-            public void windowClosing(WindowEvent e)
-            {
-                e.getWindow().dispose();
-                
-                // a check to make sure that it doesn't start the replay if that is paused, if a close is attempted
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				e.getWindow().dispose();
+
+				// a check to make sure that it doesn't start the replay if that is paused, if a close is attempted
 				if(!(infoPanel.getPause())) {
 					startTimer();
 				}
-            }
-        });
-        
+			}
+		});
+
 		fileLoaderWindow.setVisible(true);
 		setReplayMode(false);
 		main.setFocusable(true);
@@ -686,36 +707,36 @@ public class GUI extends JFrame {
 
 		pauseWindow = popUpWindow("Pause Window", 300,300);
 		pauseWindow.add(panel);
-        pauseWindow.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-            	
-                // starts the timer again
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    pauseWindow.dispose();
-                    // although it's impossible to reach here outside of replay mode, this is the safety check
-    				
-    				startTimer();
-    				
-                }
-            }
-        });
-        
-        // if closed out using X
-        pauseWindow.addWindowListener(new WindowAdapter()
-        {
-            @Override
-            public void windowClosing(WindowEvent e)
-            {
-                e.getWindow().dispose();
-                // although it's impossible to reach here outside of replay mode, this is the safety check
+		pauseWindow.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				// starts the timer again
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					pauseWindow.dispose();
+					// although it's impossible to reach here outside of replay mode, this is the safety check
+
+					startTimer();
+
+				}
+			}
+		});
+
+		// if closed out using X
+		pauseWindow.addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				e.getWindow().dispose();
+				// although it's impossible to reach here outside of replay mode, this is the safety check
 				if(!(infoPanel.getPause())) {
 					startTimer();
 				}
-            }
-        });
-        
-        pauseWindow.setVisible(true);
+			}
+		});
+
+		pauseWindow.setVisible(true);
 
 	}
 
@@ -729,7 +750,7 @@ public class GUI extends JFrame {
 		game.loadLevel(gamePanel,lvl);
 
 	}
-	
+
 	/**
 	 * Quick method for restarting the game
 	 */
@@ -743,7 +764,7 @@ public class GUI extends JFrame {
 	 * Redraws the game panel.
 	 */
 	public void updateBoard() {
-		
+
 		// redraws the board
 		gamePanel.clearBoard();
 		gamePanel.drawBoard();
@@ -760,24 +781,24 @@ public class GUI extends JFrame {
 		int first = replayMode ? recIndex : Treasure.getTotalCollected();
 		int secnd = replayMode ? ReplayUtils.replaySize()-1 : Treasure.getTotalInLevel();
 		infoPanel.displayChips(replayMode, first, secnd);
-		
+
 		// inventory is displayed regardless
 		infoPanel.clearInventory();
 		infoPanel.drawInventory();
-		
+
 		// shows the buttons if in replay mode
 		infoPanel.updateRec(replayMode);
 		gamePanel.updateUI();
 
 	}
 
-    /**
-     * Only ever called once to create the timer and override it's action event
-     */
-    void setupTimer() {
+	/**
+	 * Only ever called once to create the timer and override it's action event
+	 */
+	void setupTimer() {
 
-    	// sets up the game timer, which runs ten times a second
-    	gameLoop = new Timer(250, new ActionListener() {
+		// sets up the game timer, which runs ten times a second
+		gameLoop = new Timer(250, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -795,7 +816,7 @@ public class GUI extends JFrame {
 
 					// if the timer on screen needs to be updated
 					if (timeToggle) {
-						
+
 						// decrements the time, if it's 0 restart
 						game.setTime(game.getTime()-1);
 						if (game.getTime() < 0) restartLevel(game.getLevelNum());
@@ -813,12 +834,12 @@ public class GUI extends JFrame {
 			}
 
 
-    	});
+		});
 		gameLoop.setInitialDelay(0);
 		gameLoop.setRepeats(true);
 
 		// sets up the replay timer, which runs on a different mechanism
-    	replayLoop = new Timer(10, new ActionListener() {
+		replayLoop = new Timer(10, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -828,16 +849,16 @@ public class GUI extends JFrame {
 					}
 					// grabs the time from the action record
 					int t = ReplayUtils.getActionRecord(recIndex).getTimeSinceLevelStart();
-					
+
 					// depending on fast forward or not, this loop may run once or 3 times
 					for(int i=0; i<(10.0/gameSpeed); i++) {
 
 						// if there are still more frames to go
 						boolean moreToGo = recIndex < ReplayUtils.replaySize()-1;
-						
+
 						// if after rounding, these two numbers are equal, shows the updated board
 						if (ReplayUtils.roundTimeToTen(t) == keyFrame) {
-	
+
 							Maze m = ReplayUtils.getActionRecord(recIndex).getMaze();
 							game.getRender().setMaze(m);
 							game.setMaze(m);
@@ -845,155 +866,155 @@ public class GUI extends JFrame {
 
 							// if the replay isn't complete yet
 							if (moreToGo) recIndex++;
-							
+
 						}
-						
+
 						// this fixes a bug where two actionRecords, if close enough together, can have the same rounded time
 						if (ReplayUtils.roundTimeToTen(t) == keyFrame-10 && moreToGo) recIndex++;
-	
+
 						// increments these both by the delay speed
 						keyFrame += replayLoop.getDelay();
 						globalFrame += replayLoop.getDelay();
 					}
-					
+
 					// a quick check to see whether or not a global counter should be updated
 					if (globalFrameCheck(globalFrame)) updateBoard();
 				} catch (NullPointerException e) {}
 			}
 
 
-    	});
-    	replayLoop.setInitialDelay(0);
-    	replayLoop.setRepeats(true);
+		});
+		replayLoop.setInitialDelay(0);
+		replayLoop.setRepeats(true);
 
-    }
+	}
 
-    /**
-     * The only purpose of this method is to check if it's safe to flash the icon or not, ignoring 0
-     * @param frame
-     * 		The frame number
-     * @return
-     * 		Whether or not the board should be updated
-     */
-    private boolean globalFrameCheck(int frame) {
-    	if (frame == 0) return false;
+	/**
+	 * The only purpose of this method is to check if it's safe to flash the icon or not, ignoring 0
+	 * @param frame
+	 * 		The frame number
+	 * @return
+	 * 		Whether or not the board should be updated
+	 */
+	private boolean globalFrameCheck(int frame) {
+		if (frame == 0) return false;
 		if (frame % 400 == 0) {
 			flashIcon = !flashIcon;
 			return true;
 		}
 		return false;
-    }
-    
-    /**
-     * Starts the timers, and has extra conditions for if this timer is just starting or is unpausing
-     */
-    public static void startTimer() {
-    	if (!replayMode) {
-    		
+	}
+
+	/**
+	 * Starts the timers, and has extra conditions for if this timer is just starting or is unpausing
+	 */
+	public static void startTimer() {
+		if (!replayMode) {
+
 			// has to create and initialise a new folder for all the recordings to be saved into, as well as reset
 			// all the variables for toggling when enemies move, for example
-    		if (!started) {
-    			ReplayUtils.reset();
-    			gameFrame = 0;
-    			enemyToggle = false;
-    	    	timeToggle = false;
-    	    	started = true;
-    		} else {
-    			ReplayUtils.updateDifference();
-    		}
-    		
-	    	gameLoop.start();
-    	} else {
-    		
+			if (!started) {
+				ReplayUtils.reset();
+				gameFrame = 0;
+				enemyToggle = false;
+				timeToggle = false;
+				started = true;
+			} else {
+				ReplayUtils.updateDifference();
+			}
+
+			gameLoop.start();
+		} else {
+
 			// if replay mode is just starting, sets all the indexes to 0
-    		if (!started) {
-    			globalFrame = 0;
-        		keyFrame = 0;
-        		recIndex = 0;
-        		flashIcon = true;
-        		started = true;
+			if (!started) {
+				globalFrame = 0;
+				keyFrame = 0;
+				recIndex = 0;
+				flashIcon = true;
+				started = true;
 
-    		}
-    		
-    		replayLoop.start();
-    	}
-    }
+			}
 
-    /**
-     * Stops whichever timer is active, regardless of which mode its in
-     */
-    public static void stopTimer() {
-    	if (!replayMode) {
-    		ReplayUtils.setPause();
-    		gameLoop.stop();
-    	}
-    	else replayLoop.stop();
-    }
-    
-    /**
-     * Switches the replay mode and sets started to false for the timers
-     * @param bool
-     * 		true for Replay, false for inGame
-     */
-    public static void setReplayMode(boolean bool) {
-    	replayMode = bool;
-    	started = false;
+			replayLoop.start();
+		}
+	}
 
-    }
-    
-    /**
-     * Sets the keyFrame (for classes outside of gui).
-     * 
-     * @param key The keyframe to set to (should be a multiple of 10)
-     */
-    public static void setKeyFrame(int key) {
-    	keyFrame = key;
-    }
-    
-    /**
-     * Gets the keyFrame (for classes outside of this one)
-     * @return The keyframe at this time
-     */
-    public int getKeyFrame() {
-    	return keyFrame;
-    }
-    
-    /**
-     * Sets the recIndex (for classes outside of GUI).
-     * 
-     * @param rec
-     * 		the recIndex to set to
-     */
-    public static void setRecIndex(int rec) {
-    	recIndex = rec;
-    }
-    
-    /**
-     * Gets the recIndex (for classes outside of this one).
-     * 
-     * @return The recIndex at this time
-     */
-    public int getRecIndex() {
-    	return recIndex;
-    }
-    
-    /**
-     * Sets the speed of the replay.
-     * 
-     * @param speed The speed to set to (10, or 3).
-     */
-    public static void setSpeed(int speed) {
-    	gameSpeed = speed;
-    }
-    
-    /**
-     * Gets the speed of the replay.
-     * 
-     * @return gameSpeed The speed (10 or 3).
-     */
-    public int getSpeed() {
-    	return gameSpeed;
-    }
+	/**
+	 * Stops whichever timer is active, regardless of which mode its in
+	 */
+	public static void stopTimer() {
+		if (!replayMode) {
+			ReplayUtils.setPause();
+			gameLoop.stop();
+		}
+		else replayLoop.stop();
+	}
+
+	/**
+	 * Switches the replay mode and sets started to false for the timers
+	 * @param bool
+	 * 		true for Replay, false for inGame
+	 */
+	public static void setReplayMode(boolean bool) {
+		replayMode = bool;
+		started = false;
+
+	}
+
+	/**
+	 * Sets the keyFrame (for classes outside of gui).
+	 * 
+	 * @param key The keyframe to set to (should be a multiple of 10)
+	 */
+	public static void setKeyFrame(int key) {
+		keyFrame = key;
+	}
+
+	/**
+	 * Gets the keyFrame (for classes outside of this one)
+	 * @return The keyframe at this time
+	 */
+	public int getKeyFrame() {
+		return keyFrame;
+	}
+
+	/**
+	 * Sets the recIndex (for classes outside of GUI).
+	 * 
+	 * @param rec
+	 * 		the recIndex to set to
+	 */
+	public static void setRecIndex(int rec) {
+		recIndex = rec;
+	}
+
+	/**
+	 * Gets the recIndex (for classes outside of this one).
+	 * 
+	 * @return The recIndex at this time
+	 */
+	public int getRecIndex() {
+		return recIndex;
+	}
+
+	/**
+	 * Sets the speed of the replay.
+	 * 
+	 * @param speed The speed to set to (10, or 3).
+	 */
+	public static void setSpeed(int speed) {
+		gameSpeed = speed;
+	}
+
+	/**
+	 * Gets the speed of the replay.
+	 * 
+	 * @return gameSpeed The speed (10 or 3).
+	 */
+	public int getSpeed() {
+		return gameSpeed;
+	}
 
 	/**
 	 * Return the max level.
@@ -1001,7 +1022,7 @@ public class GUI extends JFrame {
 	 * @return LEVEL_COUNT
 	 */
 	public int getLevelCount(){
-    	return LEVEL_COUNT;
+		return LEVEL_COUNT;
 	}
 
 	/**
@@ -1012,7 +1033,7 @@ public class GUI extends JFrame {
 	public Game getGame() {
 		return game;
 	}
-	
+
 	/**
 	 * Sets the game (for testing purposes, mainly)
 	 * @param game
@@ -1022,13 +1043,13 @@ public class GUI extends JFrame {
 		this.game = game;
 	}
 
-    /**
-     * Checks the conditions of the maze to see if the game needs
-     * to be reset or moved onto the next level
-     * @param maze
-     * 		the current maze
-     */
-    private void checkConditions(Maze maze) {
+	/**
+	 * Checks the conditions of the maze to see if the game needs
+	 * to be reset or moved onto the next level
+	 * @param maze
+	 * 		the current maze
+	 */
+	private void checkConditions(Maze maze) {
 		// if the goal has been reached
 		if (maze.isGoalReached()) {
 			stopTimer();
