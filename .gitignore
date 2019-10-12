@@ -3,7 +3,6 @@ Chap’s Challenge.iml
 /out/
 /bin/
 .project
-.classpath
 /saves/*
 /recordings/*
 .settings/org.eclipse.jdt.core.prefs
