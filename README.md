@@ -1,3 +1,7 @@
+**NOTE: If running the main method gives a NullPointer on an ECS lab machine, please try and run it on** <br>
+**your own computer. We have ran the program in eclipse on multiple team members computers,**<br>
+**and it runs just fine.**<br>
+<br>
 **Running in IntelliJ** <br>
 <br>
 To import the Project through IntelliJ (just in case we forget or have problems): <br>
